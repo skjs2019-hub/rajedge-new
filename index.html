@@ -8,23 +8,122 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e3a8a">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="RajEdge">
+
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RajEdge">
+
+    <!-- ================= SUPABASE ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ================= LOGIN CHECK ================= -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        (async function checkStudentSession() {
+
+            try {
+
+                const { data, error } =
+                    await supabaseClient.auth.getSession();
+
+
+                /*
+                 * अगर session check में error आए
+                 * तो Login page पर भेजेंगे
+                 */
+
+                if (error) {
+
+                    console.error(
+                        "Session check error:",
+                        error
+                    );
+
+                    window.location.replace(
+                        "student-login.html"
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * अगर student पहले से logged in है
+                 * तो सीधे dashboard
+                 */
+
+                if (data && data.session) {
+
+                    window.location.replace(
+                        "student-dashboard.html"
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * अगर student logged in नहीं है
+                 * तो Login/Register page
+                 */
+
+                window.location.replace(
+                    "student-login.html"
+                );
+
+
+            } catch (err) {
+
+                console.error(
+                    "Login check error:",
+                    err
+                );
+
+                window.location.replace(
+                    "student-login.html"
+                );
+
+            }
+
+        })();
+
+    </script>
+
 </head>
 
+
 <body>
+
 
 <!-- ================= HEADER ================= -->
 
 <header class="header">
 
     <div class="logo-box">
-        <div class="logo-icon">📚</div>
+
+        <div class="logo-icon">
+            📚
+        </div>
 
         <div>
+
             <div class="logo-text">
                 Raj<span>Edge</span>
             </div>
@@ -32,23 +131,37 @@
             <div class="logo-subtitle">
                 Rajasthan Education Hub
             </div>
+
         </div>
+
     </div>
 
 
     <nav class="navbar">
 
-        <a href="index.html" class="active">Home</a>
+        <a href="index.html" class="active">
+            Home
+        </a>
 
-        <a href="student-notes.html">Notes</a>
+        <a href="student-notes.html">
+            Notes
+        </a>
 
-        <a href="student-tests.html">Test Series</a>
+        <a href="student-tests.html">
+            Test Series
+        </a>
 
-        <a href="student-courses.html">Courses</a>
+        <a href="student-courses.html">
+            Courses
+        </a>
 
-        <a href="student-notes.html">Current Affairs</a>
+        <a href="student-notes.html">
+            Current Affairs
+        </a>
 
-        <a href="#about">About Us</a>
+        <a href="#about">
+            About Us
+        </a>
 
     </nav>
 
@@ -57,7 +170,9 @@
 
         <div class="search-box">
 
-            <span>⌕</span>
+            <span>
+                ⌕
+            </span>
 
             <input
                 type="text"
@@ -67,11 +182,18 @@
         </div>
 
 
-        <a href="student-login.html" class="login-btn">
+        <a
+            href="student-login.html"
+            class="login-btn"
+        >
             Login
         </a>
 
-        <a href="student-register.html" class="register-btn">
+
+        <a
+            href="student-register.html"
+            class="register-btn"
+        >
             Register
         </a>
 
@@ -87,33 +209,44 @@
 
     <div class="hero-overlay"></div>
 
+
     <div class="hero-content">
 
         <div class="hero-small">
+
             Rajasthan Exams &nbsp; | &nbsp;
             Better Notes &nbsp; | &nbsp;
             Brighter Future
+
         </div>
 
 
         <h1>
+
             Your Rajasthan
+
             <br>
 
             <span>
                 Exam Preparation Partner
             </span>
+
         </h1>
 
 
         <p>
+
             सही दिशा &nbsp; | &nbsp;
             सटीक तैयारी &nbsp; | &nbsp;
             सफलता आपके कदमों में
+
         </p>
 
 
-        <a href="#exams" class="hero-btn">
+        <a
+            href="#exams"
+            class="hero-btn"
+        >
             Explore Now →
         </a>
 
@@ -123,11 +256,13 @@
     <div class="rajasthan-badge">
 
         <div>
+
             म्हारो
             <br>
             राजस्थान
             <br>
             म्हारो अभिमान
+
         </div>
 
     </div>
@@ -140,90 +275,126 @@
 
 <section class="quick-section">
 
-    <a href="student-notes.html" class="quick-card">
+
+    <a
+        href="student-notes.html"
+        class="quick-card"
+    >
 
         <div class="quick-icon blue">
             📄
         </div>
 
         <div>
-            <h3>Study Notes</h3>
+
+            <h3>
+                Study Notes
+            </h3>
 
             <p>
                 All Subjects | PDF Format
             </p>
+
         </div>
 
     </a>
 
 
 
-    <a href="student-tests.html" class="quick-card">
+    <a
+        href="student-tests.html"
+        class="quick-card"
+    >
 
         <div class="quick-icon purple">
             ✓
         </div>
 
         <div>
-            <h3>Test Series</h3>
+
+            <h3>
+                Test Series
+            </h3>
 
             <p>
                 Chapter-wise & Full Length
             </p>
+
         </div>
 
     </a>
 
 
 
-    <a href="student-courses.html" class="quick-card">
+    <a
+        href="student-courses.html"
+        class="quick-card"
+    >
 
         <div class="quick-icon green">
             ▶
         </div>
 
         <div>
-            <h3>Video Courses</h3>
+
+            <h3>
+                Video Courses
+            </h3>
 
             <p>
                 Expert Faculty | Easy Language
             </p>
+
         </div>
 
     </a>
 
 
 
-    <a href="student-notes.html" class="quick-card">
+    <a
+        href="student-notes.html"
+        class="quick-card"
+    >
 
         <div class="quick-icon orange">
             ▤
         </div>
 
         <div>
-            <h3>Current Affairs</h3>
+
+            <h3>
+                Current Affairs
+            </h3>
 
             <p>
                 Daily & Monthly Updates
             </p>
+
         </div>
 
     </a>
 
 
 
-    <a href="#about" class="quick-card">
+    <a
+        href="#about"
+        class="quick-card"
+    >
 
         <div class="quick-icon red">
             ◎
         </div>
 
         <div>
-            <h3>Exam Guidance</h3>
+
+            <h3>
+                Exam Guidance
+            </h3>
 
             <p>
                 Strategy | Tips | Resources
             </p>
+
         </div>
 
     </a>
@@ -234,14 +405,21 @@
 
 <!-- ================= POPULAR EXAMS ================= -->
 
-<section class="content-section" id="exams">
+<section
+    class="content-section"
+    id="exams"
+>
 
     <div class="section-heading">
 
         <h2>
+
             <span></span>
+
             Popular Exams
+
         </h2>
+
 
         <a href="student-courses.html">
             View All →
@@ -271,12 +449,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -301,12 +484,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -331,12 +519,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -361,12 +554,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -391,12 +589,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -421,12 +624,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -451,12 +659,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -481,12 +694,17 @@
             </p>
 
             <div class="exam-links">
+
                 Notes &nbsp; | &nbsp;
                 Test Series &nbsp; | &nbsp;
                 Courses
+
             </div>
 
-            <a href="student-courses.html" class="explore-btn">
+            <a
+                href="student-courses.html"
+                class="explore-btn"
+            >
                 Explore
             </a>
 
@@ -505,9 +723,13 @@
     <div class="section-heading">
 
         <h2>
+
             <span></span>
+
             Latest Notes
+
         </h2>
+
 
         <a href="student-notes.html">
             View All →
@@ -519,7 +741,10 @@
     <div class="notes-list">
 
 
-        <a href="student-notes.html" class="note-item">
+        <a
+            href="student-notes.html"
+            class="note-item"
+        >
 
             <div class="pdf-icon">
                 PDF
@@ -532,7 +757,8 @@
                 </h3>
 
                 <p>
-                    Geography &nbsp; | &nbsp; Rajasthan GK
+                    Geography &nbsp; | &nbsp;
+                    Rajasthan GK
                 </p>
 
             </div>
@@ -545,7 +771,10 @@
 
 
 
-        <a href="student-notes.html" class="note-item">
+        <a
+            href="student-notes.html"
+            class="note-item"
+        >
 
             <div class="pdf-icon">
                 PDF
@@ -558,7 +787,8 @@
                 </h3>
 
                 <p>
-                    Polity &nbsp; | &nbsp; Rajasthan GK
+                    Polity &nbsp; | &nbsp;
+                    Rajasthan GK
                 </p>
 
             </div>
@@ -571,7 +801,10 @@
 
 
 
-        <a href="student-notes.html" class="note-item">
+        <a
+            href="student-notes.html"
+            class="note-item"
+        >
 
             <div class="pdf-icon">
                 PDF
@@ -584,7 +817,8 @@
                 </h3>
 
                 <p>
-                    Geography &nbsp; | &nbsp; Rajasthan GK
+                    Geography &nbsp; | &nbsp;
+                    Rajasthan GK
                 </p>
 
             </div>
@@ -597,7 +831,10 @@
 
 
 
-        <a href="student-notes.html" class="note-item">
+        <a
+            href="student-notes.html"
+            class="note-item"
+        >
 
             <div class="pdf-icon">
                 PDF
@@ -610,7 +847,8 @@
                 </h3>
 
                 <p>
-                    History &nbsp; | &nbsp; Rajasthan GK
+                    History &nbsp; | &nbsp;
+                    Rajasthan GK
                 </p>
 
             </div>
@@ -631,9 +869,12 @@
 
 <section class="stats-section">
 
+
     <div class="stat-box">
 
-        <strong>500+</strong>
+        <strong>
+            500+
+        </strong>
 
         <p>
             Study Notes
@@ -644,7 +885,9 @@
 
     <div class="stat-box">
 
-        <strong>2000+</strong>
+        <strong>
+            2000+
+        </strong>
 
         <p>
             Practice Questions
@@ -655,7 +898,9 @@
 
     <div class="stat-box">
 
-        <strong>50+</strong>
+        <strong>
+            50+
+        </strong>
 
         <p>
             Test Series
@@ -666,7 +911,9 @@
 
     <div class="stat-box">
 
-        <strong>1M+</strong>
+        <strong>
+            1M+
+        </strong>
 
         <p>
             Happy Learners
@@ -681,6 +928,7 @@
 <!-- ================= FOOTER ================= -->
 
 <footer id="about">
+
 
     <div class="footer-content">
 
@@ -709,13 +957,21 @@
                 Exams
             </h3>
 
-            <a href="student-courses.html">REET</a>
+            <a href="student-courses.html">
+                REET
+            </a>
 
-            <a href="student-courses.html">CET</a>
+            <a href="student-courses.html">
+                CET
+            </a>
 
-            <a href="student-courses.html">RAS / RPSC</a>
+            <a href="student-courses.html">
+                RAS / RPSC
+            </a>
 
-            <a href="student-courses.html">LDC</a>
+            <a href="student-courses.html">
+                LDC
+            </a>
 
         </div>
 
@@ -727,13 +983,21 @@
                 Resources
             </h3>
 
-            <a href="student-notes.html">Notes</a>
+            <a href="student-notes.html">
+                Notes
+            </a>
 
-            <a href="student-tests.html">Test Series</a>
+            <a href="student-tests.html">
+                Test Series
+            </a>
 
-            <a href="student-notes.html">Current Affairs</a>
+            <a href="student-notes.html">
+                Current Affairs
+            </a>
 
-            <a href="student-courses.html">Courses</a>
+            <a href="student-courses.html">
+                Courses
+            </a>
 
         </div>
 
@@ -745,13 +1009,21 @@
                 Support
             </h3>
 
-            <a href="#about">About Us</a>
+            <a href="#about">
+                About Us
+            </a>
 
-            <a href="mailto:support@rajedge.in">Contact Us</a>
+            <a href="mailto:support@rajedge.in">
+                Contact Us
+            </a>
 
-            <a href="student-login.html">Help & Support</a>
+            <a href="student-login.html">
+                Help & Support
+            </a>
 
-            <a href="admin-login.html">Admin Login</a>
+            <a href="admin-login.html">
+                Admin Login
+            </a>
 
         </div>
 
@@ -767,18 +1039,45 @@
 
 </footer>
 
+
+
+<!-- ================= PWA SERVICE WORKER ================= -->
+
 <script>
+
 if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./service-worker.js")
-            .then(function () {
-                console.log("RajEdge PWA Service Worker registered");
-            })
-            .catch(function (error) {
-                console.error("RajEdge Service Worker Error:", error);
-            });
-    });
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            navigator.serviceWorker
+                .register("./service-worker.js")
+
+                .then(function () {
+
+                    console.log(
+                        "RajEdge PWA Service Worker registered"
+                    );
+
+                })
+
+                .catch(function (error) {
+
+                    console.error(
+                        "RajEdge Service Worker Error:",
+                        error
+                    );
+
+                });
+
+        }
+    );
+
 }
+
 </script>
+
+
 </body>
 </html>

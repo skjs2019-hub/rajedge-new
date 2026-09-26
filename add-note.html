@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +58,10 @@
       cursor: pointer;
     }
 
+    .back-btn:hover {
+      background: #ffdf45;
+    }
+
     .container {
       max-width: 850px;
       margin: 35px auto;
@@ -100,6 +104,7 @@
       border-radius: 8px;
       font-size: 15px;
       outline: none;
+      background: white;
     }
 
     input:focus,
@@ -125,6 +130,7 @@
       margin-top: 10px;
       color: #555;
       font-size: 14px;
+      word-break: break-word;
     }
 
     .submit-btn {
@@ -155,6 +161,7 @@
       padding: 14px;
       border-radius: 8px;
       font-weight: bold;
+      line-height: 1.5;
     }
 
     .success {
@@ -188,6 +195,28 @@
       color: #0b64c0;
     }
 
+    .progress {
+      display: none;
+      margin-top: 12px;
+      height: 8px;
+      background: #e4eaf1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #0b64c0;
+      transition: width 0.3s ease;
+    }
+
+    .small-info {
+      margin-top: 7px;
+      font-size: 13px;
+      color: #777;
+    }
+
     @media (max-width: 600px) {
       .header-inner {
         flex-direction: column;
@@ -200,6 +229,10 @@
 
       h1 {
         font-size: 23px;
+      }
+
+      .back-btn {
+        width: 100%;
       }
     }
   </style>
@@ -321,6 +354,10 @@
             केवल PDF file select करें
           </div>
 
+          <div class="small-info">
+            Maximum recommended size: 50 MB
+          </div>
+
         </div>
 
       </div>
@@ -341,6 +378,10 @@
         ⏳ PDF upload हो रही है... कृपया wait करें।
       </div>
 
+      <div class="progress" id="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
 
       <!-- MESSAGE -->
       <div id="message" class="message"></div>
@@ -348,4 +389,626 @@
 
       <div class="note">
         <strong>Important:</strong><br>
-        PDF पहले Supabase Storage के <b>
+        PDF Supabase Storage के
+        <b>notes-pdfs</b>
+        bucket में upload होगी और उसकी जानकारी
+        <b>notes</b> table में save होगी।
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    /* =========================================================
+       SUPABASE CONFIG
+    ========================================================= */
+
+    const SUPABASE_URL =
+      "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+    const PDF_BUCKET = "notes-pdfs";
+
+
+    /* =========================================================
+       SUPABASE CLIENT
+    ========================================================= */
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const titleInput =
+      document.getElementById("title");
+
+    const categoryInput =
+      document.getElementById("category");
+
+    const pdfInput =
+      document.getElementById("pdfFile");
+
+    const fileInfo =
+      document.getElementById("fileInfo");
+
+    const uploadBtn =
+      document.getElementById("uploadBtn");
+
+    const loading =
+      document.getElementById("loading");
+
+    const message =
+      document.getElementById("message");
+
+    const progress =
+      document.getElementById("progress");
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+
+    /* =========================================================
+       PDF FILE SELECT
+    ========================================================= */
+
+    pdfInput.addEventListener("change", function () {
+
+      const file = pdfInput.files[0];
+
+      if (!file) {
+
+        fileInfo.textContent =
+          "केवल PDF file select करें";
+
+        return;
+      }
+
+
+      if (
+        file.type !== "application/pdf" &&
+        !file.name.toLowerCase().endsWith(".pdf")
+      ) {
+
+        fileInfo.textContent =
+          "❌ केवल PDF file allowed है।";
+
+        pdfInput.value = "";
+
+        return;
+      }
+
+
+      const sizeMB =
+        file.size / (1024 * 1024);
+
+
+      fileInfo.innerHTML =
+        "✅ Selected: <b>" +
+        escapeHTML(file.name) +
+        "</b><br>" +
+        "Size: " +
+        sizeMB.toFixed(2) +
+        " MB";
+
+    });
+
+
+    /* =========================================================
+       UPLOAD PDF
+    ========================================================= */
+
+    async function uploadPDF() {
+
+      hideMessage();
+
+
+      const title =
+        titleInput.value.trim();
+
+      const category =
+        categoryInput.value.trim();
+
+      const file =
+        pdfInput.files[0];
+
+
+      /* -------------------------
+         VALIDATION
+      ------------------------- */
+
+      if (!title) {
+
+        showMessage(
+          "❌ कृपया Note / PDF Title डालें।",
+          "error"
+        );
+
+        titleInput.focus();
+
+        return;
+      }
+
+
+      if (!category) {
+
+        showMessage(
+          "❌ कृपया Exam / Category select करें।",
+          "error"
+        );
+
+        categoryInput.focus();
+
+        return;
+      }
+
+
+      if (!file) {
+
+        showMessage(
+          "❌ कृपया PDF file select करें।",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const isPDF =
+        file.type === "application/pdf" ||
+        file.name.toLowerCase().endsWith(".pdf");
+
+
+      if (!isPDF) {
+
+        showMessage(
+          "❌ केवल PDF file upload की जा सकती है।",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /* -------------------------
+         FILE SIZE CHECK
+      ------------------------- */
+
+      const maxSize =
+        50 * 1024 * 1024;
+
+
+      if (file.size > maxSize) {
+
+        showMessage(
+          "❌ PDF बहुत बड़ी है। कृपया 50 MB से छोटी PDF upload करें।",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /* -------------------------
+         UI LOADING
+      ------------------------- */
+
+      uploadBtn.disabled = true;
+
+      uploadBtn.textContent =
+        "⏳ Uploading...";
+
+      loading.style.display =
+        "block";
+
+      progress.style.display =
+        "block";
+
+      progressBar.style.width =
+        "10%";
+
+
+      try {
+
+        /* =====================================================
+           CHECK CURRENT ADMIN AUTH
+        ===================================================== */
+
+        const {
+          data: authData,
+          error: authError
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (authError) {
+
+          throw new Error(
+            "Admin session check failed: " +
+            authError.message
+          );
+
+        }
+
+
+        /*
+          Note:
+          अगर तुम्हारा admin-login Supabase Auth
+          session create करता है तो यह session मिलेगा।
+        */
+
+        const session =
+          authData?.session;
+
+
+        if (!session) {
+
+          throw new Error(
+            "Admin session नहीं मिला। पहले Admin Login करें।"
+          );
+
+        }
+
+
+        progressBar.style.width =
+          "20%";
+
+
+        /* =====================================================
+           SAFE FILE NAME
+        ===================================================== */
+
+        const originalName =
+          file.name;
+
+
+        const extension =
+          "pdf";
+
+
+        const safeTitle =
+          title
+            .toLowerCase()
+            .replace(/[^a-z0-9\u0900-\u097f]+/gi, "-")
+            .replace(/^-+|-+$/g, "")
+            .substring(0, 80);
+
+
+        const randomPart =
+          crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now().toString();
+
+
+        const fileName =
+          safeTitle +
+          "-" +
+          randomPart +
+          "." +
+          extension;
+
+
+        const filePath =
+          category +
+          "/" +
+          fileName;
+
+
+        progressBar.style.width =
+          "30%";
+
+
+        /* =====================================================
+           UPLOAD TO SUPABASE STORAGE
+        ===================================================== */
+
+        const {
+          data: uploadData,
+          error: uploadError
+        } =
+          await supabaseClient
+            .storage
+            .from(PDF_BUCKET)
+            .upload(
+              filePath,
+              file,
+              {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: "application/pdf"
+              }
+            );
+
+
+        if (uploadError) {
+
+          throw new Error(
+            "PDF Storage upload failed: " +
+            uploadError.message
+          );
+
+        }
+
+
+        progressBar.style.width =
+          "60%";
+
+
+        /* =====================================================
+           GET PUBLIC URL
+        ===================================================== */
+
+        const {
+          data: publicUrlData
+        } =
+          supabaseClient
+            .storage
+            .from(PDF_BUCKET)
+            .getPublicUrl(filePath);
+
+
+        const pdfUrl =
+          publicUrlData?.publicUrl;
+
+
+        if (!pdfUrl) {
+
+          throw new Error(
+            "PDF public URL generate नहीं हो पाया।"
+          );
+
+        }
+
+
+        progressBar.style.width =
+          "75%";
+
+
+        /* =====================================================
+           SAVE RECORD IN NOTES TABLE
+        ===================================================== */
+
+        const {
+          data: noteData,
+          error: noteError
+        } =
+          await supabaseClient
+            .from("notes")
+            .insert([
+              {
+                title: title,
+                category: category,
+                pdf_url: pdfUrl
+              }
+            ])
+            .select();
+
+
+        if (noteError) {
+
+          /*
+            अगर database insert fail हो जाए,
+            तो uploaded PDF को delete करने की कोशिश।
+          */
+
+          try {
+
+            await supabaseClient
+              .storage
+              .from(PDF_BUCKET)
+              .remove([filePath]);
+
+          } catch (deleteError) {
+
+            console.warn(
+              "Uploaded PDF cleanup failed:",
+              deleteError
+            );
+
+          }
+
+
+          throw new Error(
+            "Notes database save failed: " +
+            noteError.message
+          );
+
+        }
+
+
+        progressBar.style.width =
+          "100%";
+
+
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+
+        showMessage(
+          "✅ PDF successfully upload हो गई और Notes में save हो गई।",
+          "success"
+        );
+
+
+        /* Reset form */
+
+        titleInput.value = "";
+
+        categoryInput.value = "";
+
+        pdfInput.value = "";
+
+        fileInfo.textContent =
+          "केवल PDF file select करें";
+
+
+      } catch (error) {
+
+        console.error(
+          "Upload Error:",
+          error
+        );
+
+
+        showMessage(
+          "❌ " + getFriendlyError(error),
+          "error"
+        );
+
+
+      } finally {
+
+        uploadBtn.disabled = false;
+
+        uploadBtn.textContent =
+          "📤 Upload PDF";
+
+        loading.style.display =
+          "none";
+
+        setTimeout(function () {
+
+          progress.style.display =
+            "none";
+
+          progressBar.style.width =
+            "0%";
+
+        }, 1200);
+
+      }
+
+    }
+
+
+    /* =========================================================
+       FRIENDLY ERROR
+    ========================================================= */
+
+    function getFriendlyError(error) {
+
+      const msg =
+        error?.message ||
+        String(error);
+
+
+      if (
+        msg.toLowerCase().includes("row-level security")
+      ) {
+
+        return (
+          "Supabase RLS policy ने request block कर दी। " +
+          "Storage/Table policies check करनी होंगी।"
+        );
+
+      }
+
+
+      if (
+        msg.toLowerCase().includes("bucket")
+      ) {
+
+        return (
+          "Storage bucket '" +
+          PDF_BUCKET +
+          "' नहीं मिला या access नहीं है।"
+        );
+
+      }
+
+
+      if (
+        msg.toLowerCase().includes("duplicate")
+      ) {
+
+        return (
+          "यह file पहले से मौजूद हो सकती है।"
+        );
+
+      }
+
+
+      return msg;
+
+    }
+
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message " + type;
+
+      message.style.display =
+        "block";
+
+
+      message.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+
+    function hideMessage() {
+
+      message.style.display =
+        "none";
+
+      message.textContent =
+        "";
+
+    }
+
+
+    /* =========================================================
+       DASHBOARD
+    ========================================================= */
+
+    function goBack() {
+
+      window.location.href =
+        "admin-dashboard.html";
+
+    }
+
+
+    /* =========================================================
+       HTML ESCAPE
+    ========================================================= */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+  </script>
+
+</body>
+</html>
