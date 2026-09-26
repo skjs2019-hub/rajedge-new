@@ -7,6 +7,12 @@
     <title>RajEdge | Rajasthan Education Hub</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RajEdge">
 </head>
 
 <body>
@@ -761,6 +767,18 @@
 
 </footer>
 
-
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(function () {
+                console.log("RajEdge PWA Service Worker registered");
+            })
+            .catch(function (error) {
+                console.error("RajEdge Service Worker Error:", error);
+            });
+    });
+}
+</script>
 </body>
 </html>
