@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Pricing | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .pricing-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .pricing-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .pricing-header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            color: #052a5b;
+            background: #f5c400;
+            padding: 9px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .pricing-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page-title h2 {
+            color: #052a5b;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .message {
+            display: none;
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .success {
+            display: block;
+            background: #e7f7ed;
+            color: #16803c;
+        }
+
+        .error {
+            display: block;
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-bottom: 25px;
+        }
+
+        .price-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .price-card h3 {
+            color: #052a5b;
+            margin-top: 0;
+        }
+
+        .price-card p {
+            color: #777;
+        }
+
+        .price-input {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .rupee {
+            background: #052a5b;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px 0 0 8px;
+            font-weight: 700;
+        }
+
+        .price-input input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d8dee8;
+            border-radius: 0 8px 8px 0;
+            font-size: 18px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .save-btn {
+            background: #052a5b;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #0b4b88;
+        }
+
+        .pricing-table-card {
+            background: white;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .pricing-table-card h3 {
+            color: #052a5b;
+            margin-top: 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .pricing-table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf0f4;
+            text-align: left;
+        }
+
+        .pricing-table th {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .course-name {
+            color: #052a5b;
+            font-weight: 700;
+        }
+
+        .price-value {
+            color: #052a5b;
+            font-weight: 800;
+        }
+
+        .active-badge {
+            background: #e7f7ed;
+            color: #16803c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .inactive-badge {
+            background: #ffe8e8;
+            color: #c62828;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .edit-btn {
+            background: #fff4c2;
+            color: #765d00;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 7px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background: #f5c400;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .note-box {
+            background: #fff8d8;
+            border-left: 4px solid #f5c400;
+            padding: 15px;
+            margin-top: 25px;
+            border-radius: 8px;
+            color: #665500;
+            font-size: 14px;
+        }
+
+        @media(max-width: 700px) {
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-container {
+                padding: 20px 12px;
+            }
+
+            .pricing-table-card,
+            .price-card {
+                padding: 18px;
+            }
+
+            .pricing-header {
+                padding: 15px;
+            }
+
+            .brand h1 {
+                font-size: 19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="pricing-page">
+
+
+    <!-- HEADER -->
+
+    <header class="pricing-header">
+
+        <div class="pricing-header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <h1>
+                        RajEdge Admin
+                    </h1>
+
+                    <p>
+                        Pricing Management
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="admin-dashboard.html"
+                class="back-btn">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="pricing-container">
+
+
+        <!-- TITLE -->
+
+        <div class="page-title">
+
+            <h2>
+                💰 Manage Pricing
+            </h2>
+
+            <p>
+                Courses और Test Series की कीमत यहाँ से manage करें।
+            </p>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- DEFAULT PRICE CARDS -->
+
+        <div class="pricing-grid">
+
+
+            <!-- COURSE -->
+
+            <div class="price-card">
+
+                <h3>
+                    📚 Course Price
+                </h3>
+
+                <p>
+                    Selected course की Notes price बदलें।
+                </p>
+
+
+                <select
+                    id="courseSelect"
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border:1px solid #d8dee8;
+                        border-radius:8px;
+                        font-size:14px;
+                    "
+                    onchange="loadSelectedCoursePrice()">
+
+                    <option value="">
+                        Course select करें
+                    </option>
+
+                </select>
+
+
+                <div class="price-input">
+
+                    <span class="rupee">
+                        ₹
+                    </span>
+
+                    <input
+                        type="number"
+                        id="coursePrice"
+                        min="0"
+                        step="1"
+                        placeholder="99">
+
+                </div>
+
+
+                <button
+                    class="save-btn"
+                    onclick="saveCoursePrice()">
+
+                    💾 Save Course Price
+
+                </button>
+
+            </div>
+
+
+            <!-- TEST SERIES -->
+
+            <div class="price-card">
+
+                <h3>
+                    📝 Test Series Price
+                </h3>
+
+                <p>
+                    Selected course की Test Series price बदलें।
+                </p>
+
+
+                <select
+                    id="testCourseSelect"
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border:1px solid #d8dee8;
+                        border-radius:8px;
+                        font-size:14px;
+                    "
+                    onchange="loadSelectedTestPrice()">
+
+                    <option value="">
+                        Course select करें
+                    </option>
+
+                </select>
+
+
+                <div class="price-input">
+
+                    <span class="rupee">
+                        ₹
+                    </span>
+
+                    <input
+                        type="number"
+                        id="testPrice"
+                        min="0"
+                        step="1"
+                        placeholder="39">
+
+                </div>
+
+
+                <button
+                    class="save-btn"
+                    onclick="saveTestPrice()">
+
+                    💾 Save Test Series Price
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- COURSE PRICING TABLE -->
+
+        <section class="pricing-table-card">
+
+            <h3>
+                📚 Course Pricing
+            </h3>
+
+
+            <div class="table-wrapper">
+
+                <table class="pricing-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Course
+                            </th>
+
+                            <th>
+                                Notes Price
+                            </th>
+
+                            <th>
+                                Test Series Price
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="coursesTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="loading">
+
+                                Courses loading...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- TEST PRICING TABLE -->
+
+        <section class="pricing-table-card">
+
+            <h3>
+                📝 Individual Test Pricing
+            </h3>
+
+
+            <div class="table-wrapper">
+
+                <table class="pricing-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Test
+                            </th>
+
+                            <th>
+                                Exam
+                            </th>
+
+                            <th>
+                                Questions
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="testsTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="loading">
+
+                                Tests loading...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note-box">
+
+                💡 <strong>Note:</strong>
+                यहाँ बदली गई Course और Test Series prices
+                database में save होंगी और student side पर updated price दिखाई जाएगी।
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let courses = [];
+
+let tests = [];
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+    box.textContent =
+        text;
+
+    box.className =
+        "message " + type;
+
+    setTimeout(
+        function() {
+
+            box.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================================
+   ADMIN CHECK
+========================================= */
+
+async function checkAdminAccess() {
+
+    const {
+        data: userData,
+        error: userError
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if (
+        userError ||
+        !userData ||
+        !userData.user
+    ) {
+
+        window.location.replace(
+            "admin-login.html"
+        );
+
+        return false;
+
+    }
+
+
+    const user =
+        userData.user;
+
+
+    const {
+        data: adminData,
+        error: adminError
+    } =
+        await supabaseClient
+
+            .from("admin_users")
+
+            .select("id,email")
+
+            .eq(
+                "id",
+                user.id
+            )
+
+            .maybeSingle();
+
+
+    if (
+        adminError ||
+        !adminData
+    ) {
+
+        alert(
+            "⛔ आपको Admin access नहीं है।"
+        );
+
+
+        await supabaseClient.auth.signOut();
+
+
+        window.location.replace(
+            "student-dashboard.html"
+        );
+
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================
+   LOAD COURSES
+========================================= */
+
+async function loadCourses() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("courses")
+
+            .select(`
+                id,
+                name,
+                slug,
+                notes_price,
+                test_series_price,
+                is_active
+            `)
+
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Courses load नहीं हुए: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    courses =
+        data || [];
+
+
+    fillCourseSelectors();
+
+    renderCourses();
+
+}
+
+
+/* =========================================
+   COURSE SELECTORS
+========================================= */
+
+function fillCourseSelectors() {
+
+    const courseSelect =
+        document.getElementById(
+            "courseSelect"
+        );
+
+    const testCourseSelect =
+        document.getElementById(
+            "testCourseSelect"
+        );
+
+
+    courseSelect.innerHTML =
+        `<option value="">
+            Course select करें
+        </option>`;
+
+
+    testCourseSelect.innerHTML =
+        `<option value="">
+            Course select करें
+        </option>`;
+
+
+    courses.forEach(
+        course => {
+
+            const option1 =
+                document.createElement(
+                    "option"
+                );
+
+            option1.value =
+                course.id;
+
+            option1.textContent =
+                course.name;
+
+            courseSelect.appendChild(
+                option1
+            );
+
+
+            const option2 =
+                document.createElement(
+                    "option"
+                );
+
+            option2.value =
+                course.id;
+
+            option2.textContent =
+                course.name;
+
+            testCourseSelect.appendChild(
+                option2
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LOAD SELECTED COURSE PRICE
+========================================= */
+
+function loadSelectedCoursePrice() {
+
+    const id =
+        document.getElementById(
+            "courseSelect"
+        ).value;
+
+
+    const course =
+        courses.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    document.getElementById(
+        "coursePrice"
+    ).value =
+        course
+            ? (course.notes_price ?? 0)
+            : "";
+
+}
+
+
+/* =========================================
+   LOAD SELECTED TEST PRICE
+========================================= */
+
+function loadSelectedTestPrice() {
+
+    const id =
+        document.getElementById(
+            "testCourseSelect"
+        ).value;
+
+
+    const course =
+        courses.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    document.getElementById(
+        "testPrice"
+    ).value =
+        course
+            ? (course.test_series_price ?? 0)
+            : "";
+
+}
+
+
+/* =========================================
+   SAVE COURSE PRICE
+========================================= */
+
+async function saveCoursePrice() {
+
+    const id =
+        document.getElementById(
+            "courseSelect"
+        ).value;
+
+
+    const price =
+        document.getElementById(
+            "coursePrice"
+        ).value;
+
+
+    if (!id) {
+
+        alert(
+            "पहले Course select करें।"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        price === "" ||
+        Number(price) < 0
+    ) {
+
+        alert(
+            "Valid course price डालें।"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from("courses")
+
+            .update({
+                notes_price:
+                    Number(price)
+            })
+
+            .eq(
+                "id",
+                id
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Course price save नहीं हुई: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "✅ Course price successfully updated.",
+        "success"
+    );
+
+
+    await loadCourses();
+
+}
+
+
+/* =========================================
+   SAVE TEST SERIES PRICE
+========================================= */
+
+async function saveTestPrice() {
+
+    const id =
+        document.getElementById(
+            "testCourseSelect"
+        ).value;
+
+
+    const price =
+        document.getElementById(
+            "testPrice"
+        ).value;
+
+
+    if (!id) {
+
+        alert(
+            "पहले Course select करें।"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        price === "" ||
+        Number(price) < 0
+    ) {
+
+        alert(
+            "Valid Test Series price डालें।"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from("courses")
+
+            .update({
+                test_series_price:
+                    Number(price)
+            })
+
+            .eq(
+                "id",
+                id
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Test Series price save नहीं हुई: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "✅ Test Series price successfully updated.",
+        "success"
+    );
+
+
+    await loadCourses();
+
+}
+
+
+/* =========================================
+   RENDER COURSES
+========================================= */
+
+function renderCourses() {
+
+    const tbody =
+        document.getElementById(
+            "coursesTableBody"
+        );
+
+
+    if (
+        !courses ||
+        courses.length === 0
+    ) {
+
+        tbody.innerHTML =
+            `<tr>
+                <td
+                    colspan="5"
+                    class="empty">
+
+                    कोई course नहीं मिला।
+
+                </td>
+            </tr>`;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        "";
+
+
+    courses.forEach(
+        course => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const status =
+                course.is_active
+                    ? `
+                        <span class="active-badge">
+                            Active
+                        </span>
+                    `
+                    : `
+                        <span class="inactive-badge">
+                            Inactive
+                        </span>
+                    `;
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="course-name">
+
+                        ${escapeHtml(
+                            course.name
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span class="price-value">
+
+                        ₹${Number(
+                            course.notes_price || 0
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="price-value">
+
+                        ₹${Number(
+                            course.test_series_price || 0
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${status}
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="selectCourse('${course.id}')">
+
+                        Edit
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SELECT COURSE FOR EDIT
+========================================= */
+
+function selectCourse(id) {
+
+    document.getElementById(
+        "courseSelect"
+    ).value =
+        id;
+
+
+    document.getElementById(
+        "testCourseSelect"
+    ).value =
+        id;
+
+
+    loadSelectedCoursePrice();
+
+    loadSelectedTestPrice();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   LOAD TESTS
+========================================= */
+
+async function loadTests() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("tests")
+
+            .select(`
+                id,
+                exam,
+                name,
+                question_count,
+                price,
+                status
+            `)
+
+            .order(
+                "id",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Tests load नहीं हुए: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    tests =
+        data || [];
+
+
+    renderTests();
+
+}
+
+
+/* =========================================
+   RENDER TESTS
+========================================= */
+
+function renderTests() {
+
+    const tbody =
+        document.getElementById(
+            "testsTableBody"
+        );
+
+
+    if (
+        !tests ||
+        tests.length === 0
+    ) {
+
+        tbody.innerHTML =
+            `<tr>
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    अभी कोई Test नहीं मिला।
+
+                </td>
+            </tr>`;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        "";
+
+
+    tests.forEach(
+        test => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const status =
+                test.status === "Active"
+                    ? `
+                        <span class="active-badge">
+                            Active
+                        </span>
+                    `
+                    : `
+                        <span class="inactive-badge">
+                            ${escapeHtml(
+                                test.status || "Inactive"
+                            )}
+                        </span>
+                    `;
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="course-name">
+
+                        ${escapeHtml(
+                            test.name
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        test.exam || "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${Number(
+                        test.question_count || 0
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span class="price-value">
+
+                        ₹${Number(
+                            test.price || 0
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${status}
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editTestPrice('${test.id}')">
+
+                        Edit
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   EDIT INDIVIDUAL TEST PRICE
+========================================= */
+
+async function editTestPrice(id) {
+
+    const test =
+        tests.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!test) {
+
+        return;
+
+    }
+
+
+    const newPrice =
+        prompt(
+            test.name +
+            "\n\nनई Test price डालें:",
+            test.price ?? 39
+        );
+
+
+    if (
+        newPrice === null
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        newPrice === "" ||
+        isNaN(newPrice) ||
+        Number(newPrice) < 0
+    ) {
+
+        alert(
+            "Valid price डालें।"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from("tests")
+
+            .update({
+                price:
+                    Number(newPrice)
+            })
+
+            .eq(
+                "id",
+                id
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Test price update नहीं हुई: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "✅ Test price successfully updated.",
+        "success"
+    );
+
+
+    await loadTests();
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   INIT
+========================================= */
+
+async function init() {
+
+    const isAdmin =
+        await checkAdminAccess();
+
+
+    if (!isAdmin) {
+
+        return;
+
+    }
+
+
+    await loadCourses();
+
+    await loadTests();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        init();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

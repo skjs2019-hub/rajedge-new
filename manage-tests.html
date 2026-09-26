@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Test Series | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .test-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .test-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .test-header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            color: #052a5b;
+            background: #f5c400;
+            padding: 9px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page-title h2 {
+            color: #052a5b;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .test-card,
+        .test-list {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            margin-bottom: 25px;
+        }
+
+        .test-card h3,
+        .test-list h3 {
+            color: #052a5b;
+            margin-top: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .save-btn {
+            background: #052a5b;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #0b4b88;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #e7f7ed;
+            color: #16803c;
+        }
+
+        .error {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .test-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .test-table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+        }
+
+        .test-table th,
+        .test-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf0f4;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .test-table th {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .exam-badge {
+            background: #e8f1ff;
+            color: #0755a5;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .active-badge {
+            background: #e7f7ed;
+            color: #16803c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .inactive-badge {
+            background: #ffe8e8;
+            color: #c62828;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .price {
+            color: #052a5b;
+            font-weight: 700;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .edit-btn {
+            background: #fff4c2;
+            color: #765d00;
+        }
+
+        .delete-btn {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .test-header-inner {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="test-page">
+
+    <!-- HEADER -->
+    <header class="test-header">
+
+        <div class="test-header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">📝</div>
+
+                <div>
+                    <h1>RajEdge Admin</h1>
+                    <p>Test Series Management</p>
+                </div>
+
+            </div>
+
+            <a href="admin-dashboard.html" class="back-btn">
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="test-container">
+
+        <!-- TITLE -->
+        <div class="page-title">
+
+            <h2>📝 Manage Test Series</h2>
+
+            <p>
+                Exam-wise Test Series बनाएं और manage करें।
+            </p>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+        <div id="messageBox" class="message"></div>
+
+
+        <!-- ADD / EDIT TEST -->
+        <section class="test-card">
+
+            <h3 id="formTitle">➕ Create New Test</h3>
+
+            <form id="testForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="testExam">
+                            Exam / Course
+                        </label>
+
+                        <select id="testExam" required>
+
+                            <option value="">
+                                Select Exam
+                            </option>
+
+                            <option value="REET">REET</option>
+                            <option value="CET">CET</option>
+                            <option value="LDC">LDC</option>
+                            <option value="VDO">VDO</option>
+                            <option value="Lab Assistant">
+                                Lab Assistant
+                            </option>
+                            <option value="Rajasthan Police HC">
+                                Rajasthan Police HC
+                            </option>
+                            <option value="Rajasthan GK">
+                                Rajasthan GK
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="testName">
+                            Test Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="testName"
+                            placeholder="जैसे REET Mock Test - 01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="questionCount">
+                            Number of Questions
+                        </label>
+
+                        <input
+                            type="number"
+                            id="questionCount"
+                            value="50"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="timeLimit">
+                            Time Limit (Minutes)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="timeLimit"
+                            value="60"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="testPrice">
+                            Test Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="testPrice"
+                            value="39"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="testStatus">
+                            Status
+                        </label>
+
+                        <select id="testStatus">
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="testDescription">
+                            Test Description
+                        </label>
+
+                        <textarea
+                            id="testDescription"
+                            placeholder="इस test में कौन-कौन से topics होंगे..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    id="saveBtn">
+
+                    💾 Create Test
+
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelBtn"
+                    class="action-btn edit-btn"
+                    style="display:none; padding:13px 18px;">
+
+                    Cancel
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- TEST LIST -->
+        <section class="test-list">
+
+            <h3>📋 All Test Series</h3>
+
+            <div class="test-table-wrapper">
+
+                <table class="test-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Exam</th>
+                            <th>Questions</th>
+                            <th>Time</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="testTableBody">
+
+                        <tr>
+                            <td colspan="7" class="loading">
+                                Loading tests...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let editingTestId = null;
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(message, type = "success") {
+
+    const box =
+        document.getElementById("messageBox");
+
+    box.textContent = message;
+
+    box.className =
+        "message " + type;
+
+    box.style.display = "block";
+
+    setTimeout(function() {
+
+        box.style.display = "none";
+
+    }, 4000);
+}
+
+
+/* =========================
+   LOAD TESTS
+========================= */
+
+async function loadTests() {
+
+    const tbody =
+        document.getElementById("testTableBody");
+
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="7" class="loading">
+                Loading tests...
+            </td>
+        </tr>
+    `;
+
+    const { data, error } =
+        await supabaseClient
+            .from("tests")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (error) {
+
+        console.error(error);
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-box">
+                    ❌ Tests load नहीं हो सके।<br><br>
+                    ${error.message}
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-box">
+                    अभी कोई Test Series नहीं है।
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    tbody.innerHTML = "";
+
+
+    data.forEach(function(test) {
+
+        const statusClass =
+            test.status === "Active"
+                ? "active-badge"
+                : "inactive-badge";
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                <strong>
+                    ${escapeHtml(test.name)}
+                </strong>
+            </td>
+
+            <td>
+                <span class="exam-badge">
+                    ${escapeHtml(test.exam)}
+                </span>
+            </td>
+
+            <td>
+                ${test.question_count}
+            </td>
+
+            <td>
+                ${test.time_limit} Min
+            </td>
+
+            <td>
+                <span class="price">
+                    ₹${test.price}
+                </span>
+            </td>
+
+            <td>
+                <span class="${statusClass}">
+                    ${escapeHtml(test.status)}
+                </span>
+            </td>
+
+            <td>
+
+                <button
+                    class="action-btn edit-btn"
+                    onclick="editTest('${test.id}')">
+
+                    Edit
+
+                </button>
+
+                <button
+                    class="action-btn delete-btn"
+                    onclick="deleteTest('${test.id}')">
+
+                    Delete
+
+                </button>
+
+            </td>
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================
+   CREATE / UPDATE TEST
+========================= */
+
+document
+    .getElementById("testForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const exam =
+                document.getElementById("testExam").value;
+
+            const name =
+                document
+                    .getElementById("testName")
+                    .value
+                    .trim();
+
+            const questionCount =
+                Number(
+                    document
+                        .getElementById("questionCount")
+                        .value
+                );
+
+            const timeLimit =
+                Number(
+                    document
+                        .getElementById("timeLimit")
+                        .value
+                );
+
+            const price =
+                Number(
+                    document
+                        .getElementById("testPrice")
+                        .value
+                );
+
+            const status =
+                document.getElementById("testStatus").value;
+
+            const description =
+                document
+                    .getElementById("testDescription")
+                    .value
+                    .trim();
+
+
+            if (
+                !exam ||
+                !name ||
+                questionCount < 1 ||
+                timeLimit < 1
+            ) {
+
+                showMessage(
+                    "Please सभी required fields भरें।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const payload = {
+
+                exam: exam,
+
+                name: name,
+
+                question_count: questionCount,
+
+                time_limit: timeLimit,
+
+                price: price,
+
+                status: status,
+
+                description: description
+
+            };
+
+
+            const saveBtn =
+                document.getElementById("saveBtn");
+
+            saveBtn.disabled = true;
+
+            saveBtn.textContent =
+                "Saving...";
+
+
+            let result;
+
+
+            if (editingTestId) {
+
+                result =
+                    await supabaseClient
+                        .from("tests")
+                        .update(payload)
+                        .eq("id", editingTestId);
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("tests")
+                        .insert([payload]);
+
+            }
+
+
+            if (result.error) {
+
+                console.error(result.error);
+
+                showMessage(
+                    "❌ Test save नहीं हुआ: " +
+                    result.error.message,
+                    "error"
+                );
+
+            } else {
+
+                showMessage(
+                    editingTestId
+                        ? "✅ Test successfully updated!"
+                        : "✅ Test successfully created!"
+                );
+
+                resetForm();
+
+                loadTests();
+
+            }
+
+
+            saveBtn.disabled = false;
+
+            saveBtn.textContent =
+                editingTestId
+                    ? "💾 Update Test"
+                    : "💾 Create Test";
+
+        }
+    );
+
+
+/* =========================
+   EDIT TEST
+========================= */
+
+async function editTest(id) {
+
+    const { data, error } =
+        await supabaseClient
+            .from("tests")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+
+    if (error) {
+
+        showMessage(
+            "❌ Test details load नहीं हुए।",
+            "error"
+        );
+
+        return;
+    }
+
+
+    editingTestId = id;
+
+
+    document.getElementById("testExam").value =
+        data.exam;
+
+    document.getElementById("testName").value =
+        data.name;
+
+    document.getElementById("questionCount").value =
+        data.question_count;
+
+    document.getElementById("timeLimit").value =
+        data.time_limit;
+
+    document.getElementById("testPrice").value =
+        data.price;
+
+    document.getElementById("testStatus").value =
+        data.status;
+
+    document.getElementById("testDescription").value =
+        data.description || "";
+
+
+    document.getElementById("formTitle").textContent =
+        "✏️ Edit Test";
+
+    document.getElementById("saveBtn").textContent =
+        "💾 Update Test";
+
+    document.getElementById("cancelBtn").style.display =
+        "inline-block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================
+   DELETE TEST
+========================= */
+
+async function deleteTest(id) {
+
+    const confirmDelete =
+        confirm(
+            "क्या आप यह Test permanently delete करना चाहते हैं?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("tests")
+            .delete()
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "❌ Test delete नहीं हुआ: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "✅ Test successfully deleted!"
+    );
+
+
+    loadTests();
+
+}
+
+
+/* =========================
+   RESET FORM
+========================= */
+
+function resetForm() {
+
+    editingTestId = null;
+
+    document.getElementById("testForm").reset();
+
+    document.getElementById("questionCount").value =
+        50;
+
+    document.getElementById("timeLimit").value =
+        60;
+
+    document.getElementById("testPrice").value =
+        39;
+
+    document.getElementById("testStatus").value =
+        "Active";
+
+    document.getElementById("formTitle").textContent =
+        "➕ Create New Test";
+
+    document.getElementById("saveBtn").textContent =
+        "💾 Create Test";
+
+    document.getElementById("cancelBtn").style.display =
+        "none";
+
+}
+
+
+/* =========================
+   CANCEL EDIT
+========================= */
+
+document
+    .getElementById("cancelBtn")
+    .addEventListener(
+        "click",
+        function() {
+
+            resetForm();
+
+        }
+    );
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+loadTests();
+
+</script>
+
+</body>
+</html>

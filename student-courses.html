@@ -1,0 +1,4132 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Courses | RajEdge</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- QR CODE LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .courses-page {
+            background: #f5f8fc;
+            min-height: 100vh;
+        }
+
+        .courses-wrapper {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px 50px;
+        }
+
+        .header {
+            background: #052a5b;
+        }
+
+        .page-title {
+            background:
+                linear-gradient(
+                    135deg,
+                    #052a5b,
+                    #0b4b88
+                );
+
+            color: white;
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-title::after {
+            content: "📚";
+            position: absolute;
+            right: 30px;
+            top: 8px;
+            font-size: 90px;
+            opacity: .12;
+        }
+
+        .page-title h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title p {
+            margin: 0;
+            opacity: .9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background: #f5c400;
+            color: #052a5b;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .courses-layout {
+            display: grid;
+            grid-template-columns: 245px 1fr;
+            gap: 25px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #052a5b;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .side-link {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 7px;
+            border-radius: 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .side-link:hover,
+        .side-link.active {
+            background: #fff4c2;
+            color: #052a5b;
+        }
+
+        .logout-btn {
+            color: #d62828;
+        }
+
+        .courses-content {
+            display: grid;
+            gap: 20px;
+        }
+
+        .section-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .section-card h2 {
+            margin: 0 0 18px;
+            color: #052a5b;
+            font-size: 21px;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid #e5eaf1;
+            border-radius: 16px;
+            padding: 20px;
+            transition: .2s;
+            position: relative;
+        }
+
+        .course-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        }
+
+        .course-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: #fff4c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .course-card h3 {
+            margin: 0 0 8px;
+            color: #052a5b;
+            font-size: 20px;
+        }
+
+        .course-card p {
+            margin: 0 0 15px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .course-status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .status-purchased {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .status-not-purchased {
+            background: #fff1f1;
+            color: #b42318;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .price-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .price-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #052a5b;
+        }
+
+        .course-btn {
+            display: inline-block;
+            background: #052a5b;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .course-btn:hover {
+            background: #0b4b88;
+        }
+
+        .buy-btn {
+            background: #f5c400;
+            color: #052a5b;
+        }
+
+        .buy-btn:hover {
+            background: #e4b600;
+        }
+
+        .secondary-btn {
+            background: #eef4ff;
+            color: #052a5b;
+            margin-top: 8px;
+        }
+
+        .secondary-btn:hover {
+            background: #dfeaff;
+        }
+
+        .course-hero {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .course-big-icon {
+            width: 85px;
+            height: 85px;
+            border-radius: 20px;
+            background: #fff4c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+        }
+
+        .course-hero h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #052a5b;
+        }
+
+        .course-hero p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .paid-badge {
+            display: inline-block;
+            background: #e8f7ee;
+            color: #16803c;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .test-only-badge {
+            display: inline-block;
+            background: #fff9df;
+            color: #8a6800;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 22px;
+        }
+
+        .stat-box {
+            background: #f7f9fc;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid #e5eaf1;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .stat-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: #052a5b;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .resource-card {
+            border: 1px solid #e5eaf1;
+            border-radius: 14px;
+            padding: 20px;
+            background: white;
+            transition: .2s;
+        }
+
+        .resource-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+            transform: translateY(-2px);
+        }
+
+        .resource-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .resource-card h3 {
+            margin: 5px 0 8px;
+            color: #052a5b;
+            font-size: 18px;
+        }
+
+        .resource-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .resource-btn {
+            display: inline-block;
+            background: #052a5b;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+
+        .resource-btn:hover {
+            background: #0b4b88;
+        }
+
+        .test-btn {
+            background: #f5c400;
+            color: #052a5b;
+        }
+
+        .test-btn:hover {
+            background: #e4b600;
+        }
+
+        .test-series-box {
+            background: linear-gradient(
+                135deg,
+                #fff9df,
+                #fffdf5
+            );
+
+            border: 1px solid #f3df85;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .test-series-box h3 {
+            margin: 0 0 8px;
+            color: #052a5b;
+        }
+
+        .test-series-box p {
+            margin: 0 0 15px;
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .test-series-price {
+            font-size: 25px;
+            font-weight: 800;
+            color: #052a5b;
+            margin-bottom: 14px;
+        }
+
+        .test-series-unlocked {
+            background: #e8f7ee;
+            border-color: #b8e5c8;
+        }
+
+        .test-series-unlocked .test-series-price {
+            color: #16803c;
+        }
+
+        .locked-notes-box {
+            background: #fff9df;
+            border: 1px solid #f3df85;
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .locked-test-box {
+            background: #fff9df;
+            border: 1px solid #f3df85;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .loading-box {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 30px 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .error-box {
+            text-align: center;
+            padding: 25px;
+            background: #fff1f1;
+            border: 1px solid #ffcaca;
+            border-radius: 12px;
+            color: #b42318;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #f3f6fa;
+            color: #052a5b;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .back-btn:hover {
+            background: #e7edf5;
+        }
+
+        .info-note {
+            background: #fff9df;
+            border-left: 4px solid #f5c400;
+            padding: 16px;
+            border-radius: 8px;
+            color: #555;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ==============================
+           PAYMENT MODAL
+        ============================== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .payment-modal {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,.2);
+        }
+
+        .payment-modal h2 {
+            margin: 0 0 8px;
+            color: #052a5b;
+        }
+
+        .payment-course-name {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .payment-amount {
+            background: #f7f9fc;
+            border: 1px solid #e5eaf1;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .payment-amount span {
+            display: block;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .payment-amount strong {
+            font-size: 28px;
+            color: #052a5b;
+        }
+
+        .qr-payment-box {
+            text-align: center;
+            margin: 10px 0 18px;
+        }
+
+        .qr-title {
+            color: #052a5b;
+            font-weight: 800;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .qr-subtitle {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .qr-box {
+            width: 190px;
+            height: 190px;
+            margin: 12px auto;
+            background: white;
+            border: 1px solid #dfe5ec;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0,0,0,.06);
+        }
+
+        #upiQr img,
+        #upiQr canvas {
+            max-width: 180px;
+            max-height: 180px;
+        }
+
+        .upi-box {
+            background: #fff9df;
+            border-left: 4px solid #f5c400;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .upi-id-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .upi-id-text {
+            font-weight: 800;
+            color: #052a5b;
+            word-break: break-all;
+        }
+
+        .copy-upi-btn {
+            border: none;
+            background: #052a5b;
+            color: white;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .copy-upi-btn:hover {
+            background: #0b4b88;
+        }
+
+        .upi-pay-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: #16803c;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .upi-pay-btn:hover {
+            background: #116b32;
+        }
+
+        .payment-instruction {
+            background: #f7f9fc;
+            border: 1px solid #e5eaf1;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .payment-instruction strong {
+            color: #052a5b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: #052a5b;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d9e0e8;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: #0b4b88;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .modal-cancel {
+            background: #eef2f6;
+            color: #333;
+        }
+
+        .modal-submit {
+            background: #052a5b;
+            color: white;
+        }
+
+        .modal-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .modal-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .modal-message.success {
+            display: block;
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .modal-message.error {
+            display: block;
+            background: #fff1f1;
+            color: #b42318;
+        }
+
+        .access-denied {
+            max-width: 600px;
+            margin: 70px auto;
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 45px 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+        }
+
+        .access-denied-icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        .access-denied h2 {
+            color: #052a5b;
+            margin-bottom: 10px;
+        }
+
+        .access-denied p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        @media(max-width: 800px) {
+
+            .courses-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .course-grid,
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .course-hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .course-big-icon {
+                margin: auto;
+            }
+
+            .page-title h1 {
+                font-size: 25px;
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            .courses-wrapper {
+                padding: 20px 12px 40px;
+            }
+
+            .section-card {
+                padding: 18px;
+            }
+
+            .page-title {
+                padding: 23px 18px;
+            }
+
+            .page-title::after {
+                font-size: 55px;
+                right: 15px;
+            }
+
+            .course-hero h2 {
+                font-size: 23px;
+            }
+
+            .modal-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-modal {
+                padding: 20px;
+            }
+
+            .upi-id-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .copy-upi-btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="courses-page">
+
+    <header class="header">
+
+        <div class="container nav-container">
+
+            <a
+                href="index.html"
+                class="logo-box"
+            >
+
+                <div class="logo-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <div class="logo-text">
+                        Raj<span>Edge</span>
+                    </div>
+
+                    <div class="logo-subtitle">
+                        Rajasthan Education Hub
+                    </div>
+
+                </div>
+
+            </a>
+
+            <a
+                href="student-dashboard.html"
+                class="btn-login"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main
+        class="courses-wrapper"
+        id="mainWrapper"
+    >
+
+        <div class="loading-box">
+            ⏳ Courses load हो रहे हैं...
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ==========================================
+     PAYMENT MODAL
+========================================== -->
+
+<div
+    class="modal-overlay"
+    id="paymentModal"
+>
+
+    <div class="payment-modal">
+
+        <h2 id="paymentTitle">
+            💳 Payment
+        </h2>
+
+        <div
+            class="payment-course-name"
+            id="paymentCourseName"
+        >
+            Course
+        </div>
+
+
+        <div class="payment-amount">
+
+            <span>
+                Payable Amount
+            </span>
+
+            <strong id="paymentAmount">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="qr-payment-box">
+
+            <div class="qr-title">
+                📱 Scan & Pay via UPI
+            </div>
+
+            <div class="qr-subtitle">
+                QR scan करके payment करें।<br>
+                QR में amount automatically set रहेगा।
+            </div>
+
+            <div
+                class="qr-box"
+                id="upiQr"
+            >
+                QR generate हो रहा है...
+            </div>
+
+        </div>
+
+
+        <div class="upi-box">
+
+            <strong>
+                💳 UPI ID
+            </strong>
+
+            <div class="upi-id-row">
+
+                <span
+                    class="upi-id-text"
+                    id="upiIdText"
+                >
+                    7568283200-3@ybl
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-upi-btn"
+                    onclick="copyUpiId()"
+                >
+                    📋 Copy
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="#"
+            id="upiPayButton"
+            class="upi-pay-btn"
+        >
+            📲 Pay via UPI App
+        </a>
+
+
+        <div class="payment-instruction">
+
+            <strong>
+                Payment Process:
+            </strong>
+
+            <br>
+
+            1️⃣ QR या UPI App से payment करें।
+
+            <br>
+
+            2️⃣ Payment successful होने के बाद UTR / Transaction ID देखें।
+
+            <br>
+
+            3️⃣ नीचे UTR डालकर request submit करें।
+
+            <br>
+
+            4️⃣ Admin payment verify करने के बाद access unlock करेगा।
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="utrInput">
+                UTR / Transaction ID
+            </label>
+
+            <input
+                type="text"
+                id="utrInput"
+                placeholder="जैसे 123456789012"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div
+            class="modal-message"
+            id="paymentMessage"
+        ></div>
+
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                class="modal-btn modal-cancel"
+                onclick="closePaymentModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="modal-btn modal-submit"
+                id="submitPaymentBtn"
+                onclick="submitPaymentRequest()"
+            >
+                Submit Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   SUPABASE
+========================================== */
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==========================================
+   UPI
+========================================== */
+
+const RAJEDGE_UPI_ID =
+    "7568283200-3@ybl";
+
+
+/* ==========================================
+   GLOBAL
+========================================== */
+
+let currentUser = null;
+let currentCourse = null;
+let selectedCourse = null;
+
+
+/* ==========================================
+   URL
+========================================== */
+
+function getCourseIdFromUrl() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    return params.get("course_id");
+}
+
+
+/* ==========================================
+   USER
+========================================== */
+
+async function getCurrentUser() {
+
+    const {
+        data: {
+            session
+        },
+        error
+    } =
+        await supabaseClient.auth.getSession();
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+    }
+
+    if (!session) {
+
+        window.location.href =
+            "student-login.html";
+
+        return null;
+    }
+
+    currentUser =
+        session.user;
+
+    return currentUser;
+}
+
+
+/* ==========================================
+   PAGE INITIALIZE
+========================================== */
+
+async function initializePage() {
+
+    const user =
+        await getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+    const courseId =
+        getCourseIdFromUrl();
+
+    if (courseId) {
+
+        await loadCourseDetails(
+            courseId
+        );
+
+    } else {
+
+        await loadMyCourses();
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD MY COURSES
+========================================== */
+
+async function loadMyCourses() {
+
+    const main =
+        document.getElementById(
+            "mainWrapper"
+        );
+
+    try {
+
+        const {
+            data: courses,
+            error: coursesError
+        } =
+            await supabaseClient
+                .from("courses")
+                .select(`
+                    id,
+                    name,
+                    slug,
+                    notes_price,
+                    test_series_price,
+                    is_active,
+                    created_at
+                `)
+                .eq(
+                    "is_active",
+                    true
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (coursesError) {
+            throw coursesError;
+        }
+
+
+        const {
+            data: enrollments,
+            error: enrollmentError
+        } =
+            await supabaseClient
+                .from("enrollments")
+                .select(`
+                    id,
+                    course_id,
+                    purchase_type,
+                    amount,
+                    payment_status,
+                    created_at
+                `)
+                .eq(
+                    "student_id",
+                    currentUser.id
+                );
+
+        if (enrollmentError) {
+            throw enrollmentError;
+        }
+
+
+        const coursePurchases =
+            new Map();
+
+        const testSeriesPurchases =
+            new Map();
+
+
+        (enrollments || []).forEach(
+            enrollment => {
+
+                if (
+                    enrollment.payment_status !==
+                    "paid"
+                ) {
+                    return;
+                }
+
+
+                if (
+                    enrollment.purchase_type ===
+                    "course"
+                ) {
+
+                    coursePurchases.set(
+                        String(
+                            enrollment.course_id
+                        ),
+                        enrollment
+                    );
+
+                }
+
+
+                if (
+                    enrollment.purchase_type ===
+                    "test_series"
+                ) {
+
+                    testSeriesPurchases.set(
+                        String(
+                            enrollment.course_id
+                        ),
+                        enrollment
+                    );
+
+                }
+
+            }
+        );
+
+
+        main.innerHTML = `
+
+            <a
+                href="student-dashboard.html"
+                class="back-btn"
+            >
+                ← Dashboard
+            </a>
+
+
+            <div class="page-title">
+
+                <span class="course-badge">
+                    📚 STUDENT PANEL
+                </span>
+
+                <h1>
+                    My Courses
+                </h1>
+
+                <p>
+                    अपने courses और Test Series यहाँ manage करें।
+                </p>
+
+            </div>
+
+
+            <div class="courses-layout">
+
+
+                <aside class="sidebar">
+
+                    <div class="sidebar-title">
+                        Student Panel
+                    </div>
+
+
+                    <a
+                        href="student-dashboard.html"
+                        class="side-link"
+                    >
+                        🏠 Dashboard
+                    </a>
+
+
+                    <a
+                        href="student-courses.html"
+                        class="side-link active"
+                    >
+                        📚 My Courses
+                    </a>
+
+
+                    <a
+                        href="student-tests.html"
+                        class="side-link"
+                    >
+                        📝 My Tests
+                    </a>
+
+
+                    <a
+                        href="student-notes.html"
+                        class="side-link"
+                    >
+                        📄 My Notes
+                    </a>
+
+
+                    <a
+                        href="student-results.html"
+                        class="side-link"
+                    >
+                        📊 My Results
+                    </a>
+
+
+                    <a
+                        href="student-profile.html"
+                        class="side-link"
+                    >
+                        👤 My Profile
+                    </a>
+
+
+                    <button
+                        class="side-link logout-btn"
+                        onclick="logoutStudent()"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </aside>
+
+
+                <section class="courses-content">
+
+                    <div class="section-card">
+
+                        <h2>
+                            📚 Available Courses
+                        </h2>
+
+                        <div
+                            class="course-grid"
+                            id="courseGrid"
+                        ></div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        `;
+
+
+        const grid =
+            document.getElementById(
+                "courseGrid"
+            );
+
+
+        if (
+            !courses ||
+            courses.length === 0
+        ) {
+
+            grid.innerHTML = `
+
+                <div
+                    class="empty-box"
+                    style="grid-column:1/-1;"
+                >
+
+                    📚 अभी कोई active course available नहीं है।
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        grid.innerHTML =
+            courses
+                .map(
+                    course => {
+
+                        const courseEnrollment =
+                            coursePurchases.get(
+                                String(course.id)
+                            );
+
+                        const testSeriesEnrollment =
+                            testSeriesPurchases.get(
+                                String(course.id)
+                            );
+
+                        const coursePurchased =
+                            !!courseEnrollment;
+
+                        const testSeriesPurchased =
+                            !!testSeriesEnrollment;
+
+                        const icon =
+                            getCourseIcon(
+                                course.name
+                            );
+
+                        let statusText = "";
+
+
+                        if (
+                            coursePurchased &&
+                            testSeriesPurchased
+                        ) {
+
+                            statusText =
+                                "✅ Course + Test Series Purchased";
+
+                        }
+
+                        else if (
+                            coursePurchased
+                        ) {
+
+                            statusText =
+                                "✅ Course Purchased";
+
+                        }
+
+                        else if (
+                            testSeriesPurchased
+                        ) {
+
+                            statusText =
+                                "📝 Test Series Purchased";
+
+                        }
+
+                        else {
+
+                            statusText =
+                                "🔒 Not Purchased";
+
+                        }
+
+
+                        const statusClass =
+                            (
+                                coursePurchased ||
+                                testSeriesPurchased
+                            )
+                                ? "status-purchased"
+                                : "status-not-purchased";
+
+
+                        let mainButton = "";
+
+
+                        if (coursePurchased) {
+
+                            mainButton = `
+
+                                <a
+                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}"
+                                    class="course-btn"
+                                >
+                                    📚 Open Course
+                                </a>
+
+                            `;
+
+                        }
+
+                        else if (testSeriesPurchased) {
+
+                            mainButton = `
+
+                                <a
+                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}#tests"
+                                    class="course-btn"
+                                >
+                                    📝 Open Test Series
+                                </a>
+
+                            `;
+
+                        }
+
+                        else {
+
+                            mainButton = `
+
+                                <a
+                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}"
+                                    class="course-btn secondary-btn"
+                                >
+                                    👁 View Course
+                                </a>
+
+                            `;
+
+                        }
+
+
+                        return `
+
+                            <div class="course-card">
+
+                                <div class="course-card-icon">
+                                    ${icon}
+                                </div>
+
+
+                                <span class="course-status ${statusClass}">
+                                    ${statusText}
+                                </span>
+
+
+                                <h3>
+                                    ${escapeHtml(course.name)}
+                                </h3>
+
+
+                                <p>
+                                    ${escapeHtml(course.name)}
+                                    की preparation के लिए
+                                    PDF Notes और complete Test Series available हैं।
+                                </p>
+
+
+                                ${
+                                    coursePurchased
+
+                                    ?
+
+                                    `
+
+                                    <div class="price-row">
+
+                                        <div class="price-label">
+                                            Course
+                                        </div>
+
+                                        <div class="price-value">
+                                            ${formatPrice(courseEnrollment.amount)}
+                                        </div>
+
+                                    </div>
+
+                                    `
+
+                                    :
+
+                                    `
+
+                                    <div class="price-row">
+
+                                        <div class="price-label">
+                                            Course Price
+                                        </div>
+
+                                        <div class="price-value">
+                                            ${formatPrice(course.notes_price)}
+                                        </div>
+
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        class="course-btn buy-btn"
+                                        onclick='openCoursePaymentModal(
+                                            ${JSON.stringify({
+                                                id: course.id,
+                                                name: course.name,
+                                                price: course.notes_price,
+                                                purchaseType: "course"
+                                            }).replace(/'/g, "&#39;")}
+                                        )'
+                                    >
+                                        💳 Buy Course
+                                    </button>
+
+                                    `
+                                }
+
+
+                                <div style="
+                                    margin-top:18px;
+                                    padding-top:16px;
+                                    border-top:1px solid #edf0f5;
+                                ">
+
+                                    <div
+                                        style="
+                                            font-size:13px;
+                                            color:#666;
+                                            margin-bottom:8px;
+                                            font-weight:700;
+                                        "
+                                    >
+                                        📝 Test Series
+                                    </div>
+
+
+                                    ${
+                                        testSeriesPurchased
+
+                                        ?
+
+                                        `
+
+                                        <span class="course-status status-purchased">
+                                            ✅ Test Series Purchased
+                                        </span>
+
+                                        `
+
+                                        :
+
+                                        `
+
+                                        <div class="price-row">
+
+                                            <div class="price-label">
+                                                Full Test Series
+                                            </div>
+
+                                            <div class="price-value">
+                                                ${formatPrice(course.test_series_price)}
+                                            </div>
+
+                                        </div>
+
+                                        `
+                                    }
+
+
+                                    ${mainButton}
+
+
+                                    ${
+                                        !testSeriesPurchased
+
+                                        ?
+
+                                        `
+
+                                        <button
+                                            type="button"
+                                            class="course-btn test-btn"
+                                            style="margin-top:8px;"
+                                            onclick='openTestSeriesPaymentModal(
+                                                ${JSON.stringify({
+                                                    id: course.id,
+                                                    name: course.name,
+                                                    price: course.test_series_price,
+                                                    purchaseType: "test_series"
+                                                }).replace(/'/g, "&#39;")}
+                                            )'
+                                        >
+                                            📝 Buy Full Test Series
+                                        </button>
+
+                                        `
+
+                                        :
+
+                                        ""
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "My Courses Error:",
+            error
+        );
+
+
+        main.innerHTML = `
+
+            <div class="error-box">
+
+                ❌ Courses load नहीं हो पाए।
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+                <br><br>
+
+                <a
+                    href="student-dashboard.html"
+                    class="resource-btn"
+                >
+                    ← Dashboard
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD COURSE DETAILS
+========================================== */
+
+async function loadCourseDetails(
+    courseId
+) {
+
+    const main =
+        document.getElementById(
+            "mainWrapper"
+        );
+
+    try {
+
+        const {
+            data: course,
+            error: courseError
+        } =
+            await supabaseClient
+                .from("courses")
+                .select(`
+                    id,
+                    name,
+                    slug,
+                    notes_price,
+                    test_series_price,
+                    is_active
+                `)
+                .eq(
+                    "id",
+                    courseId
+                )
+                .maybeSingle();
+
+
+        if (courseError) {
+            throw courseError;
+        }
+
+
+        if (!course) {
+
+            showAccessDenied(
+                "Course नहीं मिला",
+                "यह course available नहीं है।"
+            );
+
+            return;
+        }
+
+
+        if (
+            course.is_active === false
+        ) {
+
+            showAccessDenied(
+                "Course Currently Unavailable",
+                "यह course अभी active नहीं है।"
+            );
+
+            return;
+        }
+
+
+        const {
+            data: enrollments,
+            error: enrollmentError
+        } =
+            await supabaseClient
+                .from("enrollments")
+                .select(`
+                    id,
+                    course_id,
+                    purchase_type,
+                    amount,
+                    payment_status,
+                    created_at
+                `)
+                .eq(
+                    "student_id",
+                    currentUser.id
+                )
+                .eq(
+                    "course_id",
+                    courseId
+                )
+                .eq(
+                    "payment_status",
+                    "paid"
+                );
+
+
+        if (enrollmentError) {
+            throw enrollmentError;
+        }
+
+
+        const courseEnrollment =
+            (enrollments || [])
+                .find(
+                    item =>
+                        item.purchase_type ===
+                        "course"
+                ) || null;
+
+
+        const testSeriesEnrollment =
+            (enrollments || [])
+                .find(
+                    item =>
+                        item.purchase_type ===
+                        "test_series"
+                ) || null;
+
+
+        const coursePurchased =
+            !!courseEnrollment;
+
+        const testSeriesPurchased =
+            !!testSeriesEnrollment;
+
+
+        if (
+            !coursePurchased &&
+            !testSeriesPurchased
+        ) {
+
+            showAccessDenied(
+                "Access Locked 🔒",
+                "इस course का Course या Test Series access आपके account में active नहीं है।"
+            );
+
+            return;
+        }
+
+
+        currentCourse =
+            course;
+
+
+        let pageBadge = "";
+        let pageTitle = "";
+        let paidStatusHtml = "";
+
+
+        if (
+            coursePurchased &&
+            testSeriesPurchased
+        ) {
+
+            pageBadge =
+                "🔐 FULL ACCESS";
+
+            pageTitle =
+                "आपका Course और Test Series दोनों active हैं।";
+
+            paidStatusHtml = `
+
+                <span class="paid-badge">
+                    ✅ Course + Test Series Purchased & Active
+                </span>
+
+            `;
+
+        }
+
+        else if (
+            coursePurchased
+        ) {
+
+            pageBadge =
+                "📚 COURSE ACCESS";
+
+            pageTitle =
+                "आपका Course access active है।";
+
+            paidStatusHtml = `
+
+                <span class="paid-badge">
+                    ✅ Course Purchased & Active
+                </span>
+
+            `;
+
+        }
+
+        else {
+
+            pageBadge =
+                "📝 TEST SERIES ACCESS";
+
+            pageTitle =
+                "आपकी Test Series access active है।";
+
+            paidStatusHtml = `
+
+                <span class="test-only-badge">
+                    ✅ Test Series Purchased & Active
+                </span>
+
+            `;
+
+        }
+
+
+        const purchasedAmounts = [
+
+            courseEnrollment?.amount,
+            testSeriesEnrollment?.amount
+
+        ].filter(
+            value =>
+                value !== null &&
+                value !== undefined &&
+                value !== ""
+        );
+
+
+        const totalPurchasedAmount =
+            purchasedAmounts.reduce(
+                (
+                    total,
+                    value
+                ) =>
+                    total +
+                    Number(
+                        value || 0
+                    ),
+                0
+            );
+
+
+        main.innerHTML = `
+
+            <a
+                href="student-courses.html"
+                class="back-btn"
+            >
+                ← My Courses
+            </a>
+
+
+            <div class="page-title">
+
+                <span class="course-badge">
+                    ${pageBadge}
+                </span>
+
+                <h1>
+                    ${escapeHtml(course.name)}
+                </h1>
+
+                <p>
+                    ${pageTitle}
+                </p>
+
+            </div>
+
+
+            <div class="courses-layout">
+
+
+                <aside class="sidebar">
+
+                    <div class="sidebar-title">
+                        Student Panel
+                    </div>
+
+
+                    <a
+                        href="student-dashboard.html"
+                        class="side-link"
+                    >
+                        🏠 Dashboard
+                    </a>
+
+
+                    <a
+                        href="student-courses.html"
+                        class="side-link active"
+                    >
+                        📚 My Courses
+                    </a>
+
+
+                    <a
+                        href="student-tests.html"
+                        class="side-link"
+                    >
+                        📝 My Tests
+                    </a>
+
+
+                    <a
+                        href="student-notes.html"
+                        class="side-link"
+                    >
+                        📄 My Notes
+                    </a>
+
+
+                    <a
+                        href="student-results.html"
+                        class="side-link"
+                    >
+                        📊 My Results
+                    </a>
+
+
+                    <a
+                        href="student-profile.html"
+                        class="side-link"
+                    >
+                        👤 My Profile
+                    </a>
+
+
+                    <button
+                        class="side-link logout-btn"
+                        onclick="logoutStudent()"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </aside>
+
+
+                <section class="courses-content">
+
+
+                    <div
+                        class="section-card"
+                        id="courseDetailsCard"
+                    >
+
+                        <div class="course-hero">
+
+                            <div class="course-big-icon">
+                                ${getCourseIcon(course.name)}
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    ${escapeHtml(course.name)}
+                                </h2>
+
+
+                                <p>
+                                    ${escapeHtml(course.name)}
+                                    की complete preparation के लिए
+                                    PDF Notes और Test Series यहाँ available हैं।
+                                </p>
+
+
+                                ${paidStatusHtml}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="quick-stats">
+
+
+                            <div class="stat-box">
+
+                                <div class="stat-icon">
+                                    📄
+                                </div>
+
+                                <div
+                                    class="stat-number"
+                                    id="notesCount"
+                                >
+                                    ${
+                                        coursePurchased
+                                            ? "—"
+                                            : "🔒"
+                                    }
+                                </div>
+
+                                <div class="stat-label">
+                                    Notes Available
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-box">
+
+                                <div class="stat-icon">
+                                    📝
+                                </div>
+
+                                <div
+                                    class="stat-number"
+                                    id="testsCount"
+                                >
+                                    —
+                                </div>
+
+                                <div class="stat-label">
+                                    Tests Available
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-box">
+
+                                <div class="stat-icon">
+                                    💰
+                                </div>
+
+                                <div class="stat-number">
+                                    ${formatPrice(totalPurchasedAmount)}
+                                </div>
+
+                                <div class="stat-label">
+                                    Purchased Amount
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOTES -->
+
+                    <div class="section-card">
+
+                        <h2>
+                            📄 Course Notes
+                        </h2>
+
+
+                        <div
+                            class="resource-grid"
+                            id="notesGrid"
+                        >
+
+                            ${
+                                coursePurchased
+
+                                ?
+
+                                `
+
+                                <div class="loading-box">
+                                    ⏳ Notes load हो रहे हैं...
+                                </div>
+
+                                `
+
+                                :
+
+                                `
+
+                                <div
+                                    class="locked-notes-box"
+                                    style="grid-column:1/-1;"
+                                >
+
+                                    <div style="font-size:45px;">
+                                        🔒
+                                    </div>
+
+                                    <h3 style="color:#052a5b;">
+                                        Course Notes Locked
+                                    </h3>
+
+                                    <p>
+                                        आपने अभी केवल Test Series purchase की है।
+                                        PDF Notes access करने के लिए Course purchase करें।
+                                    </p>
+
+                                    <button
+                                        type="button"
+                                        class="course-btn buy-btn"
+                                        onclick='openCoursePaymentModal(
+                                            ${JSON.stringify({
+                                                id: course.id,
+                                                name: course.name,
+                                                price: course.notes_price,
+                                                purchaseType: "course"
+                                            }).replace(/'/g, "&#39;")}
+                                        )'
+                                    >
+                                        💳 Buy Course
+                                    </button>
+
+                                </div>
+
+                                `
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TEST SERIES -->
+
+                    <div
+                        class="section-card"
+                        id="tests"
+                    >
+
+                        <h2>
+                            📝 Test Series
+                        </h2>
+
+
+                        <div id="testSeriesStatus"></div>
+
+
+                        <div
+                            class="resource-grid"
+                            id="testsGrid"
+                        >
+
+                            <div class="loading-box">
+                                ⏳ Tests load हो रहे हैं...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INFO -->
+
+                    <div class="section-card">
+
+                        <h2>
+                            🔐 Access Information
+                        </h2>
+
+
+                        <div class="info-note">
+
+                            ${
+                                coursePurchased
+                                ?
+                                `
+
+                                <strong>
+                                    ✅ Course access active है।
+                                </strong>
+
+                                <br><br>
+
+                                📄 आप इस course के PDF Notes access कर सकते हैं।
+
+                                `
+                                :
+                                `
+
+                                <strong>
+                                    🔒 Course Notes access active नहीं है।
+                                </strong>
+
+                                <br><br>
+
+                                📄 PDF Notes के लिए Course अलग से purchase करना होगा।
+
+                                `
+                            }
+
+
+                            <br><br>
+
+
+                            ${
+                                testSeriesPurchased
+                                ?
+                                `
+
+                                <strong>
+                                    ✅ Test Series access active है।
+                                </strong>
+
+                                <br><br>
+
+                                📝 आपकी पूरी Test Series active है।
+                                नीचे दिए गए सभी active tests attempt कर सकते हैं।
+
+                                `
+                                :
+                                `
+
+                                <strong>
+                                    🔒 Test Series access active नहीं है।
+                                </strong>
+
+                                <br><br>
+
+                                📝 Test Series purchase करने के बाद
+                                सभी active tests unlock होंगे।
+
+                                `
+                            }
+
+
+                            <br><br>
+
+                            🔐 Payment approval के बाद access
+                            आपके student account से जुड़ जाता है।
+
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+            </div>
+
+        `;
+
+
+        await loadCourseNotes(
+            course,
+            coursePurchased
+        );
+
+
+        await loadCourseTests(
+            course,
+            testSeriesPurchased
+        );
+
+
+        if (
+            window.location.hash ===
+            "#tests"
+        ) {
+
+            setTimeout(
+                function() {
+
+                    const testsSection =
+                        document.getElementById(
+                            "tests"
+                        );
+
+                    if (testsSection) {
+
+                        testsSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+
+                },
+                300
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Course Details Error:",
+            error
+        );
+
+
+        main.innerHTML = `
+
+            <div class="error-box">
+
+                ❌ Course details load नहीं हो पाए।
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+                <br><br>
+
+                <a
+                    href="student-courses.html"
+                    class="resource-btn"
+                >
+                    ← My Courses
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD NOTES
+========================================== */
+
+async function loadCourseNotes(
+    course,
+    coursePurchased = true
+) {
+
+    const notesGrid =
+        document.getElementById(
+            "notesGrid"
+        );
+
+
+    if (!notesGrid) {
+        return;
+    }
+
+
+    if (!coursePurchased) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            data: notes,
+            error
+        } =
+            await supabaseClient
+                .from("notes")
+                .select(`
+                    id,
+                    title,
+                    category,
+                    exam,
+                    subject,
+                    pdf_url,
+                    created_at
+                `)
+                .eq(
+                    "exam",
+                    course.name
+                )
+                .not(
+                    "pdf_url",
+                    "is",
+                    null
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const count =
+            notes?.length || 0;
+
+
+        const notesCount =
+            document.getElementById(
+                "notesCount"
+            );
+
+
+        if (notesCount) {
+            notesCount.innerText =
+                count;
+        }
+
+
+        if (
+            !notes ||
+            notes.length === 0
+        ) {
+
+            notesGrid.innerHTML = `
+
+                <div
+                    class="empty-box"
+                    style="grid-column:1/-1;"
+                >
+
+                    📄 इस course के लिए अभी
+                    कोई PDF notes available नहीं हैं।
+
+                    <br><br>
+
+                    Admin द्वारा notes upload होने के बाद
+                    यहाँ दिखाई देंगे।
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        notesGrid.innerHTML =
+
+            notes
+                .map(
+                    note => `
+
+                        <div
+                            class="resource-card"
+                        >
+
+                            <div class="resource-icon">
+                                📄
+                            </div>
+
+
+                            <h3>
+                                ${escapeHtml(
+                                    note.title ||
+                                    "Course Note"
+                                )}
+                            </h3>
+
+
+                            <p>
+
+                                ${
+                                    note.subject
+                                        ? escapeHtml(
+                                            note.subject
+                                        )
+                                        : note.category
+                                        ? escapeHtml(
+                                            note.category
+                                        )
+                                        : "Study Material"
+                                }
+
+                            </p>
+
+
+                            <a
+                                href="${escapeHtml(
+                                    note.pdf_url
+                                )}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="resource-btn"
+                            >
+
+                                📖 PDF Open करें
+
+                            </a>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Notes Error:",
+            error
+        );
+
+
+        const notesCount =
+            document.getElementById(
+                "notesCount"
+            );
+
+
+        if (notesCount) {
+            notesCount.innerText =
+                "0";
+        }
+
+
+        notesGrid.innerHTML = `
+
+            <div
+                class="error-box"
+                style="grid-column:1/-1;"
+            >
+
+                ❌ Notes load नहीं हो पाए।
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD TEST SERIES
+========================================== */
+
+async function loadCourseTests(
+    course,
+    testSeriesPurchased
+) {
+
+    const testsGrid =
+        document.getElementById(
+            "testsGrid"
+        );
+
+
+    const statusBox =
+        document.getElementById(
+            "testSeriesStatus"
+        );
+
+
+    if (!testsGrid) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            data: tests,
+            error
+        } =
+            await supabaseClient
+                .from("tests")
+                .select(`
+                    id,
+                    exam,
+                    name,
+                    question_count,
+                    time_limit,
+                    price,
+                    status,
+                    description,
+                    created_at
+                `)
+                .eq(
+                    "exam",
+                    course.name
+                )
+                .ilike(
+                    "status",
+                    "active"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const count =
+            tests?.length || 0;
+
+
+        const testsCount =
+            document.getElementById(
+                "testsCount"
+            );
+
+
+        if (testsCount) {
+            testsCount.innerText =
+                count;
+        }
+
+
+        if (testSeriesPurchased) {
+
+            statusBox.innerHTML = `
+
+                <div
+                    class="test-series-box test-series-unlocked"
+                >
+
+                    <h3>
+                        ✅ Full Test Series Unlocked
+                    </h3>
+
+                    <p>
+                        आपने ${escapeHtml(course.name)}
+                        की पूरी Test Series purchase कर ली है।
+                        अब नीचे दिए गए सभी active tests attempt कर सकते हैं।
+                    </p>
+
+                    <div class="test-series-price">
+                        ✅ Purchased
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+        else {
+
+            statusBox.innerHTML = `
+
+                <div class="test-series-box">
+
+                    <h3>
+                        🔒 Full Test Series Locked
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(course.name)}
+                        की पूरी Test Series खरीदें और
+                        इस exam के सभी active tests unlock करें।
+                    </p>
+
+                    <div class="test-series-price">
+                        ${formatPrice(course.test_series_price)}
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="course-btn test-btn"
+                        onclick='openTestSeriesPaymentModal(
+                            ${JSON.stringify({
+                                id: course.id,
+                                name: course.name,
+                                price: course.test_series_price,
+                                purchaseType: "test_series"
+                            }).replace(/'/g, "&#39;")}
+                        )'
+                    >
+                        📝 Buy Full Test Series
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        if (
+            !tests ||
+            tests.length === 0
+        ) {
+
+            testsGrid.innerHTML = `
+
+                <div
+                    class="empty-box"
+                    style="grid-column:1/-1;"
+                >
+
+                    📝 इस exam के लिए अभी कोई active test available नहीं है।
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        if (!testSeriesPurchased) {
+
+            testsGrid.innerHTML =
+
+                tests
+                    .map(
+                        test => `
+
+                            <div
+                                class="resource-card"
+                            >
+
+                                <div class="resource-icon">
+                                    🔒
+                                </div>
+
+
+                                <h3>
+                                    ${escapeHtml(
+                                        test.name
+                                    )}
+                                </h3>
+
+
+                                <p>
+
+                                    ${
+                                        test.description
+                                            ? escapeHtml(
+                                                test.description
+                                            )
+                                            : "Test Series"
+                                    }
+
+                                    <br><br>
+
+                                    <strong>
+                                        Questions:
+                                    </strong>
+
+                                    ${test.question_count}
+
+                                    <br>
+
+                                    <strong>
+                                        Time:
+                                    </strong>
+
+                                    ${test.time_limit}
+                                    Minutes
+
+                                </p>
+
+
+                                <button
+                                    type="button"
+                                    class="resource-btn test-btn"
+                                    onclick='openTestSeriesPaymentModal(
+                                        ${JSON.stringify({
+                                            id: course.id,
+                                            name: course.name,
+                                            price: course.test_series_price,
+                                            purchaseType: "test_series"
+                                        }).replace(/'/g, "&#39;")}
+                                    )'
+                                >
+
+                                    🔒 Unlock Test Series
+
+                                </button>
+
+                            </div>
+
+                        `
+                    )
+                    .join("");
+
+            return;
+        }
+
+
+        testsGrid.innerHTML =
+
+            tests
+                .map(
+                    test => `
+
+                        <div
+                            class="resource-card"
+                        >
+
+                            <div class="resource-icon">
+                                📝
+                            </div>
+
+
+                            <h3>
+                                ${escapeHtml(
+                                    test.name
+                                )}
+                            </h3>
+
+
+                            <p>
+
+                                ${
+                                    test.description
+                                        ? escapeHtml(
+                                            test.description
+                                        )
+                                        : "Test Series"
+                                }
+
+                                <br><br>
+
+                                <strong>
+                                    Questions:
+                                </strong>
+
+                                ${test.question_count}
+
+                                <br>
+
+                                <strong>
+                                    Time:
+                                </strong>
+
+                                ${test.time_limit}
+                                Minutes
+
+                            </p>
+
+
+                            <a
+                                href="start-test.html?test_id=${encodeURIComponent(test.id)}"
+                                class="resource-btn test-btn"
+                            >
+
+                                ▶ Start Test
+
+                            </a>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Tests Error:",
+            error
+        );
+
+
+        const testsCount =
+            document.getElementById(
+                "testsCount"
+            );
+
+
+        if (testsCount) {
+            testsCount.innerText =
+                "0";
+        }
+
+
+        testsGrid.innerHTML = `
+
+            <div
+                class="error-box"
+                style="grid-column:1/-1;"
+            >
+
+                ❌ Tests load नहीं हो पाए।
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================
+   COURSE PAYMENT MODAL
+========================================== */
+
+function openCoursePaymentModal(
+    course
+) {
+
+    selectedCourse = {
+
+        id:
+            course.id,
+
+        name:
+            course.name,
+
+        price:
+            course.price,
+
+        purchaseType:
+            "course"
+
+    };
+
+
+    openPaymentModalUI(
+        "💳 Course Purchase"
+    );
+
+}
+
+
+/* ==========================================
+   TEST SERIES PAYMENT MODAL
+========================================== */
+
+function openTestSeriesPaymentModal(
+    course
+) {
+
+    selectedCourse = {
+
+        id:
+            course.id,
+
+        name:
+            course.name,
+
+        price:
+            course.price,
+
+        purchaseType:
+            "test_series"
+
+    };
+
+
+    openPaymentModalUI(
+        "📝 Test Series Purchase"
+    );
+
+}
+
+
+/* ==========================================
+   UPI PAYMENT URL
+========================================== */
+
+function generateUpiPaymentUrl() {
+
+    if (!selectedCourse) {
+        return "";
+    }
+
+
+    const amount =
+        Number(
+            selectedCourse.price
+        );
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+        return "";
+    }
+
+
+    const courseName =
+        selectedCourse.name ||
+        "RajEdge Course";
+
+
+    const transactionNote =
+        selectedCourse.purchaseType ===
+        "test_series"
+
+            ?
+
+            "RajEdge Test Series - " +
+            courseName
+
+            :
+
+            "RajEdge Course - " +
+            courseName;
+
+
+    return (
+        "upi://pay" +
+
+        "?pa=" +
+        encodeURIComponent(
+            RAJEDGE_UPI_ID
+        ) +
+
+        "&pn=" +
+        encodeURIComponent(
+            "RajEdge"
+        ) +
+
+        "&am=" +
+        encodeURIComponent(
+            amount.toFixed(2)
+        ) +
+
+        "&cu=INR" +
+
+        "&tn=" +
+        encodeURIComponent(
+            transactionNote
+        )
+    );
+
+}
+
+
+/* ==========================================
+   GENERATE QR
+========================================== */
+
+function generatePaymentQR() {
+
+    const qrContainer =
+        document.getElementById(
+            "upiQr"
+        );
+
+
+    if (!qrContainer) {
+        return;
+    }
+
+
+    qrContainer.innerHTML = "";
+
+
+    const upiUrl =
+        generateUpiPaymentUrl();
+
+
+    if (!upiUrl) {
+
+        qrContainer.innerHTML =
+            "QR generate नहीं हो पाया।";
+
+        return;
+    }
+
+
+    if (
+        typeof QRCode ===
+        "undefined"
+    ) {
+
+        qrContainer.innerHTML =
+            "QR library load नहीं हुई।";
+
+        return;
+    }
+
+
+    new QRCode(
+        qrContainer,
+        {
+            text: upiUrl,
+            width: 180,
+            height: 180,
+            correctLevel:
+                QRCode.CorrectLevel.M
+        }
+    );
+
+}
+
+
+/* ==========================================
+   UPDATE UPI PAYMENT UI
+========================================== */
+
+function updateUpiPaymentUI() {
+
+    if (!selectedCourse) {
+        return;
+    }
+
+
+    const amount =
+        formatPrice(
+            selectedCourse.price
+        );
+
+
+    const amountText =
+        document.getElementById(
+            "paymentAmount"
+        );
+
+
+    if (amountText) {
+
+        amountText.innerText =
+            amount;
+
+    }
+
+
+    const upiIdText =
+        document.getElementById(
+            "upiIdText"
+        );
+
+
+    if (upiIdText) {
+
+        upiIdText.innerText =
+            RAJEDGE_UPI_ID;
+
+    }
+
+
+    const payButton =
+        document.getElementById(
+            "upiPayButton"
+        );
+
+
+    if (payButton) {
+
+        const upiUrl =
+            generateUpiPaymentUrl();
+
+
+        payButton.href =
+            upiUrl || "#";
+
+    }
+
+
+    generatePaymentQR();
+
+}
+
+
+/* ==========================================
+   COPY UPI ID
+========================================== */
+
+async function copyUpiId() {
+
+    try {
+
+        await navigator.clipboard.writeText(
+            RAJEDGE_UPI_ID
+        );
+
+
+        const button =
+            document.querySelector(
+                ".copy-upi-btn"
+            );
+
+
+        if (button) {
+
+            const oldText =
+                button.innerText;
+
+
+            button.innerText =
+                "✅ Copied";
+
+
+            setTimeout(
+                function() {
+
+                    button.innerText =
+                        oldText;
+
+                },
+                1500
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        alert(
+            "UPI ID: " +
+            RAJEDGE_UPI_ID
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   PAYMENT UI
+========================================== */
+
+function openPaymentModalUI(
+    title
+) {
+
+    document.getElementById(
+        "paymentTitle"
+    ).innerText =
+        title;
+
+
+    document.getElementById(
+        "paymentCourseName"
+    ).innerText =
+        selectedCourse.name;
+
+
+    document.getElementById(
+        "paymentAmount"
+    ).innerText =
+        formatPrice(
+            selectedCourse.price
+        );
+
+
+    document.getElementById(
+        "utrInput"
+    ).value =
+        "";
+
+
+    const message =
+        document.getElementById(
+            "paymentMessage"
+        );
+
+
+    message.className =
+        "modal-message";
+
+
+    message.innerText =
+        "";
+
+
+    const submitBtn =
+        document.getElementById(
+            "submitPaymentBtn"
+        );
+
+
+    submitBtn.disabled =
+        false;
+
+
+    submitBtn.innerText =
+        "Submit Payment";
+
+
+    document.getElementById(
+        "paymentModal"
+    ).classList.add(
+        "show"
+    );
+
+
+    updateUpiPaymentUI();
+
+}
+
+
+/* ==========================================
+   CLOSE PAYMENT
+========================================== */
+
+function closePaymentModal() {
+
+    document.getElementById(
+        "paymentModal"
+    ).classList.remove(
+        "show"
+    );
+
+
+    selectedCourse =
+        null;
+
+}
+
+
+/* ==========================================
+   SUBMIT PAYMENT REQUEST
+   SECURE RPC
+========================================== */
+
+async function submitPaymentRequest() {
+
+    if (!currentUser) {
+
+        showPaymentMessage(
+            "error",
+            "कृपया पहले login करें।"
+        );
+
+        return;
+    }
+
+
+    if (!selectedCourse) {
+
+        showPaymentMessage(
+            "error",
+            "Purchase select नहीं हुआ।"
+        );
+
+        return;
+    }
+
+
+    const purchaseType =
+        selectedCourse.purchaseType ||
+        "course";
+
+
+    const utrInput =
+        document.getElementById(
+            "utrInput"
+        );
+
+
+    const utr =
+        utrInput
+            ? utrInput.value.trim()
+            : "";
+
+
+    if (!utr) {
+
+        showPaymentMessage(
+            "error",
+            "कृपया UTR / Transaction ID डालें।"
+        );
+
+        return;
+    }
+
+
+    if (utr.length < 6) {
+
+        showPaymentMessage(
+            "error",
+            "UTR / Transaction ID सही डालें।"
+        );
+
+        return;
+    }
+
+
+    const submitBtn =
+        document.getElementById(
+            "submitPaymentBtn"
+        );
+
+
+    if (!submitBtn) {
+        return;
+    }
+
+
+    submitBtn.disabled =
+        true;
+
+
+    submitBtn.innerText =
+        "Submitting...";
+
+
+    try {
+
+        const {
+            data: result,
+            error
+        } =
+            await supabaseClient.rpc(
+                "create_payment_request",
+                {
+                    p_course_id:
+                        selectedCourse.id,
+
+                    p_purchase_type:
+                        purchaseType,
+
+                    p_utr_number:
+                        utr
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !result ||
+            result.success !== true
+        ) {
+
+            throw new Error(
+                "Payment request create नहीं हो पाई।"
+            );
+
+        }
+
+
+        if (
+            result.amount !== null &&
+            result.amount !== undefined
+        ) {
+
+            selectedCourse.price =
+                Number(
+                    result.amount
+                );
+
+        }
+
+
+        showPaymentMessage(
+
+            "success",
+
+            purchaseType ===
+            "test_series"
+
+                ?
+
+                "✅ Test Series payment request successfully submit हो गई है। Admin verification के बाद पूरे exam की Test Series unlock हो जाएगी।"
+
+                :
+
+                "✅ Course payment request successfully submit हो गई है। Admin verification के बाद आपका course access active हो जाएगा।"
+
+        );
+
+
+        if (utrInput) {
+
+            utrInput.value =
+                "";
+
+        }
+
+
+        submitBtn.innerText =
+            "Submitted";
+
+
+        submitBtn.disabled =
+            true;
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Payment Request Error:",
+            error
+        );
+
+
+        let message =
+            error?.message ||
+            "Payment request submit नहीं हो पाई।";
+
+
+        if (
+            message.includes(
+                "Payment request already pending"
+            )
+        ) {
+
+            message =
+                purchaseType ===
+                "test_series"
+
+                    ?
+
+                    "इस Test Series की payment request पहले से pending है। Admin approval का इंतजार करें।"
+
+                    :
+
+                    "इस Course की payment request पहले से pending है। Admin approval का इंतजार करें।";
+
+        }
+
+
+        else if (
+            message.includes(
+                "Already purchased"
+            )
+        ) {
+
+            message =
+                purchaseType ===
+                "test_series"
+
+                    ?
+
+                    "✅ यह Test Series आपके account में पहले से active है।"
+
+                    :
+
+                    "✅ यह Course आपके account में पहले से active है।";
+
+        }
+
+
+        else if (
+            message.includes(
+                "UTR is required"
+            )
+        ) {
+
+            message =
+                "कृपया UTR / Transaction ID डालें।";
+
+        }
+
+
+        else if (
+            message.includes(
+                "Login required"
+            )
+        ) {
+
+            message =
+                "कृपया पहले login करें।";
+
+        }
+
+
+        else if (
+            message.includes(
+                "Course not found or inactive"
+            )
+        ) {
+
+            message =
+                "यह course अभी available नहीं है।";
+
+        }
+
+
+        else if (
+            message.includes(
+                "Invalid purchase type"
+            )
+        ) {
+
+            message =
+                "Purchase type सही नहीं है। कृपया page refresh करके फिर कोशिश करें।";
+
+        }
+
+
+        showPaymentMessage(
+            "error",
+            message
+        );
+
+
+        submitBtn.disabled =
+            false;
+
+
+        submitBtn.innerText =
+            "Submit Payment";
+
+    }
+
+}
+
+
+/* ==========================================
+   PAYMENT MESSAGE
+========================================== */
+
+function showPaymentMessage(
+    type,
+    message
+) {
+
+    const box =
+        document.getElementById(
+            "paymentMessage"
+        );
+
+
+    if (!box) {
+        return;
+    }
+
+
+    box.className =
+        "modal-message " +
+        type;
+
+
+    box.innerText =
+        message;
+
+}
+
+
+/* ==========================================
+   ACCESS DENIED
+========================================== */
+
+function showAccessDenied(
+    title,
+    message
+) {
+
+    const main =
+        document.getElementById(
+            "mainWrapper"
+        );
+
+
+    main.innerHTML = `
+
+        <div class="access-denied">
+
+            <div class="access-denied-icon">
+                🔒
+            </div>
+
+
+            <h2>
+                ${escapeHtml(title)}
+            </h2>
+
+
+            <p>
+                ${escapeHtml(message)}
+            </p>
+
+
+            <br>
+
+
+            <a
+                href="student-courses.html"
+                class="resource-btn"
+            >
+                ← My Courses
+            </a>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================
+   COURSE ICON
+========================================== */
+
+function getCourseIcon(
+    name
+) {
+
+    const text =
+        String(
+            name || ""
+        ).toLowerCase();
+
+
+    if (
+        text.includes("reet")
+    ) {
+        return "📘";
+    }
+
+
+    if (
+        text.includes("cet")
+    ) {
+        return "📗";
+    }
+
+
+    if (
+        text.includes("ldc")
+    ) {
+        return "📕";
+    }
+
+
+    if (
+        text.includes("vdo")
+    ) {
+        return "📙";
+    }
+
+
+    if (
+        text.includes("lab")
+    ) {
+        return "🔬";
+    }
+
+
+    if (
+        text.includes("police")
+    ) {
+        return "👮";
+    }
+
+
+    return "📚";
+
+}
+
+
+/* ==========================================
+   PRICE
+========================================== */
+
+function formatPrice(
+    price
+) {
+
+    if (
+        price === null ||
+        price === undefined ||
+        price === ""
+    ) {
+
+        return "Not set";
+    }
+
+
+    const number =
+        Number(price);
+
+
+    if (
+        Number.isNaN(number)
+    ) {
+
+        return "Not set";
+    }
+
+
+    if (
+        number === 0
+    ) {
+
+        return "Free";
+    }
+
+
+    return "₹" +
+        number.toLocaleString(
+            "en-IN"
+        );
+
+}
+
+
+/* ==========================================
+   HTML ESCAPE
+========================================== */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logoutStudent() {
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+
+    window.location.href =
+        "student-login.html";
+
+}
+
+
+/* ==========================================
+   CLOSE MODAL OUTSIDE CLICK
+========================================== */
+
+document.getElementById(
+    "paymentModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            this
+        ) {
+
+            closePaymentModal();
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   PAGE LOAD
+========================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        initializePage();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .login-page {
+            min-height: 100vh;
+            background: #f5f8fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.10);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .login-logo-icon {
+            font-size: 45px;
+        }
+
+        .login-logo h1 {
+            margin: 5px 0;
+            color: #052a5b;
+            font-size: 32px;
+        }
+
+        .login-logo h1 span {
+            color: #f5c400;
+        }
+
+        .login-logo p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            color: #052a5b;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border: 1px solid #d8dee8;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #0b4b88;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #052a5b;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background: #0b4b88;
+        }
+
+        .login-btn:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #666;
+        }
+
+        .register-text a {
+            color: #0b4b88;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #777;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        #message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media(max-width: 500px) {
+            .login-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+
+            <div class="login-logo-icon">
+                📚
+            </div>
+
+            <h1>
+                Raj<span>Edge</span>
+            </h1>
+
+            <p>
+                Rajasthan Education Hub
+            </p>
+
+        </div>
+
+        <h2>Student Login</h2>
+
+        <div id="message"></div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="mobile">
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="mobile"
+                    placeholder="Enter your mobile number"
+                    maxlength="10"
+                    inputmode="numeric"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="register-text">
+
+            New Student?
+
+            <a href="student-register.html">
+                Register Now
+            </a>
+
+        </div>
+
+        <a href="index.html" class="back-home">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   SUPABASE CONFIG
+========================================== */
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==========================================
+   MESSAGE FUNCTION
+========================================== */
+
+function showMessage(message, success = false) {
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = message;
+
+    box.style.display = "block";
+
+    if (success) {
+
+        box.style.background = "#e8f7ee";
+        box.style.color = "#16753b";
+
+    } else {
+
+        box.style.background = "#fdecec";
+        box.style.color = "#b42318";
+
+    }
+
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            /* --------------------------------
+               GET FORM VALUES
+            -------------------------------- */
+
+            const mobile =
+                document
+                    .getElementById("mobile")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+            const loginBtn =
+                document
+                    .getElementById("loginBtn");
+
+
+            /* --------------------------------
+               VALIDATION
+            -------------------------------- */
+
+            if (!/^[0-9]{10}$/.test(mobile)) {
+
+                showMessage(
+                    "Please enter a valid 10 digit mobile number."
+                );
+
+                return;
+            }
+
+
+            if (!password) {
+
+                showMessage(
+                    "Please enter your password."
+                );
+
+                return;
+            }
+
+
+            /* --------------------------------
+               BUTTON LOADING
+            -------------------------------- */
+
+            loginBtn.disabled = true;
+
+            loginBtn.textContent =
+                "Logging in...";
+
+
+            try {
+
+
+                /* ==========================================
+                   STEP 1
+                   MOBILE → LOGIN EMAIL
+                   
+                   अब student_profiles को direct
+                   SELECT नहीं किया जा रहा।
+                   
+                   Supabase RPC function इस्तेमाल होगा।
+                ========================================== */
+
+                const {
+                    data: profileData,
+                    error: profileError
+                } =
+                    await supabaseClient.rpc(
+                        "get_student_login_email",
+                        {
+                            p_mobile: mobile
+                        }
+                    );
+
+
+                /* --------------------------------
+                   RPC ERROR
+                -------------------------------- */
+
+                if (profileError) {
+
+                    console.error(
+                        "Profile RPC Error:",
+                        profileError
+                    );
+
+                    throw profileError;
+
+                }
+
+
+                /* --------------------------------
+                   PROFILE FIND
+                -------------------------------- */
+
+                const profile =
+                    profileData &&
+                    profileData.length > 0
+                        ? profileData[0]
+                        : null;
+
+
+                /* --------------------------------
+                   MOBILE NOT FOUND
+                -------------------------------- */
+
+                if (!profile) {
+
+                    showMessage(
+                        "This mobile number is not registered."
+                    );
+
+                    return;
+                }
+
+
+                /* ==========================================
+                   STEP 2
+                   GET EMAIL
+                ========================================== */
+
+                const email =
+                    profile.login_email ||
+                    profile.email;
+
+
+                if (!email) {
+
+                    showMessage(
+                        "Login email not found for this account."
+                    );
+
+                    return;
+                }
+
+
+                /* ==========================================
+                   STEP 3
+                   SUPABASE AUTH LOGIN
+                ========================================== */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+
+                            email: email,
+
+                            password: password
+
+                        });
+
+
+                /* --------------------------------
+                   AUTH ERROR
+                -------------------------------- */
+
+                if (error) {
+
+                    console.error(
+                        "Auth Login Error:",
+                        error
+                    );
+
+                    throw error;
+
+                }
+
+
+                /* --------------------------------
+                   USER CHECK
+                -------------------------------- */
+
+                if (!data || !data.user) {
+
+                    showMessage(
+                        "Login failed. Please try again."
+                    );
+
+                    return;
+                }
+
+
+                /* ==========================================
+                   LOGIN SUCCESS
+                ========================================== */
+
+                showMessage(
+                    "✅ Login successful! Redirecting...",
+                    true
+                );
+
+
+                /* --------------------------------
+                   REDIRECT
+                -------------------------------- */
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "student-dashboard.html";
+
+                    },
+                    1000
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Login Error:",
+                    error
+                );
+
+
+                let message =
+                    error.message ||
+                    "Login failed. Please try again.";
+
+
+                /* --------------------------------
+                   FRIENDLY AUTH ERRORS
+                -------------------------------- */
+
+                if (
+                    message
+                        .toLowerCase()
+                        .includes("invalid login credentials")
+                ) {
+
+                    message =
+                        "❌ Mobile number या password गलत है.";
+
+                }
+
+
+                showMessage(
+                    message
+                );
+
+
+            } finally {
+
+                /* --------------------------------
+                   RESET BUTTON
+                -------------------------------- */
+
+                loginBtn.disabled = false;
+
+                loginBtn.textContent =
+                    "Login";
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

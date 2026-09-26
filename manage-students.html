@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Students | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .students-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .students-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .students-header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            color: #052a5b;
+            background: #f5c400;
+            padding: 9px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .students-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page-title h2 {
+            color: #052a5b;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: 800;
+            color: #052a5b;
+            margin-top: 8px;
+        }
+
+        .stat-label {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .students-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .students-toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .students-table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+        }
+
+        .students-table th,
+        .students-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf0f4;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .students-table th {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .student-name {
+            font-weight: 700;
+            color: #052a5b;
+        }
+
+        .student-email {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .mobile-text {
+            white-space: nowrap;
+        }
+
+        .date-text {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .active-badge {
+            background: #e7f7ed;
+            color: #16803c;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .view-btn {
+            background: #e8f1ff;
+            color: #0755a5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #e7f7ed;
+            color: #16803c;
+        }
+
+        .error {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px;
+            color: #777;
+        }
+
+        @media(max-width: 700px) {
+
+            .students-container {
+                padding: 20px 12px;
+            }
+
+            .students-card {
+                padding: 18px;
+            }
+
+            .students-header {
+                padding: 15px;
+            }
+
+            .students-header-inner {
+                gap: 12px;
+            }
+
+            .brand h1 {
+                font-size: 19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="students-page">
+
+
+    <!-- HEADER -->
+
+    <header class="students-header">
+
+        <div class="students-header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <h1>
+                        RajEdge Admin
+                    </h1>
+
+                    <p>
+                        Student Management
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="admin-dashboard.html"
+                class="back-btn">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="students-container">
+
+
+        <!-- TITLE -->
+
+        <div class="page-title">
+
+            <h2>
+                👥 Manage Students
+            </h2>
+
+            <p>
+                Registered students की वास्तविक जानकारी यहाँ देखें।
+            </p>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👨‍🎓
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalStudents">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Total Students
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟢
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="activeStudents">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Registered Students
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- STUDENTS -->
+
+        <section class="students-card">
+
+
+            <h3 style="color:#052a5b;">
+                📋 Student List
+            </h3>
+
+
+            <!-- SEARCH -->
+
+            <div class="students-toolbar">
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="studentSearch"
+                        placeholder="🔎 Name, mobile या email से search करें...">
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="table-wrapper">
+
+                <table class="students-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Mobile
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Registration
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="studentsTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="loading">
+
+                                Checking Admin Access...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let allStudents = [];
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+
+    message.style.display =
+        "block";
+
+}
+
+
+/* =========================================
+   ADMIN ACCESS CHECK
+========================================= */
+
+async function checkAdminAccess() {
+
+    try {
+
+        const {
+            data: userData,
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        if (
+            userError ||
+            !userData ||
+            !userData.user
+        ) {
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return false;
+
+        }
+
+
+        const user =
+            userData.user;
+
+
+        const {
+            data: adminData,
+            error: adminError
+        } =
+            await supabaseClient
+
+                .from("admin_users")
+
+                .select(
+                    "id,email"
+                )
+
+                .eq(
+                    "id",
+                    user.id
+                )
+
+                .maybeSingle();
+
+
+        if (adminError) {
+
+            console.error(
+                "Admin verification error:",
+                adminError
+            );
+
+            alert(
+                "Admin verification failed."
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return false;
+
+        }
+
+
+        if (!adminData) {
+
+            alert(
+                "⛔ आपको Admin access नहीं है।"
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.replace(
+                "student-dashboard.html"
+            );
+
+            return false;
+
+        }
+
+
+        console.log(
+            "✅ Admin verified:",
+            adminData.email
+        );
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin access error:",
+            error
+        );
+
+        window.location.replace(
+            "admin-login.html"
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD STUDENTS
+========================================= */
+
+async function loadStudents() {
+
+    const tbody =
+        document.getElementById(
+            "studentsTableBody"
+        );
+
+
+    tbody.innerHTML =
+        `<tr>
+            <td colspan="6" class="loading">
+                Loading students...
+            </td>
+        </tr>`;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("student_profiles")
+
+            .select(`
+                id,
+                full_name,
+                mobile,
+                email,
+                login_email,
+                created_at
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+
+        tbody.innerHTML =
+            `<tr>
+                <td colspan="6" class="loading">
+                    Students load नहीं हुए.
+                </td>
+            </tr>`;
+
+
+        showMessage(
+            "Students load नहीं हुए: " +
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    allStudents =
+        data || [];
+
+
+    updateStats();
+
+
+    renderStudents(
+        allStudents
+    );
+
+}
+
+
+/* =========================================
+   UPDATE STATS
+========================================= */
+
+function updateStats() {
+
+    const total =
+        allStudents.length;
+
+
+    document.getElementById(
+        "totalStudents"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "activeStudents"
+    ).textContent =
+        total;
+
+}
+
+
+/* =========================================
+   RENDER STUDENTS
+========================================= */
+
+function renderStudents(
+    students
+) {
+
+    const tbody =
+        document.getElementById(
+            "studentsTableBody"
+        );
+
+
+    if (
+        !students ||
+        students.length === 0
+    ) {
+
+        tbody.innerHTML =
+            `<tr>
+                <td
+                    colspan="6"
+                    class="empty-state">
+
+                    अभी कोई registered student नहीं मिला।
+
+                </td>
+            </tr>`;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        "";
+
+
+    students.forEach(
+        student => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const email =
+                student.email ||
+                student.login_email ||
+                "-";
+
+
+            const date =
+                student.created_at
+                    ? new Date(
+                        student.created_at
+                    ).toLocaleDateString(
+                        "en-IN"
+                    )
+                    : "-";
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="student-name">
+
+                        ${escapeHtml(
+                            student.full_name ||
+                            "Unnamed Student"
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span class="mobile-text">
+
+                        ${escapeHtml(
+                            student.mobile ||
+                            "-"
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <div class="student-email">
+
+                        ${escapeHtml(
+                            email
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="date-text">
+
+                        ${escapeHtml(
+                            date
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span class="active-badge">
+
+                        Active
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="action-btn view-btn"
+                        onclick="viewStudent('${student.id}')">
+
+                        View
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+document.getElementById(
+    "studentSearch"
+).addEventListener(
+    "input",
+    function() {
+
+        const search =
+            this.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!search) {
+
+            renderStudents(
+                allStudents
+            );
+
+            return;
+
+        }
+
+
+        const filtered =
+            allStudents.filter(
+                student => {
+
+                    const name =
+                        (
+                            student.full_name ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const mobile =
+                        (
+                            student.mobile ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const email =
+                        (
+                            student.email ||
+                            student.login_email ||
+                            ""
+                        ).toLowerCase();
+
+
+                    return (
+                        name.includes(search) ||
+                        mobile.includes(search) ||
+                        email.includes(search)
+                    );
+
+                }
+            );
+
+
+        renderStudents(
+            filtered
+        );
+
+    }
+);
+
+
+/* =========================================
+   VIEW STUDENT
+========================================= */
+
+function viewStudent(id) {
+
+    const student =
+        allStudents.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!student) {
+
+        return;
+
+    }
+
+
+    const email =
+        student.email ||
+        student.login_email ||
+        "-";
+
+
+    const created =
+        student.created_at
+            ? new Date(
+                student.created_at
+            ).toLocaleString(
+                "en-IN"
+            )
+            : "-";
+
+
+    alert(
+        "👨‍🎓 Student Details\n\n" +
+
+        "Name: " +
+        (student.full_name || "-") +
+
+        "\nMobile: " +
+        (student.mobile || "-") +
+
+        "\nEmail: " +
+        email +
+
+        "\nRegistered: " +
+        created
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   INIT
+========================================= */
+
+async function init() {
+
+    const isAdmin =
+        await checkAdminAccess();
+
+
+    if (!isAdmin) {
+
+        return;
+
+    }
+
+
+    await loadStudents();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        init();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

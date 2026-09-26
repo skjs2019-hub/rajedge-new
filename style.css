@@ -1,0 +1,1493 @@
+/* =========================================================
+   RAJEDGE - MAIN WEBSITE STYLE
+   ========================================================= */
+
+:root {
+    --navy: #062b5b;
+    --navy-dark: #041d3e;
+    --blue: #1769d5;
+    --blue-light: #eaf3ff;
+    --yellow: #ffbd16;
+    --yellow-light: #fff7d8;
+
+    --green: #19a66a;
+    --purple: #7657d9;
+    --orange: #ed8b20;
+    --red: #df4d55;
+    --pink: #d95693;
+
+    --text: #14243a;
+    --muted: #68788d;
+
+    --background: #f6f9fd;
+    --white: #ffffff;
+
+    --border: #e2eaf3;
+
+    --shadow:
+        0 8px 25px rgba(20, 55, 95, 0.08);
+
+    --radius: 14px;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        Arial,
+        "Noto Sans Devanagari",
+        "Segoe UI",
+        sans-serif;
+
+    color: var(--text);
+    background: var(--background);
+
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+
+    width: 100%;
+
+    min-height: 82px;
+
+    background: var(--white);
+
+    border-bottom:
+        1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 4%;
+
+    gap: 28px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+.logo-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--navy),
+            var(--blue)
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+.logo-text {
+
+    color: var(--navy);
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.logo-text span {
+
+    color: var(--yellow);
+}
+
+.logo-subtitle {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    margin-left: auto;
+}
+
+.navbar a {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #273b55;
+
+    padding:
+        30px 0;
+
+    border-bottom:
+        3px solid transparent;
+
+    transition: 0.2s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+
+    color: var(--navy);
+
+    border-bottom-color:
+        var(--yellow);
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+   ========================================================= */
+
+.header-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* SEARCH */
+
+.search-box {
+
+    height: 42px;
+
+    width: 260px;
+
+    border:
+        1px solid #d9e3ef;
+
+    border-radius: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 14px;
+
+    background: #fff;
+}
+
+.search-box span {
+
+    font-size: 21px;
+
+    color: var(--muted);
+
+    margin-right: 7px;
+}
+
+.search-box input {
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    font-size: 13px;
+
+    color: var(--text);
+}
+
+.search-box input::placeholder {
+
+    color: #9aa8b8;
+}
+
+
+/* LOGIN */
+
+.login-btn {
+
+    padding:
+        11px 19px;
+
+    border:
+        1px solid var(--navy);
+
+    border-radius: 9px;
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    background: white;
+
+    transition: 0.2s;
+}
+
+.login-btn:hover {
+
+    background:
+        var(--navy);
+
+    color: white;
+}
+
+
+/* REGISTER */
+
+.register-btn {
+
+    padding:
+        12px 20px;
+
+    border-radius: 9px;
+
+    color: #16243b;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    background:
+        var(--yellow);
+
+    transition: 0.2s;
+}
+
+.register-btn:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 5px 15px
+        rgba(255, 189, 22, 0.25);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+
+    height: 365px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #052a5b 0%,
+            #07356d 45%,
+            #0b4b88 100%
+        );
+}
+
+
+/*
+   Temporary Rajasthan-style visual background.
+   Later we can replace this with your original
+   uploaded Rajasthan photo.
+*/
+
+.hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(4, 30, 64, 0.98),
+            rgba(4, 45, 88, 0.72),
+            rgba(7, 72, 128, 0.35)
+        );
+
+    z-index: 1;
+}
+
+
+/* Decorative fort-like silhouette */
+
+.hero::after {
+
+    content: "RAJASTHAN";
+
+    position: absolute;
+
+    right: 4%;
+
+    bottom: -35px;
+
+    font-size: 90px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.06);
+
+    z-index: 1;
+}
+
+
+/* HERO CONTENT */
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 3;
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding:
+        60px 5%;
+}
+
+.hero-small {
+
+    display: inline-block;
+
+    color: #e8f2ff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+
+    color: white;
+
+    font-size: 43px;
+
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    margin-bottom: 15px;
+
+    letter-spacing: -1px;
+}
+
+.hero h1 span {
+
+    color:
+        var(--yellow);
+}
+
+.hero p {
+
+    color:
+        #e7f0fc;
+
+    font-size: 18px;
+
+    margin-bottom: 28px;
+}
+
+
+/* HERO BUTTON */
+
+.hero-btn {
+
+    display: inline-block;
+
+    padding:
+        13px 25px;
+
+    background:
+        var(--yellow);
+
+    color:
+        #182941;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    transition: 0.2s;
+}
+
+.hero-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,0.15);
+}
+
+
+/* RAJASTHAN BADGE */
+
+.rajasthan-badge {
+
+    position: absolute;
+
+    right: 8%;
+
+    top: 55px;
+
+    z-index: 4;
+
+    width: 185px;
+
+    height: 185px;
+
+    border:
+        3px solid
+        rgba(255,255,255,0.75);
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: white;
+
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    font-weight: 800;
+
+    background:
+        rgba(0, 0, 0, 0.12);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,0.15);
+}
+
+
+/* =========================================================
+   QUICK FEATURES
+   ========================================================= */
+
+.quick-section {
+
+    max-width: 1410px;
+
+    margin:
+        25px auto 35px;
+
+    padding:
+        0 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 16px;
+}
+
+.quick-card {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius);
+
+    padding:
+        20px 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    box-shadow:
+        0 4px 16px
+        rgba(25, 60, 100, 0.05);
+
+    transition: 0.2s;
+}
+
+.quick-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.quick-icon {
+
+    min-width: 47px;
+
+    height: 47px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 19px;
+
+    font-weight: 800;
+}
+
+.quick-icon.blue {
+    background: var(--blue);
+}
+
+.quick-icon.purple {
+    background: var(--purple);
+}
+
+.quick-icon.green {
+    background: var(--green);
+}
+
+.quick-icon.orange {
+    background: var(--orange);
+}
+
+.quick-icon.red {
+    background: var(--red);
+}
+
+.quick-card h3 {
+
+    font-size: 15px;
+
+    margin-bottom: 3px;
+}
+
+.quick-card p {
+
+    color:
+        var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   COMMON CONTENT SECTION
+   ========================================================= */
+
+.content-section,
+.notes-section {
+
+    max-width: 1410px;
+
+    margin:
+        0 auto;
+
+    padding:
+        0 20px 35px;
+}
+
+
+/* SECTION HEADING */
+
+.section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin:
+        15px 0 20px;
+}
+
+.section-heading h2 {
+
+    font-size: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.section-heading h2 span {
+
+    width: 6px;
+
+    height: 26px;
+
+    border-radius: 5px;
+
+    background:
+        var(--yellow);
+
+    display: inline-block;
+}
+
+.section-heading > a {
+
+    color:
+        var(--blue);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   EXAM GRID
+   ========================================================= */
+
+.exam-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+
+/* EXAM CARD */
+
+.exam-card {
+
+    min-height: 245px;
+
+    padding:
+        24px 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius);
+
+    text-align: center;
+
+    background:
+        white;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 15px
+        rgba(20, 55, 95, 0.05);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.exam-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.exam-symbol {
+
+    width: 65px;
+
+    height: 65px;
+
+    margin:
+        0 auto 12px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 31px;
+
+    background:
+        rgba(23,105,213,0.08);
+}
+
+.exam-card h3 {
+
+    font-size: 18px;
+
+    margin-bottom: 4px;
+}
+
+.exam-card p {
+
+    color:
+        var(--muted);
+
+    font-size: 13px;
+
+    min-height: 21px;
+}
+
+.exam-links {
+
+    color:
+        #66768b;
+
+    font-size: 10px;
+
+    margin:
+        15px 0;
+}
+
+
+/* CARD COLORS */
+
+.exam-yellow {
+    border-top: 4px solid var(--yellow);
+}
+
+.exam-blue {
+    border-top: 4px solid var(--blue);
+}
+
+.exam-green {
+    border-top: 4px solid var(--green);
+}
+
+.exam-purple {
+    border-top: 4px solid var(--purple);
+}
+
+.exam-orange {
+    border-top: 4px solid var(--orange);
+}
+
+.exam-lightblue {
+    border-top: 4px solid #4ca9df;
+}
+
+.exam-pink {
+    border-top: 4px solid var(--pink);
+}
+
+.exam-navy {
+    border-top: 4px solid var(--navy);
+}
+
+
+/* EXPLORE */
+
+.explore-btn {
+
+    display: inline-block;
+
+    padding:
+        9px 20px;
+
+    border-radius: 8px;
+
+    border:
+        1px solid
+        #cdd9e8;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color:
+        var(--navy);
+
+    background: white;
+
+    transition: 0.2s;
+}
+
+.explore-btn:hover {
+
+    background:
+        var(--navy);
+
+    color: white;
+
+    border-color:
+        var(--navy);
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+.notes-section {
+
+    margin-top:
+        5px;
+}
+
+.notes-list {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 14px;
+}
+
+.note-item {
+
+    background:
+        white;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    padding:
+        17px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(20, 55, 95, 0.04);
+
+    transition: 0.2s;
+}
+
+.note-item:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.pdf-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 10px;
+
+    background:
+        #fff0f0;
+
+    color:
+        #e04848;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 11px;
+
+    font-weight: 900;
+}
+
+.note-info {
+
+    flex: 1;
+}
+
+.note-info h3 {
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.note-info p {
+
+    color:
+        var(--muted);
+
+    font-size: 11px;
+}
+
+.arrow {
+
+    color:
+        var(--blue);
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats-section {
+
+    max-width: 1410px;
+
+    margin:
+        0 auto 40px;
+
+    padding:
+        0 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.stat-box {
+
+    background:
+        var(--navy);
+
+    color: white;
+
+    border-radius:
+        13px;
+
+    text-align: center;
+
+    padding:
+        24px 15px;
+}
+
+.stat-box strong {
+
+    color:
+        var(--yellow);
+
+    font-size: 28px;
+
+    display: block;
+
+    margin-bottom: 4px;
+}
+
+.stat-box p {
+
+    font-size: 13px;
+
+    color:
+        #d9e7f8;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+
+    background:
+        var(--navy);
+
+    color:
+        white;
+
+    padding:
+        42px 5% 20px;
+}
+
+.footer-content {
+
+    max-width: 1410px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr;
+
+    gap: 35px;
+}
+
+.footer-logo {
+
+    font-size: 28px;
+
+    font-weight: 800;
+}
+
+.footer-logo span {
+
+    color:
+        var(--yellow);
+}
+
+.footer-content p {
+
+    color:
+        #c6d6e9;
+
+    font-size: 13px;
+
+    margin-top: 8px;
+}
+
+.footer-content h3 {
+
+    margin-bottom: 13px;
+
+    font-size: 16px;
+}
+
+.footer-content a {
+
+    display: block;
+
+    color:
+        #c6d6e9;
+
+    font-size: 13px;
+
+    margin:
+        8px 0;
+
+    transition: 0.2s;
+}
+
+.footer-content a:hover {
+
+    color:
+        var(--yellow);
+}
+
+.copyright {
+
+    max-width: 1410px;
+
+    margin:
+        30px auto 0;
+
+    padding-top:
+        18px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    color:
+        #9fb2c8;
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+    .header {
+
+        gap: 15px;
+    }
+
+    .navbar {
+
+        gap: 15px;
+    }
+
+    .navbar a {
+
+        font-size: 13px;
+    }
+
+    .search-box {
+
+        width: 200px;
+    }
+
+    .quick-section {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .exam-layout {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+
+        position: relative;
+
+        flex-wrap: wrap;
+
+        padding:
+            12px 16px;
+
+        gap: 10px;
+    }
+
+    .navbar {
+
+        width: 100%;
+
+        order: 3;
+
+        overflow-x: auto;
+
+        margin: 0;
+
+        gap: 20px;
+
+        padding-bottom: 4px;
+    }
+
+    .navbar a {
+
+        white-space: nowrap;
+
+        padding:
+            7px 0;
+
+        border-bottom-width: 2px;
+    }
+
+    .header-right {
+
+        margin-left: auto;
+    }
+
+    .search-box {
+
+        display: none;
+    }
+
+    .hero {
+
+        height: 350px;
+    }
+
+    .hero-content {
+
+        padding:
+            50px 24px;
+    }
+
+    .hero h1 {
+
+        font-size: 34px;
+    }
+
+    .rajasthan-badge {
+
+        width: 115px;
+
+        height: 115px;
+
+        right: 20px;
+
+        top: auto;
+
+        bottom: 25px;
+
+        font-size: 13px;
+    }
+
+    .quick-section {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        padding:
+            0 12px;
+    }
+
+    .exam-layout {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .notes-list {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .stats-section {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        padding:
+            0 12px;
+    }
+
+    .footer-content {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+    .logo-text {
+
+        font-size: 22px;
+    }
+
+    .logo-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 19px;
+    }
+
+    .logo-subtitle {
+
+        font-size: 8px;
+    }
+
+    .login-btn {
+
+        padding:
+            8px 12px;
+
+        font-size: 12px;
+    }
+
+    .register-btn {
+
+        padding:
+            9px 12px;
+
+        font-size: 12px;
+    }
+
+    .hero {
+
+        height: 390px;
+    }
+
+    .hero-content {
+
+        padding:
+            45px 20px;
+    }
+
+    .hero-small {
+
+        font-size: 11px;
+    }
+
+    .hero h1 {
+
+        font-size: 29px;
+    }
+
+    .hero p {
+
+        font-size: 14px;
+    }
+
+    .rajasthan-badge {
+
+        display: none;
+    }
+
+    .quick-section {
+
+        grid-template-columns:
+            1fr;
+
+        margin-top:
+            18px;
+    }
+
+    .quick-card {
+
+        padding:
+            15px;
+    }
+
+    .exam-layout {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .content-section,
+    .notes-section {
+
+        padding:
+            0 12px 25px;
+    }
+
+    .section-heading h2 {
+
+        font-size: 21px;
+    }
+
+    .stats-section {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .stat-box {
+
+        padding:
+            20px 10px;
+    }
+
+    .stat-box strong {
+
+        font-size: 23px;
+    }
+
+    .footer-content {
+
+        grid-template-columns:
+            1fr;
+    }
+}

@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .dashboard-page {
+            background: #f5f8fc;
+            min-height: 100vh;
+        }
+
+        .dashboard-wrapper {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .welcome-box {
+            background: linear-gradient(
+                135deg,
+                #052a5b,
+                #0b4b88
+            );
+            color: white;
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-box h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .welcome-box p {
+            margin: 0;
+            opacity: .9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 25px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #052a5b;
+            margin-bottom: 15px;
+        }
+
+        .side-link {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .side-link:hover,
+        .side-link.active {
+            background: #fff4c2;
+            color: #052a5b;
+        }
+
+        .dashboard-content {
+            display: grid;
+            gap: 22px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            color: #052a5b;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .dashboard-card h2 {
+            margin-top: 0;
+            color: #052a5b;
+        }
+
+        .progress-box {
+            margin: 18px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5eaf1;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #f5c400;
+            transition: width .5s ease;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .quick-box {
+            padding: 20px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #052a5b;
+            font-weight: 700;
+        }
+
+        .quick-box:hover {
+            background: #fff4c2;
+        }
+
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .test-info strong {
+            display: block;
+            color: #052a5b;
+            margin-bottom: 4px;
+        }
+
+        .test-info span {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .test-btn {
+            display: inline-block;
+            background: #052a5b;
+            color: white;
+            padding: 8px 13px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .test-btn:hover {
+            background: #0b4b88;
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 25px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            color: #666;
+        }
+
+        .logout-btn {
+            color: #d62828;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        .loading-text {
+            color: #666;
+        }
+
+        .error-text {
+            color: #b42318;
+        }
+
+        @media(max-width: 800px) {
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .welcome-box h1 {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-page">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="container nav-container">
+
+            <a
+                href="index.html"
+                class="logo-box">
+
+                <div class="logo-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <div class="logo-text">
+                        Raj<span>Edge</span>
+                    </div>
+
+                    <div class="logo-subtitle">
+                        Rajasthan Education Hub
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="index.html"
+                class="btn-login">
+
+                Home
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- DASHBOARD -->
+
+    <main class="dashboard-wrapper">
+
+
+        <div class="welcome-box">
+
+            <h1 id="welcomeTitle">
+                Welcome Back, Student! 👋
+            </h1>
+
+            <p>
+                अपनी तैयारी जारी रखें और अपने लक्ष्य के करीब पहुँचें।
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard-grid">
+
+
+            <!-- SIDEBAR -->
+
+            <aside class="sidebar">
+
+                <div class="sidebar-title">
+                    Student Panel
+                </div>
+
+
+                <a
+                    href="student-dashboard.html"
+                    class="side-link active">
+
+                    🏠 Dashboard
+
+                </a>
+
+
+                <a
+                    href="student-courses.html"
+                    class="side-link">
+
+                    📚 My Courses
+
+                </a>
+
+
+                <a
+                    href="student-tests.html"
+                    class="side-link">
+
+                    📝 My Tests
+
+                </a>
+
+
+                <a
+                    href="student-notes.html"
+                    class="side-link">
+
+                    📄 My Notes
+
+                </a>
+
+
+                <a
+                    href="student-results.html"
+                    class="side-link">
+
+                    📊 My Results
+
+                </a>
+
+
+                <a
+                    href="student-profile.html"
+                    class="side-link">
+
+                    👤 My Profile
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="side-link logout-btn"
+                    id="logoutBtn">
+
+                    🚪 Logout
+
+                </button>
+
+            </aside>
+
+
+
+            <!-- CONTENT -->
+
+            <section class="dashboard-content">
+
+
+                <!-- STATS -->
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <h3>
+                            My Courses
+                        </h3>
+
+                        <div
+                            class="stat-number"
+                            id="courseCount">
+
+                            ...
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <h3>
+                            Tests Attempted
+                        </h3>
+
+                        <div
+                            class="stat-number"
+                            id="attemptCount">
+
+                            ...
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <h3>
+                            Average Score
+                        </h3>
+
+                        <div
+                            class="stat-number"
+                            id="averageScore">
+
+                            ...
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PROGRESS -->
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        📈 Preparation Progress
+                    </h2>
+
+
+                    <div class="progress-box">
+
+                        <div class="progress-info">
+
+                            <span>
+                                Test Preparation
+                            </span>
+
+                            <span id="progressText">
+                                0%
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-bar">
+
+                            <div
+                                class="progress-fill"
+                                id="progressFill">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p id="progressMessage">
+
+                        आपकी preparation progress यहाँ automatically update होगी।
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- QUICK ACCESS -->
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        ⚡ Quick Access
+                    </h2>
+
+
+                    <div class="quick-grid">
+
+
+                        <a
+                            href="student-courses.html"
+                            class="quick-box">
+
+                            📚<br>
+                            My Courses
+
+                        </a>
+
+
+                        <a
+                            href="student-tests.html"
+                            class="quick-box">
+
+                            📝<br>
+                            Start Test
+
+                        </a>
+
+
+                        <a
+                            href="student-notes.html"
+                            class="quick-box">
+
+                            📄<br>
+                            Notes
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- UPCOMING TESTS -->
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        📝 Upcoming Tests
+                    </h2>
+
+
+                    <div id="upcomingTests">
+
+                        <div class="empty-box">
+
+                            <span class="loading-text">
+
+                                ⏳ Tests loading...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="student-tests.html"
+                        style="
+                        display:inline-block;
+                        margin-top:10px;
+                        background:#052a5b;
+                        color:white;
+                        padding:10px 18px;
+                        border-radius:8px;
+                        text-decoration:none;
+                        font-weight:600;">
+
+                        View All Tests →
+
+                    </a>
+
+                </div>
+
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+// ==========================================
+// SUPABASE CONFIG
+// ==========================================
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+
+// ==========================================
+// HTML ESCAPE
+// ==========================================
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+// ==========================================
+// GET CURRENT STUDENT
+// ==========================================
+
+async function getCurrentStudent() {
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.auth.getUser();
+
+
+    if(
+        error ||
+        !data ||
+        !data.user
+    ) {
+
+        window.location.href =
+            "student-login.html";
+
+        return null;
+
+    }
+
+
+    return data.user;
+
+}
+
+
+
+// ==========================================
+// LOAD STUDENT PROFILE
+// ==========================================
+
+async function loadStudentProfile(
+    user
+) {
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("student_profiles")
+        .select(`
+            full_name,
+            mobile,
+            email,
+            login_email
+        `)
+        .eq(
+            "id",
+            user.id
+        )
+        .maybeSingle();
+
+
+    if(error){
+
+        console.error(
+            "Profile Error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const studentName =
+        data?.full_name ||
+        "Student";
+
+
+    document.getElementById(
+        "welcomeTitle"
+    ).textContent =
+        `Welcome Back, ${studentName}! 👋`;
+
+}
+
+
+
+// ==========================================
+// LOAD PAID COURSES
+// ==========================================
+
+async function loadCourses(user) {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("enrollments")
+        .select(`
+            course_id,
+            purchase_type,
+            payment_status
+        `)
+        .eq(
+            "student_id",
+            user.id
+        )
+        .eq(
+            "payment_status",
+            "paid"
+        );
+
+
+    if(error){
+
+        console.error(
+            "Enrollment Error:",
+            error
+        );
+
+
+        document.getElementById(
+            "courseCount"
+        ).textContent =
+            "0";
+
+
+        return;
+
+    }
+
+
+
+    /*
+       Notes + Test Series दोनों purchase
+       होने पर भी एक course को एक ही बार count करेंगे।
+    */
+
+    const uniqueCourses =
+        new Set(
+            (data || [])
+                .map(
+                    item =>
+                        item.course_id
+                )
+                .filter(Boolean)
+        );
+
+
+    document.getElementById(
+        "courseCount"
+    ).textContent =
+        uniqueCourses.size;
+
+}
+
+
+
+// ==========================================
+// LOAD TEST ATTEMPTS
+// ==========================================
+
+async function loadAttempts(user) {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("test_attempts")
+        .select(`
+            id,
+            test_id,
+            score,
+            total_marks,
+            percentage,
+            submitted_at,
+            started_at
+        `)
+        .eq(
+            "student_id",
+            user.id
+        )
+        .order(
+            "submitted_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Attempt Error:",
+            error
+        );
+
+
+        document.getElementById(
+            "attemptCount"
+        ).textContent =
+            "0";
+
+
+        document.getElementById(
+            "averageScore"
+        ).textContent =
+            "0%";
+
+
+        updateProgress(0);
+
+        return;
+
+    }
+
+
+    const attempts =
+        data || [];
+
+
+    const count =
+        attempts.length;
+
+
+    document.getElementById(
+        "attemptCount"
+    ).textContent =
+        count;
+
+
+
+    if(count === 0){
+
+        document.getElementById(
+            "averageScore"
+        ).textContent =
+            "0%";
+
+
+        updateProgress(0);
+
+        return;
+
+    }
+
+
+
+    const totalPercentage =
+        attempts.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                (
+                    Number(
+                        item.percentage
+                    ) || 0
+                ),
+            0
+        );
+
+
+
+    const average =
+        totalPercentage /
+        count;
+
+
+
+    document.getElementById(
+        "averageScore"
+    ).textContent =
+        average.toFixed(1) +
+        "%";
+
+
+    updateProgress(
+        average
+    );
+
+}
+
+
+
+// ==========================================
+// PREPARATION PROGRESS
+// ==========================================
+
+function updateProgress(value) {
+
+
+    let progress =
+        Number(value || 0);
+
+
+    progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                progress
+            )
+        );
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        progress +
+        "%";
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        Math.round(
+            progress
+        ) +
+        "%";
+
+
+    const message =
+        document.getElementById(
+            "progressMessage"
+        );
+
+
+
+    if(progress === 0){
+
+        message.textContent =
+            "अभी कोई test attempt नहीं किया गया है। अपनी तैयारी शुरू करें।";
+
+    }
+
+    else if(progress < 40){
+
+        message.textContent =
+            "अच्छी शुरुआत है। Regular tests देकर अपनी तैयारी मजबूत करें।";
+
+    }
+
+    else if(progress < 70){
+
+        message.textContent =
+            "आपकी तैयारी आगे बढ़ रही है। लगातार practice जारी रखें।";
+
+    }
+
+    else{
+
+        message.textContent =
+            "बहुत अच्छा! अपनी preparation और मजबूत करने के लिए tests जारी रखें।";
+
+    }
+
+}
+
+
+
+// ==========================================
+// LOAD UPCOMING TESTS
+// ==========================================
+
+async function loadUpcomingTests(user) {
+
+
+    const container =
+        document.getElementById(
+            "upcomingTests"
+        );
+
+
+    // ======================================
+    // 1. GET PAID TEST-SERIES COURSES
+    // ======================================
+
+    const {
+        data:enrollments,
+        error:enrollmentError
+    } =
+    await supabaseClient
+        .from("enrollments")
+        .select(`
+            course_id,
+            purchase_type,
+            payment_status
+        `)
+        .eq(
+            "student_id",
+            user.id
+        )
+        .eq(
+            "purchase_type",
+            "test_series"
+        )
+        .eq(
+            "payment_status",
+            "paid"
+        );
+
+
+    if(enrollmentError){
+
+        console.error(
+            "Test Series Enrollment Error:",
+            enrollmentError
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                ❌ Test Series information load नहीं हो सकी।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    const courseIds =
+        [
+            ...new Set(
+                (enrollments || [])
+                    .map(
+                        item =>
+                            item.course_id
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+
+    // ======================================
+    // 2. NO TEST SERIES PURCHASE
+    // ======================================
+
+    if(courseIds.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                🔒
+
+                <br><br>
+
+                Upcoming tests देखने के लिए
+                पहले Test Series purchase करें।
+
+                <br><br>
+
+                <a
+                    href="student-courses.html"
+                    style="
+                    display:inline-block;
+                    margin-top:8px;
+                    background:#052a5b;
+                    color:white;
+                    padding:9px 15px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-weight:600;">
+
+                    View Courses →
+
+                </a>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    // ======================================
+    // 3. LOAD COURSE NAMES
+    // ======================================
+
+    const {
+        data:courses,
+        error:courseError
+    } =
+    await supabaseClient
+        .from("courses")
+        .select(`
+            id,
+            name
+        `)
+        .in(
+            "id",
+            courseIds
+        );
+
+
+    if(courseError){
+
+        console.error(
+            "Course Error:",
+            courseError
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                ❌ Course information load नहीं हो सकी।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    const courseNames =
+        (courses || [])
+            .map(
+                course =>
+                    String(
+                        course.name || ""
+                    )
+                    .trim()
+            )
+            .filter(Boolean);
+
+
+
+    if(courseNames.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                अभी कोई purchased Test Series course नहीं मिला।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    // ======================================
+    // 4. LOAD TESTS
+    // ======================================
+
+    const {
+        data:tests,
+        error:testError
+    } =
+    await supabaseClient
+        .from("tests")
+        .select(`
+            id,
+            exam,
+            name,
+            question_count,
+            time_limit,
+            price,
+            status,
+            created_at
+        `)
+        .in(
+            "exam",
+            courseNames
+        )
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        )
+        .limit(20);
+
+
+    if(testError){
+
+        console.error(
+            "Test Error:",
+            testError
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                ❌ Tests load नहीं हो पाए।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    // ======================================
+    // 5. CASE-INSENSITIVE ACTIVE FILTER
+    // ======================================
+
+    const activeTests =
+        (tests || [])
+            .filter(
+                test =>
+                    String(
+                        test.status || ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    === "active"
+            )
+            .slice(
+                0,
+                3
+            );
+
+
+
+    // ======================================
+    // 6. NO ACTIVE TEST
+    // ======================================
+
+    if(
+        activeTests.length === 0
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                अभी कोई active test available नहीं है।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    // ======================================
+    // 7. DISPLAY TESTS
+    // ======================================
+
+    container.innerHTML =
+        activeTests
+            .map(
+                test => `
+
+                    <div class="test-item">
+
+                        <div class="test-info">
+
+                            <strong>
+
+                                ${escapeHtml(
+                                    test.name ||
+                                    "Test"
+                                )}
+
+                            </strong>
+
+                            <span>
+
+                                ${escapeHtml(
+                                    test.exam ||
+                                    "Exam"
+                                )}
+
+                                •
+                                ${Number(
+                                    test.question_count ||
+                                    0
+                                )}
+                                Questions
+
+                                •
+                                ${Number(
+                                    test.time_limit ||
+                                    0
+                                )}
+                                Minutes
+
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="start-test.html?test_id=${encodeURIComponent(
+                                test.id
+                            )}"
+                            class="test-btn">
+
+                            Start Test
+
+                        </a>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+}
+
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logoutStudent() {
+
+
+    const {
+        error
+    } =
+    await supabaseClient.auth.signOut();
+
+
+    if(error){
+
+        console.error(
+            "Logout Error:",
+            error
+        );
+
+
+        alert(
+            "Logout नहीं हो पाया। Please try again."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "student-login.html";
+
+}
+
+
+
+// ==========================================
+// MAIN DASHBOARD
+// ==========================================
+
+async function loadDashboard() {
+
+
+    const user =
+        await getCurrentStudent();
+
+
+    if(!user){
+
+        return;
+
+    }
+
+
+
+    await loadStudentProfile(
+        user
+    );
+
+
+
+    await Promise.all([
+
+        loadCourses(
+            user
+        ),
+
+        loadAttempts(
+            user
+        ),
+
+        loadUpcomingTests(
+            user
+        )
+
+    ]);
+
+}
+
+
+
+// ==========================================
+// LOGOUT BUTTON
+// ==========================================
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        logoutStudent
+    );
+
+
+
+// ==========================================
+// START
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadDashboard();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

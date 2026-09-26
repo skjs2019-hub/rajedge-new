@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Payments - RajEdge</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+    color:#222;
+}
+
+.header{
+    background:#111827;
+    color:white;
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.header h1{
+    margin:0;
+    font-size:22px;
+}
+
+.header button{
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.container{
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.top-bar h2{
+    margin:0;
+}
+
+.refresh-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.stat h3{
+    margin:0 0 8px;
+    font-size:14px;
+    color:#666;
+}
+
+.stat p{
+    margin:0;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.pending-color{
+    color:#d97706;
+}
+
+.approved-color{
+    color:#16a34a;
+}
+
+.rejected-color{
+    color:#dc2626;
+}
+
+.table-box{
+    background:white;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    overflow:hidden;
+}
+
+.table-header{
+    padding:18px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.table-header h3{
+    margin:0;
+}
+
+.filter{
+    padding:9px 12px;
+    border:1px solid #ddd;
+    border-radius:7px;
+    background:white;
+}
+
+.table-scroll{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+}
+
+th,td{
+    padding:13px 12px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+    vertical-align:top;
+}
+
+th{
+    background:#f8fafc;
+    font-size:13px;
+}
+
+td{
+    font-size:14px;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.status-pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.purchase{
+    background:#eef2ff;
+    color:#3730a3;
+    padding:5px 8px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.action-btn{
+    border:none;
+    padding:8px 12px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+    margin:2px;
+}
+
+.approve-btn{
+    background:#16a34a;
+    color:white;
+}
+
+.reject-btn{
+    background:#dc2626;
+    color:white;
+}
+
+.action-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#777;
+}
+
+.loading{
+    text-align:center;
+    padding:40px;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+    display:none;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:450px;
+    border-radius:12px;
+    padding:22px;
+}
+
+.modal-box h3{
+    margin-top:0;
+}
+
+.modal-box textarea{
+    width:100%;
+    min-height:100px;
+    resize:vertical;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin:10px 0;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+.cancel-btn{
+    background:#e5e7eb;
+    border:none;
+    padding:10px 15px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.confirm-btn{
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+@media(max-width:800px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:500px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>💳 RajEdge Admin Payments</h1>
+
+    <button onclick="logoutAdmin()">
+        Logout
+    </button>
+
+</div>
+
+
+<div class="container">
+
+    <div id="errorBox" class="error"></div>
+
+
+    <div class="top-bar">
+
+        <h2>Payment Requests</h2>
+
+        <button class="refresh-btn" onclick="loadPayments()">
+            🔄 Refresh
+        </button>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Total Requests</h3>
+            <p id="totalRequests">0</p>
+        </div>
+
+        <div class="stat">
+            <h3>Pending</h3>
+            <p id="pendingRequests" class="pending-color">0</p>
+        </div>
+
+        <div class="stat">
+            <h3>Approved</h3>
+            <p id="approvedRequests" class="approved-color">0</p>
+        </div>
+
+        <div class="stat">
+            <h3>Rejected</h3>
+            <p id="rejectedRequests" class="rejected-color">0</p>
+        </div>
+
+    </div>
+
+
+    <div class="table-box">
+
+        <div class="table-header">
+
+            <h3>All Payment Requests</h3>
+
+            <select id="statusFilter"
+                    class="filter"
+                    onchange="renderPayments()">
+
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Student</th>
+
+                        <th>Course</th>
+
+                        <th>Purchase</th>
+
+                        <th>Amount</th>
+
+                        <th>UTR</th>
+
+                        <th>Status</th>
+
+                        <th>Admin Note</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="paymentTableBody">
+
+                    <tr>
+                        <td colspan="9" class="loading">
+                            Loading payments...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Reject Modal -->
+
+<div id="rejectModal" class="modal">
+
+    <div class="modal-box">
+
+        <h3>Reject Payment Request</h3>
+
+        <p>
+            Reject karne ka reason likho:
+        </p>
+
+        <textarea
+            id="rejectReason"
+            placeholder="Example: UTR verify nahi hua..."
+        ></textarea>
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel-btn"
+                onclick="closeRejectModal()">
+                Cancel
+            </button>
+
+            <button
+                class="confirm-btn"
+                onclick="confirmReject()">
+                Reject Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+let allPayments = [];
+let rejectPaymentId = null;
+
+
+/* =========================
+   ERROR
+========================= */
+
+function showError(message){
+
+    const box =
+        document.getElementById("errorBox");
+
+    box.textContent = message;
+    box.style.display = "block";
+}
+
+
+function hideError(){
+
+    document.getElementById("errorBox")
+        .style.display = "none";
+}
+
+
+/* =========================
+   ADMIN CHECK
+========================= */
+
+async function checkAdminLogin(){
+
+    try{
+
+        hideError();
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.getUser();
+
+
+        if(error || !data.user){
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return;
+        }
+
+
+        const userId =
+            data.user.id;
+
+
+        const {
+            data: adminUser,
+            error: adminError
+        } =
+        await supabaseClient
+            .from("admin_users")
+            .select("id")
+            .eq("id", userId)
+            .maybeSingle();
+
+
+        if(adminError){
+
+            console.error(
+                "Admin verification error:",
+                adminError
+            );
+
+            showError(
+                "Admin verification failed: " +
+                adminError.message
+            );
+
+            return;
+        }
+
+
+        if(!adminUser){
+
+            alert(
+                "Access denied. Admin account required."
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return;
+        }
+
+
+        await loadPayments();
+
+    }
+    catch(error){
+
+        console.error(
+            "Admin check error:",
+            error
+        );
+
+        showError(
+            "Admin check failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOAD PAYMENTS
+========================= */
+
+async function loadPayments(){
+
+    const tbody =
+        document.getElementById(
+            "paymentTableBody"
+        );
+
+
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="9" class="loading">
+                Loading payments...
+            </td>
+        </tr>
+    `;
+
+
+    hideError();
+
+
+    try{
+
+        /*
+         payment_requests:
+         id
+         student_id
+         course_id
+         purchase_type
+         amount
+         utr_number
+         payment_status
+         admin_note
+         created_at
+         */
+
+
+        const {
+            data: payments,
+            error
+        } =
+        await supabaseClient
+            .from("payment_requests")
+            .select(`
+                id,
+                student_id,
+                course_id,
+                purchase_type,
+                amount,
+                utr_number,
+                payment_status,
+                admin_note,
+                created_at
+            `)
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        allPayments =
+            payments || [];
+
+
+        /*
+         Load students
+        */
+
+        const studentIds =
+            [
+                ...new Set(
+                    allPayments
+                        .map(p => p.student_id)
+                        .filter(Boolean)
+                )
+            ];
+
+
+        /*
+         Load courses
+        */
+
+        const courseIds =
+            [
+                ...new Set(
+                    allPayments
+                        .map(p => p.course_id)
+                        .filter(Boolean)
+                )
+            ];
+
+
+        let students = [];
+        let courses = [];
+
+
+        if(studentIds.length){
+
+            const result =
+                await supabaseClient
+                    .from("student_profiles")
+                    .select(`
+                        id,
+                        full_name,
+                        mobile,
+                        email,
+                        login_email
+                    `)
+                    .in(
+                        "id",
+                        studentIds
+                    );
+
+
+            if(result.error){
+
+                console.error(
+                    "Student loading error:",
+                    result.error
+                );
+
+            }
+            else{
+
+                students =
+                    result.data || [];
+
+            }
+
+        }
+
+
+        if(courseIds.length){
+
+            const result =
+                await supabaseClient
+                    .from("courses")
+                    .select(`
+                        id,
+                        name
+                    `)
+                    .in(
+                        "id",
+                        courseIds
+                    );
+
+
+            if(result.error){
+
+                console.error(
+                    "Course loading error:",
+                    result.error
+                );
+
+            }
+            else{
+
+                courses =
+                    result.data || [];
+
+            }
+
+        }
+
+
+        const studentMap = {};
+
+        students.forEach(student => {
+
+            studentMap[student.id] =
+                student;
+
+        });
+
+
+        const courseMap = {};
+
+        courses.forEach(course => {
+
+            courseMap[course.id] =
+                course;
+
+        });
+
+
+        allPayments =
+            allPayments.map(payment => ({
+
+                ...payment,
+
+                student:
+                    studentMap[payment.student_id]
+                    || null,
+
+                course:
+                    courseMap[payment.course_id]
+                    || null
+
+            }));
+
+
+        updateStats();
+
+        renderPayments();
+
+    }
+    catch(error){
+
+        console.error(
+            "Payment loading error:",
+            error
+        );
+
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty">
+                    Payment requests load nahi ho paayi.
+                </td>
+            </tr>
+        `;
+
+
+        showError(
+            "Payment loading failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+    const total =
+        allPayments.length;
+
+
+    const pending =
+        allPayments.filter(
+            p =>
+                String(
+                    p.payment_status || ""
+                ).toLowerCase().trim()
+                === "pending"
+        ).length;
+
+
+    const approved =
+        allPayments.filter(
+            p =>
+                ["approved","paid"]
+                .includes(
+                    String(
+                        p.payment_status || ""
+                    ).toLowerCase().trim()
+                )
+        ).length;
+
+
+    const rejected =
+        allPayments.filter(
+            p =>
+                String(
+                    p.payment_status || ""
+                ).toLowerCase().trim()
+                === "rejected"
+        ).length;
+
+
+    document.getElementById(
+        "totalRequests"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "pendingRequests"
+    ).textContent = pending;
+
+
+    document.getElementById(
+        "approvedRequests"
+    ).textContent = approved;
+
+
+    document.getElementById(
+        "rejectedRequests"
+    ).textContent = rejected;
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderPayments(){
+
+    const tbody =
+        document.getElementById(
+            "paymentTableBody"
+        );
+
+
+    const filter =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    let payments =
+        [...allPayments];
+
+
+    if(filter !== "all"){
+
+        payments =
+            payments.filter(
+                payment =>
+                    String(
+                        payment.payment_status || ""
+                    ).toLowerCase().trim()
+                    === filter
+            );
+
+    }
+
+
+    if(!payments.length){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty">
+                    No payment requests found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    tbody.innerHTML =
+        payments.map(
+            payment => createPaymentRow(payment)
+        ).join("");
+
+}
+
+
+/* =========================
+   PAYMENT ROW
+========================= */
+
+function createPaymentRow(payment){
+
+    const date =
+        payment.created_at
+            ? new Date(
+                payment.created_at
+              ).toLocaleString(
+                "en-IN"
+              )
+            : "-";
+
+
+    const student =
+        payment.student;
+
+
+    const course =
+        payment.course;
+
+
+    const studentName =
+        student?.full_name
+        || "Unknown Student";
+
+
+    const mobile =
+        student?.mobile
+        || "-";
+
+
+    const email =
+        student?.email
+        || student?.login_email
+        || "-";
+
+
+    const courseName =
+        course?.name
+        || "Unknown Course";
+
+
+    const purchaseType =
+        String(
+            payment.purchase_type || ""
+        ).toLowerCase();
+
+
+    let purchaseText =
+        payment.purchase_type
+        || "-";
+
+
+    if(purchaseType === "notes"){
+
+        purchaseText =
+            "📚 Notes";
+
+    }
+    else if(
+        purchaseType === "test_series"
+        ||
+        purchaseType === "test-series"
+    ){
+
+        purchaseText =
+            "📝 Test Series";
+
+    }
+
+
+    const status =
+        String(
+            payment.payment_status || "pending"
+        ).toLowerCase().trim();
+
+
+    let statusClass =
+        "status-pending";
+
+
+    let statusText =
+        "Pending";
+
+
+    if(
+        status === "approved"
+        ||
+        status === "paid"
+    ){
+
+        statusClass =
+            "status-approved";
+
+        statusText =
+            "Approved";
+
+    }
+    else if(
+        status === "rejected"
+    ){
+
+        statusClass =
+            "status-rejected";
+
+        statusText =
+            "Rejected";
+
+    }
+
+
+    const amount =
+        Number(
+            payment.amount || 0
+        );
+
+
+    let actions = "-";
+
+
+    if(status === "pending"){
+
+        actions = `
+
+            <button
+                class="action-btn approve-btn"
+                onclick="approvePayment('${payment.id}')">
+                ✓ Approve
+            </button>
+
+            <button
+                class="action-btn reject-btn"
+                onclick="openRejectModal('${payment.id}')">
+                ✕ Reject
+            </button>
+
+        `;
+
+    }
+
+
+    return `
+
+        <tr>
+
+            <td>
+                ${escapeHtml(date)}
+            </td>
+
+
+            <td>
+
+                <strong>
+                    ${escapeHtml(studentName)}
+                </strong>
+
+                <br>
+
+                <small>
+                    📱 ${escapeHtml(mobile)}
+                </small>
+
+                <br>
+
+                <small>
+                    ✉️ ${escapeHtml(email)}
+                </small>
+
+            </td>
+
+
+            <td>
+                <strong>
+                    ${escapeHtml(courseName)}
+                </strong>
+            </td>
+
+
+            <td>
+
+                <span class="purchase">
+                    ${escapeHtml(purchaseText)}
+                </span>
+
+            </td>
+
+
+            <td>
+                <strong>
+                    ₹${amount.toLocaleString("en-IN")}
+                </strong>
+            </td>
+
+
+            <td>
+
+                <strong>
+                    ${escapeHtml(
+                        payment.utr_number || "-"
+                    )}
+                </strong>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    status
+                    ${statusClass}
+                ">
+
+                    ${statusText}
+
+                </span>
+
+            </td>
+
+
+            <td>
+                ${escapeHtml(
+                    payment.admin_note || "-"
+                )}
+            </td>
+
+
+            <td>
+                ${actions}
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+/* =========================
+   APPROVE PAYMENT
+========================= */
+
+async function approvePayment(paymentId){
+
+    const payment =
+        allPayments.find(
+            p => String(p.id) === String(paymentId)
+        );
+
+
+    if(!payment){
+
+        alert("Payment request not found.");
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Is payment ko APPROVE karna hai?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+         Step 1:
+         payment request ko approved karo
+        */
+
+        const {
+            error:paymentError
+        } =
+        await supabaseClient
+            .from("payment_requests")
+            .update({
+
+                payment_status:
+                    "approved",
+
+                verified_at:
+                    new Date().toISOString(),
+
+                admin_note:
+                    "Payment approved by admin."
+
+            })
+            .eq(
+                "id",
+                payment.id
+            );
+
+
+        if(paymentError){
+
+            throw paymentError;
+
+        }
+
+
+        /*
+         Step 2:
+         Check existing enrollment
+        */
+
+        const {
+            data:existingEnrollment,
+            error:existingError
+        } =
+        await supabaseClient
+            .from("enrollments")
+            .select("id")
+            .eq(
+                "student_id",
+                payment.student_id
+            )
+            .eq(
+                "course_id",
+                payment.course_id
+            )
+            .eq(
+                "purchase_type",
+                payment.purchase_type
+            )
+            .maybeSingle();
+
+
+        if(existingError){
+
+            throw existingError;
+
+        }
+
+
+        /*
+         Step 3:
+         Existing enrollment ko paid karo
+         ya new enrollment banao
+        */
+
+        if(existingEnrollment){
+
+            const {
+                error:updateError
+            } =
+            await supabaseClient
+                .from("enrollments")
+                .update({
+
+                    amount:
+                        payment.amount,
+
+                    payment_status:
+                        "paid",
+
+                    payment_id:
+                        payment.utr_number
+
+                })
+                .eq(
+                    "id",
+                    existingEnrollment.id
+                );
+
+
+            if(updateError){
+
+                throw updateError;
+
+            }
+
+        }
+        else{
+
+            const {
+                error:insertError
+            } =
+            await supabaseClient
+                .from("enrollments")
+                .insert({
+
+                    student_id:
+                        payment.student_id,
+
+                    course_id:
+                        payment.course_id,
+
+                    purchase_type:
+                        payment.purchase_type,
+
+                    amount:
+                        payment.amount,
+
+                    payment_status:
+                        "paid",
+
+                    payment_id:
+                        payment.utr_number
+
+                });
+
+
+            if(insertError){
+
+                throw insertError;
+
+            }
+
+        }
+
+
+        alert(
+            "✅ Payment approved!\n\nStudent ko paid access mil gaya."
+        );
+
+
+        await loadPayments();
+
+    }
+    catch(error){
+
+        console.error(
+            "Approve payment error:",
+            error
+        );
+
+
+        alert(
+            "❌ Payment approve nahi hua.\n\n"
+            + error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   REJECT MODAL
+========================= */
+
+function openRejectModal(paymentId){
+
+    rejectPaymentId =
+        paymentId;
+
+
+    document.getElementById(
+        "rejectReason"
+    ).value = "";
+
+
+    document.getElementById(
+        "rejectModal"
+    ).style.display = "flex";
+
+}
+
+
+function closeRejectModal(){
+
+    rejectPaymentId =
+        null;
+
+
+    document.getElementById(
+        "rejectModal"
+    ).style.display = "none";
+
+}
+
+
+/* =========================
+   CONFIRM REJECT
+========================= */
+
+async function confirmReject(){
+
+    if(!rejectPaymentId){
+
+        return;
+
+    }
+
+
+    const reason =
+        document.getElementById(
+            "rejectReason"
+        ).value.trim();
+
+
+    if(!reason){
+
+        alert(
+            "Reject reason likhna zaroori hai."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            error
+        } =
+        await supabaseClient
+            .from("payment_requests")
+            .update({
+
+                payment_status:
+                    "rejected",
+
+                admin_note:
+                    reason
+
+            })
+            .eq(
+                "id",
+                rejectPaymentId
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        closeRejectModal();
+
+
+        alert(
+            "❌ Payment request rejected."
+        );
+
+
+        await loadPayments();
+
+    }
+    catch(error){
+
+        console.error(
+            "Reject payment error:",
+            error
+        );
+
+
+        alert(
+            "Payment reject nahi hua.\n\n"
+            + error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value){
+
+    if(value === null || value === undefined){
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logoutAdmin(){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.replace(
+        "admin-login.html"
+    );
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+window.addEventListener(
+    "load",
+    checkAdminLogin
+);
+
+</script>
+
+</body>
+</html>

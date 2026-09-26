@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | RajEdge</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+.admin-dashboard{
+    min-height:100vh;
+    background:#f4f7fb;
+}
+
+.admin-header{
+    background:#052a5b;
+    color:white;
+    padding:18px 25px;
+}
+
+.admin-header-inner{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.admin-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.admin-brand-icon{
+    font-size:32px;
+}
+
+.admin-brand h1{
+    margin:0;
+    font-size:24px;
+}
+
+.admin-brand p{
+    margin:2px 0 0;
+    font-size:12px;
+    opacity:.8;
+}
+
+.admin-logout{
+    background:#f5c400;
+    color:#052a5b;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:700;
+    border:none;
+    cursor:pointer;
+}
+
+.admin-layout{
+    max-width:1250px;
+    margin:auto;
+    padding:25px 20px;
+    display:grid;
+    grid-template-columns:240px 1fr;
+    gap:25px;
+}
+
+.admin-sidebar{
+    background:white;
+    border-radius:15px;
+    padding:18px;
+    height:fit-content;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.sidebar-heading{
+    color:#777;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    margin:5px 10px 12px;
+}
+
+.admin-link{
+    display:block;
+    padding:13px 14px;
+    margin-bottom:6px;
+    border-radius:9px;
+    color:#333;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.admin-link:hover,
+.admin-link.active{
+    background:#fff4c2;
+    color:#052a5b;
+}
+
+.payment-link{
+    background:#fff8dc;
+    border:1px solid #f5c400;
+}
+
+.admin-main h2{
+    color:#052a5b;
+    margin-top:0;
+}
+
+.admin-main-subtitle{
+    color:#777;
+    margin-top:-10px;
+    margin-bottom:25px;
+}
+
+.admin-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.admin-stat{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.admin-stat-icon{
+    font-size:27px;
+    margin-bottom:10px;
+}
+
+.admin-stat h3{
+    margin:0;
+    font-size:13px;
+    color:#777;
+}
+
+.admin-stat-number{
+    font-size:28px;
+    font-weight:800;
+    color:#052a5b;
+    margin-top:5px;
+}
+
+.pending-stat{
+    border-left:4px solid #f5c400;
+}
+
+.admin-section{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:22px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.admin-section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.admin-section-header h3{
+    margin:0;
+    color:#052a5b;
+}
+
+.admin-btn{
+    display:inline-block;
+    background:#052a5b;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+    border:none;
+    cursor:pointer;
+}
+
+.admin-btn:hover{
+    background:#0b4b88;
+}
+
+.admin-btn-yellow{
+    background:#f5c400;
+    color:#052a5b;
+}
+
+.admin-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.action-card{
+    border:1px solid #e4e8ee;
+    border-radius:12px;
+    padding:20px;
+    text-decoration:none;
+    color:#333;
+    transition:.2s;
+}
+
+.action-card:hover{
+    border-color:#f5c400;
+    background:#fffdf2;
+}
+
+.payment-action{
+    border-color:#f5c400;
+    background:#fffdf2;
+}
+
+.action-icon{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.action-card h4{
+    margin:0 0 5px;
+    color:#052a5b;
+}
+
+.action-card p{
+    margin:0;
+    font-size:13px;
+    color:#777;
+}
+
+.course-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.course-table th,
+.course-table td{
+    padding:13px 10px;
+    border-bottom:1px solid #edf0f4;
+    text-align:left;
+}
+
+.course-table th{
+    color:#666;
+    font-size:13px;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#e7f7ed;
+    color:#16803c;
+    font-size:12px;
+    font-weight:700;
+}
+
+.status-inactive{
+    background:#ffe8e8;
+    color:#b42318;
+}
+
+.pending-badge{
+    display:inline-block;
+    background:#fff4c2;
+    color:#7a6200;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.loading{
+    text-align:center;
+    padding:25px;
+    color:#777;
+}
+
+.error-text{
+    color:#b42318;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.empty-row{
+    text-align:center;
+    color:#777;
+    padding:25px !important;
+}
+
+
+/* ================================
+   AUTH SCREEN
+================================ */
+
+#authChecking{
+    position:fixed;
+    inset:0;
+    background:#f4f7fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+    text-align:center;
+}
+
+.auth-error-box{
+    width:100%;
+    max-width:650px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 25px rgba(0,0,0,.1);
+}
+
+.auth-error-title{
+    font-size:20px;
+    font-weight:700;
+    color:#052a5b;
+}
+
+.auth-error-message{
+    color:#555;
+    font-size:14px;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+.auth-error-btn{
+    margin-top:18px;
+    background:#052a5b;
+    color:white;
+    border:none;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.api-help{
+    margin-top:18px;
+    padding:15px;
+    background:#fff4c2;
+    border-radius:10px;
+    color:#5d4c00;
+    font-size:13px;
+    line-height:1.7;
+    text-align:left;
+}
+
+.connection-ok{
+    margin-top:18px;
+    padding:15px;
+    background:#e7f7ed;
+    border-radius:10px;
+    color:#16803c;
+    font-size:13px;
+}
+
+.refresh-info{
+    font-size:12px;
+    color:#888;
+    margin-top:10px;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media(max-width:950px){
+
+    .admin-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .admin-actions{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:750px){
+
+    .admin-layout{
+        grid-template-columns:1fr;
+    }
+
+    .admin-sidebar{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:5px;
+    }
+
+    .sidebar-heading{
+        grid-column:1/-1;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .admin-header{
+        padding:15px;
+    }
+
+    .admin-header-inner{
+        gap:15px;
+    }
+
+    .admin-brand h1{
+        font-size:19px;
+    }
+
+    .admin-brand-icon{
+        font-size:25px;
+    }
+
+    .admin-logout{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .admin-stats,
+    .admin-actions{
+        grid-template-columns:1fr;
+    }
+
+    .admin-section{
+        padding:18px;
+    }
+
+    .course-table{
+        font-size:13px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     AUTH CHECK SCREEN
+===================================================== -->
+
+<div id="authChecking">
+
+    <div class="auth-error-box">
+
+        <div
+        id="authTitle"
+        class="auth-error-title">
+
+            🔐 Checking Admin Login...
+
+        </div>
+
+        <div
+        id="authMessage"
+        class="auth-error-message"
+        style="margin-top:10px;">
+
+            Supabase connection check हो रहा है...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN DASHBOARD
+===================================================== -->
+
+<div
+class="admin-dashboard"
+id="adminDashboard"
+style="display:none;">
+
+
+<header class="admin-header">
+
+<div class="admin-header-inner">
+
+<div class="admin-brand">
+
+<div class="admin-brand-icon">
+🛡️
+</div>
+
+<div>
+
+<h1>RajEdge Admin</h1>
+
+<p>Rajasthan Education Hub</p>
+
+</div>
+
+</div>
+
+
+<button
+class="admin-logout"
+id="logoutBtn">
+
+Logout
+
+</button>
+
+</div>
+
+</header>
+
+
+<div class="admin-layout">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="admin-sidebar">
+
+<div class="sidebar-heading">
+Main Menu
+</div>
+
+<a
+href="admin-dashboard.html"
+class="admin-link active">
+📊 Dashboard
+</a>
+
+<a
+href="manage-courses.html"
+class="admin-link">
+📚 Courses
+</a>
+
+<a
+href="manage-notes.html"
+class="admin-link">
+📄 Notes / PDFs
+</a>
+
+<a
+href="manage-mcqs.html"
+class="admin-link">
+📝 MCQ
+</a>
+
+<a
+href="manage-tests.html"
+class="admin-link">
+🧪 Test Series
+</a>
+
+
+<div class="sidebar-heading">
+Management
+</div>
+
+<a
+href="manage-students.html"
+class="admin-link">
+👨‍🎓 Students
+</a>
+
+<a
+href="admin-payments.html"
+class="admin-link payment-link">
+💳 Payment Requests
+</a>
+
+<a
+href="manage-pricing.html"
+class="admin-link">
+💰 Pricing
+</a>
+
+<a
+href="admin-reports.html"
+class="admin-link">
+📈 Reports
+</a>
+
+<a
+href="admin-settings.html"
+class="admin-link">
+⚙️ Settings
+</a>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="admin-main">
+
+<h2>
+Dashboard Overview
+</h2>
+
+<p class="admin-main-subtitle">
+RajEdge portal का पूरा management यहाँ से करें।
+</p>
+
+
+<!-- =====================================================
+     STATS
+===================================================== -->
+
+<div class="admin-stats">
+
+
+<div class="admin-stat">
+
+<div class="admin-stat-icon">
+👨‍🎓
+</div>
+
+<h3>
+Total Students
+</h3>
+
+<div
+class="admin-stat-number"
+id="totalStudents">
+--
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<div class="admin-stat-icon">
+📚
+</div>
+
+<h3>
+Total Courses
+</h3>
+
+<div
+class="admin-stat-number"
+id="totalCourses">
+--
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<div class="admin-stat-icon">
+📝
+</div>
+
+<h3>
+Total Tests
+</h3>
+
+<div
+class="admin-stat-number"
+id="totalTests">
+--
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<div class="admin-stat-icon">
+💰
+</div>
+
+<h3>
+Total Sales
+</h3>
+
+<div
+class="admin-stat-number"
+id="totalSales">
+₹0
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     PAYMENT OVERVIEW
+===================================================== -->
+
+<section class="admin-section pending-stat">
+
+<div class="admin-section-header">
+
+<h3>
+💳 Payment Overview
+</h3>
+
+<a
+href="admin-payments.html"
+class="admin-btn admin-btn-yellow">
+
+Open Payments
+
+</a>
+
+</div>
+
+
+<div>
+
+<strong>
+Pending Payment Requests:
+</strong>
+
+<span
+class="pending-badge"
+id="pendingPayments">
+
+--
+
+</span>
+
+</div>
+
+
+<p class="refresh-info">
+Payment status database से load हो रहा है।
+</p>
+
+</section>
+
+
+<!-- =====================================================
+     QUICK ACTIONS
+===================================================== -->
+
+<section class="admin-section">
+
+<div class="admin-section-header">
+
+<h3>
+Quick Actions
+</h3>
+
+</div>
+
+
+<div class="admin-actions">
+
+
+<a
+href="manage-courses.html"
+class="action-card">
+
+<div class="action-icon">
+📚
+</div>
+
+<h4>
+Add Course
+</h4>
+
+<p>
+नया exam/course create करें।
+</p>
+
+</a>
+
+
+<a
+href="manage-notes.html"
+class="action-card">
+
+<div class="action-icon">
+📄
+</div>
+
+<h4>
+Upload Notes
+</h4>
+
+<p>
+PDF notes upload करें।
+</p>
+
+</a>
+
+
+<a
+href="manage-mcqs.html"
+class="action-card">
+
+<div class="action-icon">
+📝
+</div>
+
+<h4>
+Add MCQ
+</h4>
+
+<p>
+नए questions add करें।
+</p>
+
+</a>
+
+
+<a
+href="manage-tests.html"
+class="action-card">
+
+<div class="action-icon">
+🧪
+</div>
+
+<h4>
+Create Test
+</h4>
+
+<p>
+Test series बनाएं।
+</p>
+
+</a>
+
+
+<a
+href="manage-pricing.html"
+class="action-card">
+
+<div class="action-icon">
+💰
+</div>
+
+<h4>
+Manage Pricing
+</h4>
+
+<p>
+Course और test की price बदलें।
+</p>
+
+</a>
+
+
+<a
+href="manage-students.html"
+class="action-card">
+
+<div class="action-icon">
+👨‍🎓
+</div>
+
+<h4>
+Students
+</h4>
+
+<p>
+Registered students देखें।
+</p>
+
+</a>
+
+
+<a
+href="admin-payments.html"
+class="action-card payment-action">
+
+<div class="action-icon">
+💳
+</div>
+
+<h4>
+Payment Requests
+</h4>
+
+<p>
+Student payments verify और approve करें।
+</p>
+
+</a>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COURSES
+===================================================== -->
+
+<section class="admin-section">
+
+<div class="admin-section-header">
+
+<h3>
+Courses
+</h3>
+
+<a
+href="manage-courses.html"
+class="admin-btn admin-btn-yellow">
+
++ Add Course
+
+</a>
+
+</div>
+
+
+<div
+id="courseLoading"
+class="loading">
+
+⏳ Courses loading...
+
+</div>
+
+
+<div style="overflow-x:auto;">
+
+<table
+class="course-table"
+id="courseTable"
+style="display:none;">
+
+<thead>
+
+<tr>
+
+<th>
+Course
+</th>
+
+<th>
+Notes Price
+</th>
+
+<th>
+Test Series
+</th>
+
+<th>
+Students
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="courseTableBody">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div
+id="courseError"
+class="error-text"
+style="display:none;">
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SYSTEM STATUS
+===================================================== -->
+
+<section class="admin-section">
+
+<div class="admin-section-header">
+
+<h3>
+System Status
+</h3>
+
+</div>
+
+<p>
+🟢 Frontend: Ready
+</p>
+
+<p>
+🟢 Backend: Supabase
+</p>
+
+<p>
+🟢 Authentication: Active
+</p>
+
+<p>
+🟢 Payment Requests: Active
+</p>
+
+<p>
+🟡 Payment Gateway: Manual UPI Verification
+</p>
+
+</section>
+
+
+</main>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ONE SUPABASE SCRIPT ONLY
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   RAJEDGE SUPABASE CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+"https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+
+let supabaseClient = null;
+
+
+/* =====================================================
+   INITIALIZE SUPABASE
+===================================================== */
+
+function initializeSupabase(){
+
+    if(!window.supabase){
+
+        throw new Error(
+            "Supabase JavaScript library load नहीं हुई। Internet connection check करें।"
+        );
+
+    }
+
+
+    if(!SUPABASE_URL){
+
+        throw new Error(
+            "Supabase Project URL missing है।"
+        );
+
+    }
+
+
+    if(!SUPABASE_KEY){
+
+        throw new Error(
+            "Supabase Publishable Key missing है।"
+        );
+
+    }
+
+
+    supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    return supabaseClient;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   AUTH ERROR
+===================================================== */
+
+function showAuthError(title,message){
+
+    const titleBox =
+        document.getElementById("authTitle");
+
+    const messageBox =
+        document.getElementById("authMessage");
+
+
+    const msg =
+        String(
+            message ||
+            "Unknown error"
+        );
+
+
+    titleBox.textContent =
+        "❌ " + title;
+
+
+    let help = "";
+
+
+    if(
+        msg.toLowerCase().includes("invalid api key")
+    ){
+
+        help = `
+
+        <div class="api-help">
+
+        <strong>⚠️ Invalid Supabase API Key</strong>
+
+        <br><br>
+
+        Supabase इस Publishable Key को accept नहीं कर रहा है।
+
+        <br><br>
+
+        <strong>Project URL:</strong>
+
+        <br>
+
+        https://xysgwtnclxpacmlgnmer.supabase.co
+
+        <br><br>
+
+        Browser में केवल:
+
+        <br>
+
+        <strong>sb_publishable_...</strong>
+
+        <br><br>
+
+        इस्तेमाल करें।
+
+        <br>
+
+        ❌ <strong>sb_secret_...</strong> browser में इस्तेमाल न करें।
+
+        <br><br>
+
+        Supabase Dashboard → Settings → API Keys में जाकर
+        current Publishable Key verify करें।
+
+        </div>
+
+        `;
+
+    }
+
+
+    messageBox.innerHTML =
+
+        `<div>${escapeHtml(msg)}</div>`
+
+        +
+
+        help
+
+        +
+
+        `
+
+        <br>
+
+        <button
+        class="auth-error-btn"
+        onclick="window.location.href='admin-login.html'">
+
+        Go to Admin Login
+
+        </button>
+
+        `;
+
+}
+
+
+/* =====================================================
+   CHECK ADMIN LOGIN
+===================================================== */
+
+async function checkAdminLogin(){
+
+    try{
+
+        document.getElementById(
+            "authTitle"
+        ).textContent =
+            "🔐 Checking Admin Login...";
+
+
+        document.getElementById(
+            "authMessage"
+        ).textContent =
+            "Supabase connection check हो रहा है...";
+
+
+        /* INITIALIZE */
+
+        initializeSupabase();
+
+
+        /* =============================================
+           CHECK AUTH USER
+        ============================================= */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.getUser();
+
+
+        if(error){
+
+            showAuthError(
+                "Supabase Auth Error",
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           LOGIN REQUIRED
+        ============================================= */
+
+        if(
+            !data ||
+            !data.user
+        ){
+
+            showAuthError(
+                "Admin Login Required",
+                "इस dashboard को खोलने से पहले Admin Login करें।"
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           CHECK ADMIN TABLE
+        ============================================= */
+
+        document.getElementById(
+            "authTitle"
+        ).textContent =
+            "🔐 Checking Admin Account...";
+
+
+        document.getElementById(
+            "authMessage"
+        ).textContent =
+            "Admin permission verify हो रही है...";
+
+
+        const {
+            data:adminUser,
+            error:adminError
+        } =
+        await supabaseClient
+
+            .from("admin_users")
+
+            .select("id")
+
+            .eq(
+                "id",
+                data.user.id
+            )
+
+            .maybeSingle();
+
+
+        if(adminError){
+
+            showAuthError(
+                "Admin Verification Error",
+                adminError.message
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           ADMIN NOT FOUND
+        ============================================= */
+
+        if(!adminUser){
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            showAuthError(
+                "Access Denied",
+                "यह Supabase account admin_users table में मौजूद नहीं है।"
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           SHOW DASHBOARD
+        ============================================= */
+
+        document.getElementById(
+            "authChecking"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "adminDashboard"
+        ).style.display =
+            "block";
+
+
+        /* LOAD DATA */
+
+        await loadDashboard();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Admin Dashboard Error:",
+            error
+        );
+
+
+        showAuthError(
+            "Admin Dashboard Error",
+            error.message ||
+            "Unknown error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD DASHBOARD
+===================================================== */
+
+async function loadDashboard(){
+
+    await Promise.allSettled([
+
+        loadStudents(),
+
+        loadCourses(),
+
+        loadTests(),
+
+        loadSales(),
+
+        loadPendingPayments()
+
+    ]);
+
+}
+
+
+/* =====================================================
+   STUDENTS
+===================================================== */
+
+async function loadStudents(){
+
+    try{
+
+        const {
+            count,
+            error
+        } =
+        await supabaseClient
+
+            .from("student_profiles")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        document.getElementById(
+            "totalStudents"
+        ).textContent =
+            count ?? 0;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Students error:",
+            error
+        );
+
+
+        document.getElementById(
+            "totalStudents"
+        ).textContent =
+            "0";
+
+    }
+
+}
+
+
+/* =====================================================
+   COURSES
+===================================================== */
+
+async function loadCourses(){
+
+    try{
+
+        const {
+            data:courses,
+            error
+        } =
+        await supabaseClient
+
+            .from("courses")
+
+            .select(`
+                id,
+                name,
+                notes_price,
+                test_series_price,
+                is_active,
+                created_at
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending:true
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        document.getElementById(
+            "totalCourses"
+        ).textContent =
+            courses?.length || 0;
+
+
+        const tbody =
+            document.getElementById(
+                "courseTableBody"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        if(
+            !courses ||
+            courses.length === 0
+        ){
+
+            tbody.innerHTML = `
+
+            <tr>
+
+            <td
+            colspan="5"
+            class="empty-row">
+
+            No courses found.
+
+            </td>
+
+            </tr>
+
+            `;
+
+        }
+
+        else{
+
+            for(
+                const course of courses
+            ){
+
+                let studentCount = 0;
+
+
+                try{
+
+                    const {
+                        count,
+                        error:studentError
+                    } =
+                    await supabaseClient
+
+                        .from("enrollments")
+
+                        .select(
+                            "id",
+                            {
+                                count:"exact",
+                                head:true
+                            }
+                        )
+
+                        .eq(
+                            "course_id",
+                            course.id
+                        )
+
+                        .eq(
+                            "payment_status",
+                            "paid"
+                        );
+
+
+                    if(!studentError){
+
+                        studentCount =
+                            count ?? 0;
+
+                    }
+
+                }
+
+                catch(e){
+
+                    console.warn(
+                        "Student count error:",
+                        e
+                    );
+
+                }
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                <td>
+
+                    <strong>
+
+                    ${escapeHtml(
+                        course.name || "--"
+                    )}
+
+                    </strong>
+
+                </td>
+
+
+                <td>
+
+                    ₹${Number(
+                        course.notes_price || 0
+                    ).toLocaleString("en-IN")}
+
+                </td>
+
+
+                <td>
+
+                    ₹${Number(
+                        course.test_series_price || 0
+                    ).toLocaleString("en-IN")}
+
+                </td>
+
+
+                <td>
+
+                    ${studentCount}
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        course.is_active
+
+                        ?
+
+                        '<span class="status">Active</span>'
+
+                        :
+
+                        '<span class="status status-inactive">Inactive</span>'
+                    }
+
+                </td>
+
+                `;
+
+
+                tbody.appendChild(row);
+
+            }
+
+        }
+
+
+        document.getElementById(
+            "courseLoading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "courseTable"
+        ).style.display =
+            "table";
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Courses error:",
+            error
+        );
+
+
+        document.getElementById(
+            "courseLoading"
+        ).style.display =
+            "none";
+
+
+        const errorBox =
+            document.getElementById(
+                "courseError"
+            );
+
+
+        errorBox.textContent =
+            "Courses load नहीं हो सके: " +
+            (
+                error.message ||
+                "Unknown error"
+            );
+
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =====================================================
+   TESTS
+===================================================== */
+
+async function loadTests(){
+
+    try{
+
+        const {
+            count,
+            error
+        } =
+        await supabaseClient
+
+            .from("tests")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        document.getElementById(
+            "totalTests"
+        ).textContent =
+            count ?? 0;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Tests error:",
+            error
+        );
+
+
+        document.getElementById(
+            "totalTests"
+        ).textContent =
+            "0";
+
+    }
+
+}
+
+
+/* =====================================================
+   SALES
+===================================================== */
+
+async function loadSales(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from("enrollments")
+
+            .select(
+                "amount,payment_status"
+            )
+
+            .eq(
+                "payment_status",
+                "paid"
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const total =
+            (data || []).reduce(
+
+                (sum,item) =>
+
+                    sum +
+                    Number(
+                        item.amount || 0
+                    ),
+
+                0
+
+            );
+
+
+        document.getElementById(
+            "totalSales"
+        ).textContent =
+
+            "₹" +
+            total.toLocaleString("en-IN");
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Sales error:",
+            error
+        );
+
+
+        document.getElementById(
+            "totalSales"
+        ).textContent =
+            "₹0";
+
+    }
+
+}
+
+
+/* =====================================================
+   PENDING PAYMENTS
+===================================================== */
+
+async function loadPendingPayments(){
+
+    try{
+
+        const {
+            count,
+            error
+        } =
+        await supabaseClient
+
+            .from("payment_requests")
+
+            .select(
+                "id",
+                {
+                    count:"exact",
+                    head:true
+                }
+            )
+
+            .ilike(
+                "payment_status",
+                "pending"
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        document.getElementById(
+            "pendingPayments"
+        ).textContent =
+            count ?? 0;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Pending payment error:",
+            error
+        );
+
+
+        document.getElementById(
+            "pendingPayments"
+        ).textContent =
+            "0";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+.getElementById("logoutBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            if(!supabaseClient){
+
+                window.location.replace(
+                    "admin-login.html"
+                );
+
+                return;
+
+            }
+
+
+            const {
+                error
+            } =
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            if(error){
+
+                alert(
+                    "Logout failed: " +
+                    error.message
+                );
+
+                return;
+
+            }
+
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+        }
+
+        catch(error){
+
+            alert(
+                "Logout error: " +
+                (
+                    error.message ||
+                    "Unknown error"
+                )
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+checkAdminLogin();
+
+</script>
+
+</body>
+
+</html>

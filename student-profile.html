@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile | RajEdge</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+.profile-page{
+    background:#f5f8fc;
+    min-height:100vh;
+}
+
+.profile-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:35px 20px;
+}
+
+.page-title{
+    background:linear-gradient(135deg,#052a5b,#0b4b88);
+    color:white;
+    padding:30px;
+    border-radius:18px;
+    margin-bottom:25px;
+}
+
+.page-title h1{
+    margin:0 0 8px;
+    font-size:30px;
+}
+
+.page-title p{
+    margin:0;
+    opacity:.9;
+}
+
+.profile-layout{
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:25px;
+}
+
+.sidebar{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+    height:fit-content;
+}
+
+.sidebar-title{
+    font-size:18px;
+    font-weight:700;
+    color:#052a5b;
+    margin-bottom:15px;
+}
+
+.side-link{
+    display:block;
+    padding:13px 15px;
+    margin-bottom:8px;
+    border-radius:10px;
+    color:#333;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.side-link:hover,
+.side-link.active{
+    background:#fff4c2;
+    color:#052a5b;
+}
+
+.logout-btn{
+    color:#d62828;
+}
+
+.profile-content{
+    display:grid;
+    gap:20px;
+}
+
+.profile-card{
+    background:white;
+    padding:28px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding-bottom:25px;
+    border-bottom:1px solid #e8edf3;
+    margin-bottom:25px;
+}
+
+.profile-avatar{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#fff4c2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    flex-shrink:0;
+}
+
+.profile-header h2{
+    margin:0 0 5px;
+    color:#052a5b;
+}
+
+.profile-header p{
+    margin:0;
+    color:#666;
+}
+
+.profile-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.profile-field{
+    background:#f7f9fc;
+    padding:16px;
+    border-radius:10px;
+}
+
+.profile-field label{
+    display:block;
+    font-size:13px;
+    color:#777;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.profile-field span{
+    color:#052a5b;
+    font-weight:700;
+    word-break:break-word;
+}
+
+.status-badge{
+    display:inline-block;
+    background:#e8f7ee;
+    color:#16803c !important;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.stat-card{
+    background:#f7f9fc;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+}
+
+.stat-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.stat-number{
+    font-size:25px;
+    font-weight:800;
+    color:#052a5b;
+}
+
+.stat-label{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.security-box{
+    background:#f8fafc;
+    padding:20px;
+    border-radius:12px;
+}
+
+.security-box h3{
+    margin-top:0;
+    color:#052a5b;
+}
+
+.profile-btn{
+    display:inline-block;
+    background:#052a5b;
+    color:white;
+    text-decoration:none;
+    padding:11px 20px;
+    border-radius:8px;
+    font-weight:600;
+    margin-top:10px;
+    border:none;
+    cursor:pointer;
+}
+
+.profile-btn:hover{
+    background:#0b4b88;
+}
+
+.info-box{
+    background:#fff9df;
+    border-left:4px solid #f5c400;
+    padding:15px;
+    border-radius:8px;
+    color:#665500;
+    line-height:1.6;
+}
+
+.message-box{
+    display:none;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:20px;
+    font-weight:600;
+}
+
+.message-error{
+    background:#ffe8e8;
+    color:#b42318;
+}
+
+.message-success{
+    background:#e8f7ee;
+    color:#16803c;
+}
+
+.loading{
+    text-align:center;
+    padding:40px;
+    color:#666;
+}
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#777;
+}
+
+@media(max-width:800px){
+
+    .profile-layout{
+        grid-template-columns:1fr;
+    }
+
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-header{
+        align-items:flex-start;
+    }
+
+    .page-title h1{
+        font-size:25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="profile-page">
+
+<header class="header">
+
+<div class="container nav-container">
+
+<a href="index.html" class="logo-box">
+
+<div class="logo-icon">
+📚
+</div>
+
+<div>
+
+<div class="logo-text">
+Raj<span>Edge</span>
+</div>
+
+<div class="logo-subtitle">
+Rajasthan Education Hub
+</div>
+
+</div>
+
+</a>
+
+<a href="index.html" class="btn-login">
+Home
+</a>
+
+</div>
+
+</header>
+
+
+<main class="profile-wrapper">
+
+<div class="page-title">
+
+<h1>
+👤 My Profile
+</h1>
+
+<p>
+अपनी account information और learning progress देखें।
+</p>
+
+</div>
+
+
+<div id="messageBox" class="message-box"></div>
+
+
+<div class="profile-layout">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+Student Panel
+</div>
+
+<a href="student-dashboard.html" class="side-link">
+🏠 Dashboard
+</a>
+
+<a href="student-courses.html" class="side-link">
+📚 My Courses
+</a>
+
+<a href="student-tests.html" class="side-link">
+📝 My Tests
+</a>
+
+<a href="student-notes.html" class="side-link">
+📄 My Notes
+</a>
+
+<a href="student-results.html" class="side-link">
+📊 My Results
+</a>
+
+<a href="student-profile.html" class="side-link active">
+👤 My Profile
+</a>
+
+<a href="#" class="side-link logout-btn" onclick="logoutStudent(event)">
+🚪 Logout
+</a>
+
+</aside>
+
+
+<!-- CONTENT -->
+
+<section class="profile-content">
+
+
+<!-- PROFILE -->
+
+<div class="profile-card">
+
+<div id="profileLoading" class="loading">
+⏳ Profile loading...
+</div>
+
+
+<div id="profileData" style="display:none;">
+
+
+<div class="profile-header">
+
+<div class="profile-avatar">
+👤
+</div>
+
+<div>
+
+<h2 id="profileName">
+Student
+</h2>
+
+<p>
+RajEdge Student Account
+</p>
+
+</div>
+
+</div>
+
+
+<div class="profile-grid">
+
+
+<div class="profile-field">
+
+<label>
+Full Name
+</label>
+
+<span id="fullName">
+--
+</span>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>
+Mobile Number
+</label>
+
+<span id="mobileNumber">
+--
+</span>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>
+Email Address
+</label>
+
+<span id="emailAddress">
+--
+</span>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>
+Account Status
+</label>
+
+<span class="status-badge">
+Active
+</span>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>
+Member Since
+</label>
+
+<span id="memberSince">
+--
+</span>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>
+Account ID
+</label>
+
+<span id="accountId">
+--
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LEARNING STATS -->
+
+<div class="profile-card">
+
+<h2>
+📊 Learning Summary
+</h2>
+
+
+<div id="statsLoading" class="loading">
+⏳ Summary loading...
+</div>
+
+
+<div id="statsData" style="display:none;">
+
+<div class="stats-grid">
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📚
+</div>
+
+<div class="stat-number" id="courseCount">
+0
+</div>
+
+<div class="stat-label">
+Purchased Courses
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📝
+</div>
+
+<div class="stat-number" id="testCount">
+0
+</div>
+
+<div class="stat-label">
+Tests Attempted
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📈
+</div>
+
+<div class="stat-number" id="averageScore">
+0%
+</div>
+
+<div class="stat-label">
+Average Percentage
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SECURITY -->
+
+<div class="profile-card">
+
+<h2>
+🔐 Account Security
+</h2>
+
+<div class="security-box">
+
+<h3>
+Supabase Authentication
+</h3>
+
+<p>
+आपका account authentication Supabase द्वारा securely manage किया जाता है।
+</p>
+
+<p>
+Password या login-related बदलाव आपके authentication account से जुड़े होते हैं।
+</p>
+
+<a href="student-login.html" class="profile-btn">
+Login Page
+</a>
+
+</div>
+
+</div>
+
+
+<!-- INFORMATION -->
+
+<div class="profile-card">
+
+<h2>
+ℹ️ Account Information
+</h2>
+
+<div class="info-box">
+
+आपका profile data आपके logged-in account से automatically
+load होता है।
+
+<br><br>
+
+आपके purchased courses और test performance का summary
+भी इसी account के आधार पर दिखाई जाती है।
+
+</div>
+
+</div>
+
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+
+/* ===============================
+   SUPABASE
+================================ */
+
+const SUPABASE_URL =
+"https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* ===============================
+   MESSAGE
+================================ */
+
+function showMessage(message,type="error"){
+
+const box =
+document.getElementById("messageBox");
+
+box.textContent = message;
+
+box.className =
+"message-box " +
+(type === "success"
+? "message-success"
+: "message-error");
+
+box.style.display = "block";
+
+}
+
+
+/* ===============================
+   DATE
+================================ */
+
+function formatDate(dateString){
+
+if(!dateString){
+return "--";
+}
+
+const date =
+new Date(dateString);
+
+return date.toLocaleDateString(
+"en-IN",
+{
+day:"2-digit",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+
+/* ===============================
+   LOAD PROFILE
+================================ */
+
+async function loadProfile(){
+
+try{
+
+
+/* AUTH */
+
+const {
+data:authData,
+error:authError
+} =
+await supabaseClient.auth.getUser();
+
+
+if(authError){
+throw authError;
+}
+
+
+const user =
+authData.user;
+
+
+/* NOT LOGGED IN */
+
+if(!user){
+
+window.location.href =
+"student-login.html";
+
+return;
+
+}
+
+
+/* PROFILE */
+
+const {
+data:profile,
+error:profileError
+} =
+await supabaseClient
+.from("student_profiles")
+.select(`
+id,
+full_name,
+mobile,
+email,
+login_email,
+created_at
+`)
+.eq("id",user.id)
+.maybeSingle();
+
+
+if(profileError){
+throw profileError;
+}
+
+
+/* PROFILE NOT FOUND */
+
+if(!profile){
+
+document.getElementById(
+"profileLoading"
+).style.display="none";
+
+showMessage(
+"Student profile नहीं मिला। कृपया registration complete करें।"
+);
+
+return;
+
+}
+
+
+/* NAME */
+
+const name =
+profile.full_name ||
+"Student";
+
+
+document.getElementById(
+"profileName"
+).textContent=name;
+
+
+document.getElementById(
+"fullName"
+).textContent=name;
+
+
+/* MOBILE */
+
+document.getElementById(
+"mobileNumber"
+).textContent =
+profile.mobile ||
+"Not Added";
+
+
+/* EMAIL */
+
+const email =
+profile.email ||
+profile.login_email ||
+user.email ||
+"Not Available";
+
+
+document.getElementById(
+"emailAddress"
+).textContent=email;
+
+
+/* MEMBER SINCE */
+
+document.getElementById(
+"memberSince"
+).textContent =
+formatDate(
+profile.created_at ||
+user.created_at
+);
+
+
+/* ACCOUNT ID */
+
+document.getElementById(
+"accountId"
+).textContent =
+user.id.substring(0,8)+"...";
+
+
+/* SHOW */
+
+document.getElementById(
+"profileLoading"
+).style.display="none";
+
+
+document.getElementById(
+"profileData"
+).style.display="block";
+
+
+/* LOAD STATS */
+
+await loadLearningStats(user.id);
+
+
+}
+catch(error){
+
+console.error(
+"Profile Error:",
+error
+);
+
+document.getElementById(
+"profileLoading"
+).style.display="none";
+
+showMessage(
+"Profile load नहीं हो सकी: "+
+(error.message || "Unknown error")
+);
+
+}
+
+}
+
+
+/* ===============================
+   LEARNING STATS
+================================ */
+
+async function loadLearningStats(userId){
+
+try{
+
+
+/* PURCHASED COURSES */
+
+const {
+data:enrollments,
+error:enrollmentError
+} =
+await supabaseClient
+.from("enrollments")
+.select(`
+course_id,
+purchase_type,
+payment_status
+`)
+.eq("student_id",userId)
+.eq("payment_status","paid");
+
+
+if(enrollmentError){
+throw enrollmentError;
+}
+
+
+/* UNIQUE COURSES */
+
+const uniqueCourses =
+new Set(
+(enrollments || [])
+.map(item => item.course_id)
+.filter(Boolean)
+);
+
+
+document.getElementById(
+"courseCount"
+).textContent =
+uniqueCourses.size;
+
+
+/* TEST ATTEMPTS */
+
+const {
+data:attempts,
+error:attemptError
+} =
+await supabaseClient
+.from("test_attempts")
+.select(`
+id,
+percentage
+`)
+.eq("student_id",userId);
+
+
+if(attemptError){
+throw attemptError;
+}
+
+
+const attemptList =
+attempts || [];
+
+
+document.getElementById(
+"testCount"
+).textContent =
+attemptList.length;
+
+
+/* AVERAGE */
+
+if(attemptList.length === 0){
+
+document.getElementById(
+"averageScore"
+).textContent =
+"0%";
+
+}
+else{
+
+const total =
+attemptList.reduce(
+(sum,item) =>
+sum + Number(item.percentage || 0),
+0
+);
+
+const average =
+total / attemptList.length;
+
+
+document.getElementById(
+"averageScore"
+).textContent =
+average.toFixed(1)+"%";
+
+}
+
+
+/* SHOW */
+
+document.getElementById(
+"statsLoading"
+).style.display="none";
+
+
+document.getElementById(
+"statsData"
+).style.display="block";
+
+
+}
+catch(error){
+
+console.error(
+"Stats Error:",
+error
+);
+
+document.getElementById(
+"statsLoading"
+).style.display="none";
+
+
+document.getElementById(
+"statsData"
+).style.display="block";
+
+
+document.getElementById(
+"courseCount"
+).textContent="0";
+
+
+document.getElementById(
+"testCount"
+).textContent="0";
+
+
+document.getElementById(
+"averageScore"
+).textContent="0%";
+
+}
+
+}
+
+
+/* ===============================
+   LOGOUT
+================================ */
+
+async function logoutStudent(event){
+
+event.preventDefault();
+
+
+const {
+error
+} =
+await supabaseClient.auth.signOut();
+
+
+if(error){
+
+showMessage(
+"Logout failed: "+
+error.message
+);
+
+return;
+
+}
+
+
+window.location.href =
+"student-login.html";
+
+}
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadProfile();
+
+</script>
+
+</body>
+</html>

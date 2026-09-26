@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | RajEdge Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .reports-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .reports-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .reports-header-inner {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reports-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reports-brand-icon {
+            font-size: 30px;
+        }
+
+        .reports-brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .reports-brand p {
+            margin: 3px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            background: #f5c400;
+            color: #052a5b;
+            padding: 10px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .reports-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .reports-title {
+            color: #052a5b;
+            margin: 0;
+        }
+
+        .reports-subtitle {
+            color: #777;
+            margin-top: 7px;
+            margin-bottom: 25px;
+        }
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .report-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .report-card h3 {
+            margin: 0;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .report-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #052a5b;
+            margin-top: 5px;
+        }
+
+        .report-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .report-section h3 {
+            margin-top: 0;
+            color: #052a5b;
+        }
+
+        .report-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf0f4;
+            text-align: left;
+        }
+
+        .report-table th {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e7f7ed;
+            color: #16803c;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-box {
+            background: #f8fafc;
+            border: 1px dashed #ccd4df;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: #777;
+        }
+
+        .empty-box-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .report-note {
+            background: #fff9df;
+            border-left: 4px solid #f5c400;
+            padding: 15px;
+            border-radius: 8px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        .error-box {
+            background: #fff0f0;
+            color: #b42318;
+            border-left: 4px solid #d92d20;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media(max-width: 950px) {
+            .report-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 550px) {
+            .reports-header-inner {
+                gap: 12px;
+            }
+
+            .reports-brand h1 {
+                font-size: 19px;
+            }
+
+            .back-btn {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .report-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .reports-container {
+                padding: 20px 12px;
+            }
+
+            .report-section {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="reports-page">
+
+    <!-- HEADER -->
+    <header class="reports-header">
+
+        <div class="reports-header-inner">
+
+            <div class="reports-brand">
+
+                <div class="reports-brand-icon">
+                    📈
+                </div>
+
+                <div>
+                    <h1>RajEdge Admin</h1>
+                    <p>Reports & Analytics</p>
+                </div>
+
+            </div>
+
+            <a href="admin-dashboard.html" class="back-btn">
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="reports-container">
+
+        <h2 class="reports-title">
+            Reports & Analytics
+        </h2>
+
+        <p class="reports-subtitle">
+            RajEdge portal की real database performance यहाँ देखें।
+        </p>
+
+
+        <div id="errorBox" class="error-box"></div>
+
+
+        <!-- REPORT CARDS -->
+        <div class="report-cards">
+
+            <div class="report-card">
+                <div class="report-icon">👨‍🎓</div>
+                <h3>Total Students</h3>
+                <div class="report-number" id="totalStudents">0</div>
+            </div>
+
+
+            <div class="report-card">
+                <div class="report-icon">📚</div>
+                <h3>Active Courses</h3>
+                <div class="report-number" id="totalCourses">0</div>
+            </div>
+
+
+            <div class="report-card">
+                <div class="report-icon">📝</div>
+                <h3>Total Tests</h3>
+                <div class="report-number" id="totalTests">0</div>
+            </div>
+
+
+            <div class="report-card">
+                <div class="report-icon">🎯</div>
+                <h3>Tests Attempted</h3>
+                <div class="report-number" id="totalAttempts">0</div>
+            </div>
+
+        </div>
+
+
+        <!-- PERFORMANCE SUMMARY -->
+        <section class="report-section">
+
+            <h3>📊 Performance Summary</h3>
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Average Test Score</td>
+                            <td id="averageScore">0%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Highest Test Score</td>
+                            <td id="highestScore">0%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Lowest Test Score</td>
+                            <td id="lowestScore">0%</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- COURSE REPORT -->
+        <section class="report-section">
+
+            <h3>📚 Course Report</h3>
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Notes Price</th>
+                            <th>Test Series Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="courseReportBody">
+
+                        <tr>
+                            <td colspan="4" class="loading">
+                                Loading courses...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT TEST ACTIVITY -->
+        <section class="report-section">
+
+            <h3>🧪 Recent Test Activity</h3>
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Test</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="recentAttemptsBody">
+
+                        <tr>
+                            <td colspan="5" class="loading">
+                                Loading test activity...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFO -->
+        <section class="report-section">
+
+            <div class="report-note">
+
+                <strong>ℹ️ Reports Status:</strong>
+
+                Students, courses, tests और test attempts अब
+                Supabase database से automatically load हो रहे हैं।
+                Sales/Revenue report payment system बनने के बाद connect किया जाएगा।
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ================================
+   ERROR MESSAGE
+================================ */
+
+function showError(message) {
+
+    const box =
+        document.getElementById("errorBox");
+
+    box.style.display = "block";
+
+    box.textContent = message;
+}
+
+
+/* ================================
+   ADMIN CHECK
+================================ */
+
+async function checkAdmin() {
+
+    const {
+        data: {
+            session
+        }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+
+        window.location.href =
+            "admin-login.html";
+
+        return false;
+    }
+
+
+    const {
+        data: admin,
+        error
+    } = await supabaseClient
+        .from("admin_users")
+        .select("id")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+
+    if (error || !admin) {
+
+        window.location.href =
+            "student-dashboard.html";
+
+        return false;
+    }
+
+    return true;
+}
+
+
+/* ================================
+   LOAD STUDENTS
+================================ */
+
+async function loadStudents() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("student_profiles")
+        .select("id");
+
+    if (error) {
+
+        throw error;
+    }
+
+    document.getElementById(
+        "totalStudents"
+    ).textContent = data.length;
+}
+
+
+/* ================================
+   LOAD COURSES
+================================ */
+
+async function loadCourses() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("courses")
+        .select(
+            "id,name,notes_price,test_series_price,is_active"
+        )
+        .order("name");
+
+
+    if (error) {
+
+        throw error;
+    }
+
+
+    const activeCourses =
+        data.filter(
+            course => course.is_active
+        );
+
+
+    document.getElementById(
+        "totalCourses"
+    ).textContent =
+        activeCourses.length;
+
+
+    const tbody =
+        document.getElementById(
+            "courseReportBody"
+        );
+
+
+    if (!data.length) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    <div class="empty-box">
+                        कोई course उपलब्ध नहीं है।
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    tbody.innerHTML =
+        data.map(course => `
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(course.name)}
+                    </strong>
+                </td>
+
+                <td>
+                    ₹${Number(course.notes_price || 0)}
+                </td>
+
+                <td>
+                    ₹${Number(course.test_series_price || 0)}
+                </td>
+
+                <td>
+
+                    ${
+                        course.is_active
+                        ? `<span class="status">Active</span>`
+                        : `<span class="status"
+                            style="background:#f1f1f1;color:#777;">
+                            Inactive
+                          </span>`
+                    }
+
+                </td>
+
+            </tr>
+
+        `).join("");
+}
+
+
+/* ================================
+   LOAD TESTS
+================================ */
+
+async function loadTests() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("tests")
+        .select(
+            "id,name,exam,status"
+        );
+
+
+    if (error) {
+
+        throw error;
+    }
+
+
+    const activeTests =
+        data.filter(
+            test =>
+                String(test.status).toLowerCase()
+                === "active"
+        );
+
+
+    document.getElementById(
+        "totalTests"
+    ).textContent =
+        activeTests.length;
+}
+
+
+/* ================================
+   LOAD ATTEMPTS
+================================ */
+
+async function loadAttempts() {
+
+    const {
+        data: attempts,
+        error
+    } = await supabaseClient
+        .from("test_attempts")
+        .select(
+            "id,test_id,student_id,score,total_marks,percentage,submitted_at"
+        )
+        .order(
+            "submitted_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        throw error;
+    }
+
+
+    document.getElementById(
+        "totalAttempts"
+    ).textContent =
+        attempts.length;
+
+
+    if (!attempts.length) {
+
+        document.getElementById(
+            "averageScore"
+        ).textContent = "0%";
+
+        document.getElementById(
+            "highestScore"
+        ).textContent = "0%";
+
+        document.getElementById(
+            "lowestScore"
+        ).textContent = "0%";
+
+        document.getElementById(
+            "recentAttemptsBody"
+        ).innerHTML = `
+            <tr>
+                <td colspan="5">
+
+                    <div class="empty-box">
+
+                        <div class="empty-box-icon">
+                            📊
+                        </div>
+
+                        <strong>
+                            अभी कोई test attempt नहीं है।
+                        </strong>
+
+                        <p>
+                            Students test attempt करने के बाद
+                            यहाँ activity दिखाई देगी।
+                        </p>
+
+                    </div>
+
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    const percentages =
+        attempts
+            .map(a => Number(a.percentage || 0));
+
+
+    const average =
+        percentages.reduce(
+            (sum, value) =>
+                sum + value,
+            0
+        ) / percentages.length;
+
+
+    const highest =
+        Math.max(...percentages);
+
+
+    const lowest =
+        Math.min(...percentages);
+
+
+    document.getElementById(
+        "averageScore"
+    ).textContent =
+        average.toFixed(2) + "%";
+
+
+    document.getElementById(
+        "highestScore"
+    ).textContent =
+        highest.toFixed(2) + "%";
+
+
+    document.getElementById(
+        "lowestScore"
+    ).textContent =
+        lowest.toFixed(2) + "%";
+
+
+    /* LOAD TEST NAMES */
+
+    const testIds =
+        [
+            ...new Set(
+                attempts
+                    .map(a => a.test_id)
+                    .filter(Boolean)
+            )
+        ];
+
+
+    let tests = [];
+
+
+    if (testIds.length) {
+
+        const {
+            data: testData,
+            error: testError
+        } = await supabaseClient
+            .from("tests")
+            .select(
+                "id,name"
+            )
+            .in(
+                "id",
+                testIds
+            );
+
+
+        if (testError) {
+
+            throw testError;
+        }
+
+        tests = testData || [];
+    }
+
+
+    const testMap =
+        new Map(
+            tests.map(
+                test => [
+                    String(test.id),
+                    test.name
+                ]
+            )
+        );
+
+
+    /* LOAD STUDENT NAMES */
+
+    const studentIds =
+        [
+            ...new Set(
+                attempts
+                    .map(a => a.student_id)
+                    .filter(Boolean)
+            )
+        ];
+
+
+    let students = [];
+
+
+    if (studentIds.length) {
+
+        const {
+            data: studentData,
+            error: studentError
+        } = await supabaseClient
+            .from("student_profiles")
+            .select(
+                "id,full_name,mobile"
+            )
+            .in(
+                "id",
+                studentIds
+            );
+
+
+        if (studentError) {
+
+            throw studentError;
+        }
+
+        students =
+            studentData || [];
+    }
+
+
+    const studentMap =
+        new Map(
+            students.map(
+                student => [
+                    String(student.id),
+                    student
+                ]
+            )
+        );
+
+
+    const recent =
+        attempts.slice(0, 10);
+
+
+    document.getElementById(
+        "recentAttemptsBody"
+    ).innerHTML =
+
+        recent.map(attempt => {
+
+            const student =
+                studentMap.get(
+                    String(
+                        attempt.student_id
+                    )
+                );
+
+
+            const studentName =
+                student?.full_name
+                || student?.mobile
+                || "Unknown Student";
+
+
+            const testName =
+                testMap.get(
+                    String(
+                        attempt.test_id
+                    )
+                )
+                || "Unknown Test";
+
+
+            const date =
+                attempt.submitted_at
+                ? new Date(
+                    attempt.submitted_at
+                ).toLocaleDateString(
+                    "en-IN"
+                )
+                : "—";
+
+
+            return `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(studentName)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(testName)}
+                    </td>
+
+                    <td>
+                        ${Number(
+                            attempt.score || 0
+                        )}/${Number(
+                            attempt.total_marks || 0
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${Number(
+                                attempt.percentage || 0
+                            ).toFixed(2)}%
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${date}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+}
+
+
+/* ================================
+   ESCAPE HTML
+================================ */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* ================================
+   INIT
+================================ */
+
+async function initReports() {
+
+    try {
+
+        const isAdmin =
+            await checkAdmin();
+
+
+        if (!isAdmin) {
+            return;
+        }
+
+
+        await Promise.all([
+            loadStudents(),
+            loadCourses(),
+            loadTests(),
+            loadAttempts()
+        ]);
+
+
+    } catch (error) {
+
+        console.error(
+            "Reports Error:",
+            error
+        );
+
+        showError(
+            "Reports data load नहीं हो पाया: "
+            + (
+                error.message
+                || "Unknown error"
+            )
+        );
+
+    }
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initReports
+);
+
+</script>
+
+</body>
+</html>

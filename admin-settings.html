@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | RajEdge Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .settings-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .settings-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .settings-header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            color: #052a5b;
+            background: #f5c400;
+            padding: 9px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .settings-container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page-title h2 {
+            color: #052a5b;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .settings-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            margin-bottom: 22px;
+        }
+
+        .settings-card h3 {
+            color: #052a5b;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .save-btn {
+            background: #052a5b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #0b4b88;
+        }
+
+        .danger-btn {
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .info-box {
+            background: #fff8d8;
+            border-left: 4px solid #f5c400;
+            padding: 15px;
+            border-radius: 8px;
+            color: #665500;
+            font-size: 14px;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="settings-page">
+
+    <!-- HEADER -->
+    <header class="settings-header">
+
+        <div class="settings-header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">⚙️</div>
+
+                <div>
+                    <h1>RajEdge Admin</h1>
+                    <p>Website Settings</p>
+                </div>
+
+            </div>
+
+            <a href="admin-dashboard.html" class="back-btn">
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="settings-container">
+
+        <div class="page-title">
+
+            <h2>⚙️ Admin Settings</h2>
+
+            <p>
+                Website और Admin की basic settings manage करें।
+            </p>
+
+        </div>
+
+
+        <!-- WEBSITE SETTINGS -->
+
+        <section class="settings-card">
+
+            <h3>🌐 Website Information</h3>
+
+            <form id="websiteForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Website Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="websiteName"
+                            value="RajEdge"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Website Subtitle
+                        </label>
+
+                        <input
+                            type="text"
+                            id="websiteSubtitle"
+                            value="Rajasthan Education Hub"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Contact Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contactEmail"
+                            placeholder="support@rajedge.in"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Contact Mobile
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="contactMobile"
+                            placeholder="98XXXXXXXX"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Website Description
+                        </label>
+
+                        <textarea
+                            id="websiteDescription"
+                            placeholder="RajEdge के बारे में..."
+                        >Rajasthan competitive exams की तैयारी के लिए Education Portal.</textarea>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    💾 Save Website Settings
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ADMIN PROFILE -->
+
+        <section class="settings-card">
+
+            <h3>👤 Admin Profile</h3>
+
+            <form id="adminForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Admin Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="adminName"
+                            value="RajEdge Admin"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Admin Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="adminEmail"
+                            placeholder="admin@example.com"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    💾 Save Admin Profile
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- PASSWORD -->
+
+        <section class="settings-card">
+
+            <h3>🔐 Change Admin Password</h3>
+
+            <form id="passwordForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Current Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Confirm New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    🔑 Change Password
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- SYSTEM INFO -->
+
+        <section class="settings-card">
+
+            <h3>🛠️ System Information</h3>
+
+            <div class="info-box">
+
+                <strong>Current Status</strong><br><br>
+
+                Frontend: ✅ Ready<br>
+                Admin Panel: ✅ Ready<br>
+                Supabase: ⏳ Not Connected<br>
+                Authentication: ⏳ Not Connected<br>
+                Payment Gateway: ⏳ Not Connected
+
+            </div>
+
+        </section>
+
+
+        <!-- DANGER ZONE -->
+
+        <section class="settings-card">
+
+            <h3 style="color:#c62828;">
+                ⚠️ Danger Zone
+            </h3>
+
+            <p style="color:#777;">
+                यह section बाद में database और production system के लिए उपयोग होगा।
+            </p>
+
+            <button
+                class="danger-btn"
+                onclick="logoutAdmin()">
+
+                🚪 Logout Admin
+
+            </button>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+document.getElementById("websiteForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("websiteName").value;
+
+        alert(
+            "Website settings saved!\n\n" +
+            "Website: " +
+            name +
+            "\n\nDatabase connection के बाद settings permanently save होंगी."
+        );
+
+    }
+);
+
+
+document.getElementById("adminForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Admin profile saved!\n\n" +
+            "Supabase Auth connect होने के बाद profile permanently save होगी."
+        );
+
+    }
+);
+
+
+document.getElementById("passwordForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const newPassword =
+            document.getElementById("newPassword").value;
+
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPassword) {
+
+            alert("New password और confirm password match नहीं हैं.");
+
+            return;
+        }
+
+        alert(
+            "Password change request ready.\n\n" +
+            "Real password change Supabase Auth connect होने के बाद होगा."
+        );
+
+    }
+);
+
+
+function logoutAdmin() {
+
+    const confirmLogout =
+        confirm("क्या आप Admin Panel से logout करना चाहते हैं?");
+
+    if (confirmLogout) {
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

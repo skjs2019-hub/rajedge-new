@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage MCQs | RajEdge</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .mcq-page {
+            min-height: 100vh;
+            background: #f4f7fb;
+        }
+
+        .mcq-header {
+            background: #052a5b;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .mcq-header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .back-btn {
+            color: #052a5b;
+            background: #f5c400;
+            padding: 9px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .mcq-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page-title h2 {
+            color: #052a5b;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .mcq-card,
+        .mcq-list {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            margin-bottom: 25px;
+        }
+
+        .mcq-card h3,
+        .mcq-list h3 {
+            color: #052a5b;
+            margin-top: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .option-box {
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-label {
+            background: #eef3f9;
+            color: #052a5b;
+            padding: 11px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .save-btn {
+            background: #052a5b;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #0b4b88;
+        }
+
+        .save-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .cancel-btn {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 8px;
+            display: none;
+        }
+
+        .message {
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #e7f7ed;
+            color: #16803c;
+        }
+
+        .error {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .mcq-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .mcq-table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: collapse;
+        }
+
+        .mcq-table th,
+        .mcq-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf0f4;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .mcq-table th {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .exam-badge {
+            background: #e8f1ff;
+            color: #0755a5;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .answer-badge {
+            background: #e7f7ed;
+            color: #16803c;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .test-badge {
+            background: #fff4c2;
+            color: #765d00;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .edit-btn {
+            background: #fff4c2;
+            color: #765d00;
+        }
+
+        .delete-btn {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        @media(max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .option-box {
+                grid-template-columns: 55px 1fr;
+            }
+
+            .mcq-header-inner {
+                gap: 15px;
+            }
+
+            .mcq-container {
+                padding: 20px 12px;
+            }
+
+            .mcq-card,
+            .mcq-list {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="mcq-page">
+
+    <!-- HEADER -->
+
+    <header class="mcq-header">
+
+        <div class="mcq-header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    ❓
+                </div>
+
+                <div>
+
+                    <h1>
+                        RajEdge Admin
+                    </h1>
+
+                    <p>
+                        MCQ Management
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a
+                href="admin-dashboard.html"
+                class="back-btn">
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="mcq-container">
+
+
+        <!-- TITLE -->
+
+        <div class="page-title">
+
+            <h2>
+                ❓ Manage MCQs
+            </h2>
+
+            <p>
+                Exam-wise Multiple Choice Questions बनाएं और Test से connect करें।
+            </p>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- ADD MCQ -->
+
+        <section class="mcq-card">
+
+            <h3 id="formTitle">
+                ➕ Add New MCQ
+            </h3>
+
+
+            <form id="mcqForm">
+
+                <div class="form-grid">
+
+
+                    <!-- EXAM -->
+
+                    <div class="form-group">
+
+                        <label for="mcqExam">
+                            Exam / Course
+                        </label>
+
+                        <select
+                            id="mcqExam"
+                            required>
+
+                            <option value="">
+                                Select Exam
+                            </option>
+
+                            <option value="REET">
+                                REET
+                            </option>
+
+                            <option value="CET">
+                                CET
+                            </option>
+
+                            <option value="LDC">
+                                LDC
+                            </option>
+
+                            <option value="VDO">
+                                VDO
+                            </option>
+
+                            <option value="Lab Assistant">
+                                Lab Assistant
+                            </option>
+
+                            <option value="Rajasthan Police HC">
+                                Rajasthan Police HC
+                            </option>
+
+                            <option value="Rajasthan GK">
+                                Rajasthan GK
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TEST -->
+
+                    <div class="form-group">
+
+                        <label for="mcqTest">
+                            📝 Select Test
+                        </label>
+
+                        <select
+                            id="mcqTest"
+                            required>
+
+                            <option value="">
+                                Loading Tests...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="mcqCategory">
+                            Category / Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="mcqCategory"
+                            placeholder="जैसे Rajasthan History"
+                            required>
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="form-group">
+
+                        <label for="mcqSubject">
+                            Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="mcqSubject"
+                            placeholder="जैसे Rajasthan GK">
+
+                    </div>
+
+
+                    <!-- QUESTION -->
+
+                    <div class="form-group full-width">
+
+                        <label for="question">
+                            Question
+                        </label>
+
+                        <textarea
+                            id="question"
+                            placeholder="यहाँ प्रश्न लिखें..."
+                            required>
+                        </textarea>
+
+                    </div>
+
+
+                    <!-- OPTION A -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Option A
+                        </label>
+
+                        <div class="option-box">
+
+                            <div class="option-label">
+                                A
+                            </div>
+
+                            <input
+                                type="text"
+                                id="optionA"
+                                placeholder="Option A"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OPTION B -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Option B
+                        </label>
+
+                        <div class="option-box">
+
+                            <div class="option-label">
+                                B
+                            </div>
+
+                            <input
+                                type="text"
+                                id="optionB"
+                                placeholder="Option B"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OPTION C -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Option C
+                        </label>
+
+                        <div class="option-box">
+
+                            <div class="option-label">
+                                C
+                            </div>
+
+                            <input
+                                type="text"
+                                id="optionC"
+                                placeholder="Option C"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OPTION D -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Option D
+                        </label>
+
+                        <div class="option-box">
+
+                            <div class="option-label">
+                                D
+                            </div>
+
+                            <input
+                                type="text"
+                                id="optionD"
+                                placeholder="Option D"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CORRECT ANSWER -->
+
+                    <div class="form-group">
+
+                        <label for="correctAnswer">
+                            Correct Answer
+                        </label>
+
+                        <select
+                            id="correctAnswer"
+                            required>
+
+                            <option value="">
+                                Select Correct Answer
+                            </option>
+
+                            <option value="A">
+                                A
+                            </option>
+
+                            <option value="B">
+                                B
+                            </option>
+
+                            <option value="C">
+                                C
+                            </option>
+
+                            <option value="D">
+                                D
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MARKS -->
+
+                    <div class="form-group">
+
+                        <label for="marks">
+                            Marks
+                        </label>
+
+                        <input
+                            type="number"
+                            id="marks"
+                            value="1"
+                            min="1"
+                            required>
+
+                    </div>
+
+
+                    <!-- EXPLANATION -->
+
+                    <div class="form-group full-width">
+
+                        <label for="explanation">
+                            Explanation
+                        </label>
+
+                        <textarea
+                            id="explanation"
+                            placeholder="सही उत्तर का explanation लिखें...">
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    id="saveBtn">
+
+                    💾 Save MCQ
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelBtn"
+                    onclick="cancelEdit()">
+
+                    Cancel Edit
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- MCQ LIST -->
+
+        <section class="mcq-list">
+
+            <h3>
+                📋 All MCQs
+            </h3>
+
+
+            <div class="mcq-table-wrapper">
+
+                <table class="mcq-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Question
+                            </th>
+
+                            <th>
+                                Exam
+                            </th>
+
+                            <th>
+                                Test
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Correct
+                            </th>
+
+                            <th>
+                                Marks
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="mcqTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="loading">
+
+                                Checking Admin Access...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
+
+const SUPABASE_URL =
+    "https://xysgwtnclxpacmlgnmer.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let editingId = null;
+
+let testMap = {};
+
+
+/* =========================================
+   ADMIN ACCESS CHECK
+========================================= */
+
+async function checkAdminAccess() {
+
+    try {
+
+        const {
+            data: userData,
+            error: userError
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        /* USER LOGIN CHECK */
+
+        if (
+            userError ||
+            !userData ||
+            !userData.user
+        ) {
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return false;
+        }
+
+
+        const user =
+            userData.user;
+
+
+        /* ADMIN TABLE CHECK */
+
+        const {
+            data: adminData,
+            error: adminError
+        } =
+            await supabaseClient
+                .from("admin_users")
+                .select("id,email")
+                .eq("id", user.id)
+                .maybeSingle();
+
+
+        if (adminError) {
+
+            console.error(
+                "Admin verification error:",
+                adminError
+            );
+
+            alert(
+                "Admin verification failed."
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+            return false;
+        }
+
+
+        /* NOT ADMIN */
+
+        if (!adminData) {
+
+            alert(
+                "⛔ आपको Admin access नहीं है।"
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.replace(
+                "student-dashboard.html"
+            );
+
+            return false;
+        }
+
+
+        console.log(
+            "✅ Admin verified:",
+            adminData.email
+        );
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin access error:",
+            error
+        );
+
+        window.location.replace(
+            "admin-login.html"
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " + type;
+
+
+    message.style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   LOAD TESTS
+========================================= */
+
+async function loadTests() {
+
+    const testSelect =
+        document.getElementById(
+            "mcqTest"
+        );
+
+
+    testSelect.innerHTML =
+        `<option value="">
+            Loading Tests...
+        </option>`;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("tests")
+
+            .select(
+                "id, exam, name, status"
+            )
+
+            .eq(
+                "status",
+                "Active"
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+
+        testSelect.innerHTML =
+            `<option value="">
+                Unable to load tests
+            </option>`;
+
+
+        showMessage(
+            "Tests load नहीं हुए: " +
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        testSelect.innerHTML =
+            `<option value="">
+                No Active Test Found
+            </option>`;
+
+
+        return;
+
+    }
+
+
+    testSelect.innerHTML =
+        `<option value="">
+            Select Test
+        </option>`;
+
+
+    data.forEach(
+        test => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                test.id;
+
+
+            option.textContent =
+                `${test.exam} - ${test.name}`;
+
+
+            option.dataset.exam =
+                test.exam;
+
+
+            testSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LOAD TEST MAP
+========================================= */
+
+async function loadTestMap() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("tests")
+
+            .select(
+                "id, exam, name"
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    testMap = {};
+
+
+    if (!data) {
+        return;
+    }
+
+
+    data.forEach(
+        test => {
+
+            testMap[test.id] =
+                `${test.exam} - ${test.name}`;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   GET TEST NAME
+========================================= */
+
+function getTestName(testId) {
+
+    if (!testId) {
+
+        return "Not Assigned";
+
+    }
+
+
+    return (
+        testMap[testId] ||
+        "Test #" + testId
+    );
+
+}
+
+
+/* =========================================
+   LOAD MCQS
+========================================= */
+
+async function loadMCQs() {
+
+    const tbody =
+        document.getElementById(
+            "mcqTableBody"
+        );
+
+
+    tbody.innerHTML =
+        `<tr>
+            <td colspan="7" class="loading">
+                Loading MCQs...
+            </td>
+        </tr>`;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("mcqs")
+
+            .select(`
+                id,
+                question,
+                option_a,
+                option_b,
+                option_c,
+                option_d,
+                correct_option,
+                exam,
+                subject,
+                category,
+                correct_answer,
+                explanation,
+                test_id
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+
+        tbody.innerHTML =
+            `<tr>
+                <td colspan="7" class="loading">
+                    MCQs load नहीं हुए.
+                </td>
+            </tr>`;
+
+
+        showMessage(
+            "MCQs load नहीं हुए: " +
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        tbody.innerHTML =
+            `<tr>
+                <td colspan="7" class="loading">
+                    अभी कोई MCQ नहीं है.
+                </td>
+            </tr>`;
+
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        "";
+
+
+    data.forEach(
+        mcq => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const testName =
+                getTestName(
+                    mcq.test_id
+                );
+
+
+            row.innerHTML = `
+
+                <td style="max-width:300px;">
+                    ${escapeHtml(
+                        mcq.question
+                    )}
+                </td>
+
+
+                <td>
+                    <span class="exam-badge">
+                        ${escapeHtml(
+                            mcq.exam
+                        )}
+                    </span>
+                </td>
+
+
+                <td>
+                    <span class="test-badge">
+                        ${escapeHtml(
+                            testName
+                        )}
+                    </span>
+                </td>
+
+
+                <td>
+                    ${escapeHtml(
+                        mcq.category || "-"
+                    )}
+                </td>
+
+
+                <td>
+                    <span class="answer-badge">
+                        ${escapeHtml(
+                            mcq.correct_option || "-"
+                        )}
+                    </span>
+                </td>
+
+
+                <td>
+                    1
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="action-btn edit-btn"
+                        onclick="editMCQ('${mcq.id}')">
+
+                        Edit
+
+                    </button>
+
+
+                    <button
+                        class="action-btn delete-btn"
+                        onclick="deleteMCQ('${mcq.id}')">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SAVE / UPDATE MCQ
+========================================= */
+
+document.getElementById(
+    "mcqForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const exam =
+            document.getElementById(
+                "mcqExam"
+            ).value;
+
+
+        const testId =
+            document.getElementById(
+                "mcqTest"
+            ).value;
+
+
+        const category =
+            document.getElementById(
+                "mcqCategory"
+            )
+            .value
+            .trim();
+
+
+        const subject =
+            document.getElementById(
+                "mcqSubject"
+            )
+            .value
+            .trim();
+
+
+        const question =
+            document.getElementById(
+                "question"
+            )
+            .value
+            .trim();
+
+
+        const optionA =
+            document.getElementById(
+                "optionA"
+            )
+            .value
+            .trim();
+
+
+        const optionB =
+            document.getElementById(
+                "optionB"
+            )
+            .value
+            .trim();
+
+
+        const optionC =
+            document.getElementById(
+                "optionC"
+            )
+            .value
+            .trim();
+
+
+        const optionD =
+            document.getElementById(
+                "optionD"
+            )
+            .value
+            .trim();
+
+
+        const correctOption =
+            document.getElementById(
+                "correctAnswer"
+            ).value;
+
+
+        const explanation =
+            document.getElementById(
+                "explanation"
+            )
+            .value
+            .trim();
+
+
+        if (
+            !exam ||
+            !testId ||
+            !category ||
+            !question ||
+            !optionA ||
+            !optionB ||
+            !optionC ||
+            !optionD ||
+            !correctOption
+        ) {
+
+            showMessage(
+                "कृपया सभी required fields भरें.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+            IMPORTANT:
+
+            हमारे mcqs table में marks
+            column नहीं है, इसलिए marks
+            को database में भेज नहीं रहे हैं।
+
+            Test scoring में वर्तमान system
+            +1 / -1/3 इस्तेमाल करता है।
+        */
+
+
+        const mcqData = {
+
+            question:
+                question,
+
+            option_a:
+                optionA,
+
+            option_b:
+                optionB,
+
+            option_c:
+                optionC,
+
+            option_d:
+                optionD,
+
+            correct_option:
+                correctOption,
+
+            correct_answer:
+                correctOption,
+
+            exam:
+                exam,
+
+            subject:
+                subject || category,
+
+            category:
+                category,
+
+            explanation:
+                explanation,
+
+            test_id:
+                Number(testId)
+
+        };
+
+
+        const saveBtn =
+            document.getElementById(
+                "saveBtn"
+            );
+
+
+        saveBtn.disabled =
+            true;
+
+
+        saveBtn.textContent =
+            editingId
+                ? "Updating..."
+                : "Saving...";
+
+
+        let error;
+
+
+        /* =========================
+           UPDATE
+        ========================= */
+
+        if (editingId) {
+
+            const result =
+                await supabaseClient
+
+                    .from("mcqs")
+
+                    .update(
+                        mcqData
+                    )
+
+                    .eq(
+                        "id",
+                        editingId
+                    );
+
+
+            error =
+                result.error;
+
+        }
+
+
+        /* =========================
+           INSERT
+        ========================= */
+
+        else {
+
+            const result =
+                await supabaseClient
+
+                    .from("mcqs")
+
+                    .insert([
+                        mcqData
+                    ]);
+
+
+            error =
+                result.error;
+
+        }
+
+
+        saveBtn.disabled =
+            false;
+
+
+        saveBtn.textContent =
+            editingId
+                ? "💾 Update MCQ"
+                : "💾 Save MCQ";
+
+
+        if (error) {
+
+            console.error(error);
+
+
+            showMessage(
+                "MCQ save नहीं हुआ: " +
+                error.message,
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        showMessage(
+            editingId
+                ? "✅ MCQ successfully updated!"
+                : "✅ MCQ successfully saved!",
+            "success"
+        );
+
+
+        resetForm();
+
+
+        await loadTestMap();
+
+
+        await loadMCQs();
+
+    }
+);
+
+
+/* =========================================
+   EDIT MCQ
+========================================= */
+
+async function editMCQ(id) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from("mcqs")
+
+            .select(`
+                id,
+                question,
+                option_a,
+                option_b,
+                option_c,
+                option_d,
+                correct_option,
+                exam,
+                subject,
+                category,
+                explanation,
+                test_id
+            `)
+
+            .eq(
+                "id",
+                id
+            )
+
+            .single();
+
+
+    if (error) {
+
+        showMessage(
+            "MCQ load नहीं हुआ: " +
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    editingId =
+        id;
+
+
+    document.getElementById(
+        "mcqExam"
+    ).value =
+        data.exam || "";
+
+
+    document.getElementById(
+        "mcqTest"
+    ).value =
+        data.test_id || "";
+
+
+    document.getElementById(
+        "mcqCategory"
+    ).value =
+        data.category || "";
+
+
+    document.getElementById(
+        "mcqSubject"
+    ).value =
+        data.subject || "";
+
+
+    document.getElementById(
+        "question"
+    ).value =
+        data.question || "";
+
+
+    document.getElementById(
+        "optionA"
+    ).value =
+        data.option_a || "";
+
+
+    document.getElementById(
+        "optionB"
+    ).value =
+        data.option_b || "";
+
+
+    document.getElementById(
+        "optionC"
+    ).value =
+        data.option_c || "";
+
+
+    document.getElementById(
+        "optionD"
+    ).value =
+        data.option_d || "";
+
+
+    document.getElementById(
+        "correctAnswer"
+    ).value =
+        data.correct_option || "";
+
+
+    document.getElementById(
+        "explanation"
+    ).value =
+        data.explanation || "";
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "✏️ Edit MCQ";
+
+
+    document.getElementById(
+        "saveBtn"
+    ).textContent =
+        "💾 Update MCQ";
+
+
+    document.getElementById(
+        "cancelBtn"
+    ).style.display =
+        "inline-block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   DELETE MCQ
+========================================= */
+
+async function deleteMCQ(id) {
+
+    const confirmDelete =
+        confirm(
+            "क्या आप यह MCQ permanently delete करना चाहते हैं?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from("mcqs")
+
+            .delete()
+
+            .eq(
+                "id",
+                id
+            );
+
+
+    if (error) {
+
+        showMessage(
+            "MCQ delete नहीं हुआ: " +
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    showMessage(
+        "✅ MCQ successfully deleted!",
+        "success"
+    );
+
+
+    await loadMCQs();
+
+}
+
+
+/* =========================================
+   CANCEL EDIT
+========================================= */
+
+function cancelEdit() {
+
+    resetForm();
+
+}
+
+
+/* =========================================
+   RESET FORM
+========================================= */
+
+function resetForm() {
+
+    editingId =
+        null;
+
+
+    document.getElementById(
+        "mcqForm"
+    ).reset();
+
+
+    document.getElementById(
+        "marks"
+    ).value =
+        "1";
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "➕ Add New MCQ";
+
+
+    document.getElementById(
+        "saveBtn"
+    ).textContent =
+        "💾 Save MCQ";
+
+
+    document.getElementById(
+        "cancelBtn"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================================
+   AUTO SELECT EXAM
+   WHEN TEST CHANGES
+========================================= */
+
+document.getElementById(
+    "mcqTest"
+).addEventListener(
+    "change",
+    function() {
+
+        const selected =
+            this.selectedOptions[0];
+
+
+        if (
+            selected &&
+            selected.dataset.exam
+        ) {
+
+            document.getElementById(
+                "mcqExam"
+            ).value =
+                selected.dataset.exam;
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+async function init() {
+
+    /*
+        पहले Admin verify होगा।
+        Admin verified होने के बाद ही
+        Tests और MCQs load होंगे।
+    */
+
+    const isAdmin =
+        await checkAdminAccess();
+
+
+    if (!isAdmin) {
+
+        return;
+
+    }
+
+
+    await loadTests();
+
+
+    await loadTestMap();
+
+
+    await loadMCQs();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        init();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Add Note | RajEdge Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #0b376e;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: #082f63;
+      color: white;
+      padding: 20px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      margin-top: 5px;
+      color: #dceaff;
+    }
+
+    .back-btn {
+      background: #ffd000;
+      color: #082f63;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .description {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #163f70;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccd5e0;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0b64c0;
+    }
+
+    .file-box {
+      border: 2px dashed #b8c7d9;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      background: #f8fbff;
+    }
+
+    .file-box input {
+      border: none;
+      padding: 10px 0;
+      background: transparent;
+    }
+
+    .file-info {
+      margin-top: 10px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #0b64c0;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 9px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: #084f99;
+    }
+
+    .submit-btn:disabled {
+      background: #9aa9b8;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .success {
+      background: #e5f8eb;
+      color: #176b32;
+      border: 1px solid #a9dfb7;
+    }
+
+    .error {
+      background: #ffe9e9;
+      color: #a71919;
+      border: 1px solid #efaaaa;
+    }
+
+    .note {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff8d9;
+      border-left: 4px solid #ffd000;
+      border-radius: 7px;
+      color: #654f00;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #0b64c0;
+    }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+
+      <div>
+        <div class="brand">🛡️ RajEdge Admin</div>
+        <div class="subtitle">Rajasthan Education Hub</div>
+      </div>
+
+      <button class="back-btn" onclick="goBack()">
+        ← Dashboard
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <div class="card">
+
+      <h1>📄 Add New Note / PDF</h1>
+
+      <p class="description">
+        यहाँ से students के लिए PDF Notes upload करें।
+      </p>
+
+
+      <!-- TITLE -->
+      <div class="form-group">
+
+        <label for="title">
+          📚 Note / PDF Title
+        </label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="जैसे: Rajasthan Geography Complete Notes"
+        >
+
+      </div>
+
+
+      <!-- CATEGORY -->
+      <div class="form-group">
+
+        <label for="category">
+          🎯 Exam / Category
+        </label>
+
+        <select id="category">
+
+          <option value="">
+            -- Select Exam --
+          </option>
+
+          <option value="REET">
+            REET
+          </option>
+
+          <option value="CET">
+            CET
+          </option>
+
+          <option value="LDC">
+            LDC
+          </option>
+
+          <option value="VDO">
+            VDO
+          </option>
+
+          <option value="Lab Assistant">
+            Lab Assistant
+          </option>
+
+          <option value="Rajasthan Police HC">
+            Rajasthan Police HC
+          </option>
+
+          <option value="Rajasthan GK">
+            Rajasthan GK
+          </option>
+
+          <option value="Current Affairs">
+            Current Affairs
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PDF -->
+      <div class="form-group">
+
+        <label for="pdfFile">
+          📎 Select PDF File
+        </label>
+
+        <div class="file-box">
+
+          <input
+            type="file"
+            id="pdfFile"
+            accept="application/pdf,.pdf"
+          >
+
+          <div class="file-info" id="fileInfo">
+            केवल PDF file select करें
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SUBMIT -->
+      <button
+        class="submit-btn"
+        id="uploadBtn"
+        onclick="uploadPDF()"
+      >
+        📤 Upload PDF
+      </button>
+
+
+      <!-- LOADING -->
+      <div class="loading" id="loading">
+        ⏳ PDF upload हो रही है... कृपया wait करें।
+      </div>
+
+
+      <!-- MESSAGE -->
+      <div id="message" class="message"></div>
+
+
+      <div class="note">
+        <strong>Important:</strong><br>
+        PDF पहले Supabase Storage के <b>
