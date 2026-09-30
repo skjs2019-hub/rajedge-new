@@ -2,552 +2,645 @@
 <html lang="hi">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>My Tests | RajEdge</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
-
-        .tests-page {
-            background: #f5f8fc;
-            min-height: 100vh;
+        :root{
+            --primary:#052a5b;
+            --primary2:#0b4b88;
+            --accent:#f5c542;
+            --bg:#f5f8fc;
+            --text:#142033;
+            --muted:#667085;
+            --border:#e6ebf2;
+            --white:#fff;
+            --success:#16803c;
+            --danger:#d62828;
         }
 
-        .tests-wrapper {
-            max-width: 1200px;
-            margin: auto;
-            padding: 35px 20px;
+        *{box-sizing:border-box;}
+
+        html,body{
+            margin:0;
+            padding:0;
+            background:var(--bg);
+            color:var(--text);
+            font-family:Arial,Helvetica,sans-serif;
         }
 
-        .page-title {
-            background: linear-gradient(
-                135deg,
-                #052a5b,
-                #0b4b88
-            );
-            color: white;
-            padding: 30px;
-            border-radius: 18px;
-            margin-bottom: 25px;
+        body{padding-bottom:78px;}
+
+        a{text-decoration:none;}
+
+        .tests-page{
+            min-height:100vh;
+            background:linear-gradient(180deg,#eef4fb 0,#f7f9fc 260px,#f5f8fc 100%);
         }
 
-        .page-title h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
+        /* HEADER */
+        .header{
+            position:sticky;
+            top:0;
+            z-index:50;
+            background:rgba(255,255,255,.94);
+            backdrop-filter:blur(12px);
+            border-bottom:1px solid rgba(5,42,91,.08);
         }
 
-        .page-title p {
-            margin: 0;
-            opacity: .9;
+        .container{
+            width:min(1180px,100%);
+            margin:auto;
+            padding:0 16px;
         }
 
-        .tests-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 25px;
+        .nav-container{
+            min-height:66px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
         }
 
-        .sidebar {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
-            height: fit-content;
+        .logo-box{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:var(--primary);
         }
 
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #052a5b;
-            margin-bottom: 15px;
+        .logo-icon{
+            width:42px;
+            height:42px;
+            border-radius:13px;
+            display:grid;
+            place-items:center;
+            background:linear-gradient(135deg,var(--primary),var(--primary2));
+            color:white;
+            font-size:22px;
+            box-shadow:0 6px 15px rgba(5,42,91,.18);
         }
 
-        .side-link {
-            display: block;
-            padding: 13px 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            color: #333;
-            text-decoration: none;
-            font-weight: 600;
+        .logo-text{
+            font-size:21px;
+            font-weight:800;
+            line-height:1;
         }
 
-        .side-link:hover,
-        .side-link.active {
-            background: #fff4c2;
-            color: #052a5b;
+        .logo-text span{color:#0b6dcc;}
+
+        .logo-subtitle{
+            margin-top:4px;
+            color:#7a8494;
+            font-size:10px;
         }
 
-        .logout-btn {
-            color: #d62828;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            font-size: inherit;
-            font-family: inherit;
+        .btn-login{
+            background:var(--primary);
+            color:#fff;
+            padding:9px 14px;
+            border-radius:10px;
+            font-size:13px;
+            font-weight:700;
         }
 
-        .tests-content {
-            display: grid;
-            gap: 20px;
+        /* MAIN */
+        .tests-wrapper{
+            width:min(1180px,100%);
+            margin:auto;
+            padding:16px;
         }
 
-        .section-card {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        .page-title{
+            position:relative;
+            overflow:hidden;
+            background:linear-gradient(135deg,#052a5b,#0b4b88);
+            color:white;
+            padding:22px 18px;
+            border-radius:22px;
+            margin-bottom:16px;
+            box-shadow:0 12px 30px rgba(5,42,91,.16);
         }
 
-        .section-card h2 {
-            margin-top: 0;
-            color: #052a5b;
+        .page-title:after{
+            content:"";
+            position:absolute;
+            width:150px;
+            height:150px;
+            border-radius:50%;
+            right:-55px;
+            top:-70px;
+            background:rgba(255,255,255,.08);
         }
 
-        .test-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
+        .page-title h1{
+            position:relative;
+            z-index:1;
+            margin:0 0 7px;
+            font-size:26px;
         }
 
-        .test-card {
-            border: 1px solid #e5eaf1;
-            border-radius: 15px;
-            padding: 20px;
-            transition: .2s;
+        .page-title p{
+            position:relative;
+            z-index:1;
+            margin:0;
+            opacity:.9;
+            font-size:13px;
+            line-height:1.55;
         }
 
-        .test-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        .tests-layout{display:block;}
+
+        .sidebar{display:none;}
+
+        .tests-content{
+            display:grid;
+            gap:14px;
         }
 
-        .test-icon {
-            font-size: 35px;
-            margin-bottom: 10px;
+        .section-card{
+            background:#fff;
+            padding:17px;
+            border-radius:18px;
+            border:1px solid rgba(5,42,91,.05);
+            box-shadow:0 6px 22px rgba(16,24,40,.06);
         }
 
-        .test-card h3 {
-            color: #052a5b;
-            margin: 5px 0 10px;
+        .section-head{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin-bottom:13px;
         }
 
-        .test-card p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
+        .section-card h2{
+            margin:0;
+            color:var(--primary);
+            font-size:19px;
         }
 
-        .test-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
+        .count-badge{
+            background:#eef5ff;
+            color:var(--primary2);
+            border-radius:20px;
+            padding:6px 10px;
+            font-size:11px;
+            font-weight:800;
+            white-space:nowrap;
         }
 
-        .test-info span {
-            background: #f3f6fa;
-            color: #444;
-            padding: 6px 10px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: 600;
+        /* TEST CARDS */
+        .test-grid{
+            display:grid;
+            grid-template-columns:1fr;
+            gap:12px;
         }
 
-        .test-status {
-            display: inline-block;
-            background: #e8f7ee;
-            color: #16803c;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .test-card{
+            position:relative;
+            border:1px solid var(--border);
+            border-radius:17px;
+            padding:15px;
+            background:#fff;
+            box-shadow:0 3px 12px rgba(16,24,40,.035);
+            overflow:hidden;
         }
 
-        .test-btn {
-            display: inline-block;
-            background: #052a5b;
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 5px;
+        .test-card:before{
+            content:"";
+            position:absolute;
+            left:0;
+            top:0;
+            bottom:0;
+            width:4px;
+            background:linear-gradient(180deg,#0b4b88,#6ca7e8);
         }
 
-        .test-btn:hover {
-            background: #0b4b88;
+        .test-top{
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap:10px;
         }
 
+        .test-icon{
+            width:48px;
+            height:48px;
+            flex:0 0 48px;
+            display:grid;
+            place-items:center;
+            border-radius:14px;
+            background:#eef5ff;
+            font-size:25px;
+        }
+
+        .test-status{
+            display:inline-flex;
+            align-items:center;
+            background:#eaf8ef;
+            color:var(--success);
+            padding:5px 9px;
+            border-radius:20px;
+            font-size:10px;
+            font-weight:800;
+        }
+
+        .exam-name{
+            color:#0b4b88;
+            font-weight:800;
+            font-size:11px;
+            margin-top:11px;
+            text-transform:uppercase;
+            letter-spacing:.3px;
+        }
+
+        .test-card h3{
+            color:var(--primary);
+            margin:5px 0;
+            font-size:17px;
+            line-height:1.35;
+        }
+
+        .test-card p{
+            color:var(--muted);
+            font-size:12px;
+            line-height:1.55;
+            margin:0;
+        }
+
+        .test-info{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:6px;
+            margin:12px 0;
+        }
+
+        .test-info span{
+            background:#f5f7fa;
+            color:#4b5563;
+            padding:7px 5px;
+            border-radius:8px;
+            font-size:9px;
+            font-weight:700;
+            text-align:center;
+        }
+
+        .test-btn{
+            width:100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,var(--primary),var(--primary2));
+            color:white;
+            padding:11px 14px;
+            border-radius:11px;
+            font-size:13px;
+            font-weight:800;
+            box-shadow:0 5px 12px rgba(5,42,91,.14);
+        }
+
+        .test-btn:active{transform:scale(.98);}
+
+        /* COMMON STATES */
         .loading-box,
         .empty-box,
-        .error-box {
-            text-align: center;
-            padding: 35px 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            color: #666;
+        .error-box{
+            text-align:center;
+            padding:30px 15px;
+            border-radius:14px;
+            color:#667085;
+            background:#f8fafc;
+            font-size:13px;
+            line-height:1.6;
         }
 
-        .error-box {
-            color: #c62828;
-            background: #fff1f1;
+        .error-box{
+            color:#c62828;
+            background:#fff1f1;
+            border:1px solid #ffcaca;
         }
 
-        .history-table-wrapper {
-            overflow-x: auto;
+        .purchase-box{
+            background:#fff8df;
+            border:1px solid #f1d66a;
+            padding:28px 17px;
+            border-radius:15px;
+            text-align:center;
         }
 
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
+        .purchase-box h3{
+            color:var(--primary);
+            margin:9px 0;
+            font-size:18px;
+        }
+
+        .purchase-box p{
+            color:#666;
+            line-height:1.6;
+            font-size:13px;
+        }
+
+        .purchase-btn{
+            display:inline-flex;
+            margin-top:8px;
+            background:var(--primary);
+            color:white;
+            padding:11px 17px;
+            border-radius:10px;
+            font-weight:800;
+            font-size:13px;
+        }
+
+        .negative-note{
+            margin-top:13px;
+            padding:11px 12px;
+            background:#fff8df;
+            border-radius:10px;
+            color:#765c00;
+            font-size:11px;
+            line-height:1.5;
+        }
+
+        /* HISTORY */
+        .history-table-wrapper{
+            overflow-x:auto;
+            -webkit-overflow-scrolling:touch;
+            border:1px solid var(--border);
+            border-radius:12px;
+        }
+
+        .history-table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:650px;
         }
 
         .history-table th,
-        .history-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e5eaf1;
-            text-align: left;
-            font-size: 14px;
+        .history-table td{
+            padding:11px 10px;
+            border-bottom:1px solid var(--border);
+            text-align:left;
+            font-size:12px;
         }
 
-        .history-table th {
-            background: #f7f9fc;
-            color: #052a5b;
+        .history-table th{
+            background:#f7f9fc;
+            color:var(--primary);
+            font-size:11px;
         }
 
-        .score-good {
-            color: #16803c;
-            font-weight: 700;
+        .history-table tr:last-child td{border-bottom:0;}
+
+        .score-good{
+            color:var(--success);
+            font-weight:800;
         }
 
-        .score-low {
-            color: #d62828;
-            font-weight: 700;
+        .score-low{
+            color:var(--danger);
+            font-weight:800;
         }
 
-        .history-btn {
-            display: inline-block;
-            background: #052a5b;
-            color: white;
-            padding: 7px 12px;
-            border-radius: 7px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
+        .history-btn{
+            display:inline-flex;
+            background:var(--primary);
+            color:white;
+            padding:7px 10px;
+            border-radius:7px;
+            font-size:10px;
+            font-weight:700;
+            white-space:nowrap;
         }
 
-        .negative-note {
-            margin-top: 15px;
-            padding: 12px 15px;
-            background: #fff8df;
-            border-radius: 10px;
-            color: #765c00;
-            font-size: 13px;
+        /* BOTTOM NAV */
+        .mobile-bottom-nav{
+            position:fixed;
+            left:10px;
+            right:10px;
+            bottom:10px;
+            z-index:100;
+            height:64px;
+            background:rgba(255,255,255,.96);
+            backdrop-filter:blur(15px);
+            border:1px solid rgba(5,42,91,.08);
+            border-radius:18px;
+            box-shadow:0 10px 30px rgba(16,24,40,.15);
+            display:grid;
+            grid-template-columns:repeat(5,1fr);
+            align-items:center;
         }
 
-        .purchase-box {
-            background: #fff8df;
-            border: 1px solid #f1d66a;
-            padding: 25px;
-            border-radius: 14px;
-            text-align: center;
+        .mobile-bottom-nav a{
+            height:100%;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            gap:3px;
+            color:#7b8494;
+            font-size:9px;
+            font-weight:700;
         }
 
-        .purchase-box h3 {
-            color: #052a5b;
-            margin-top: 0;
+        .mobile-bottom-nav .nav-icon{
+            font-size:19px;
+            line-height:1;
         }
 
-        .purchase-box p {
-            color: #666;
-            line-height: 1.6;
+        .mobile-bottom-nav a.active{
+            color:var(--primary2);
         }
 
-        .purchase-btn {
-            display: inline-block;
-            margin-top: 10px;
-            background: #052a5b;
-            color: white;
-            text-decoration: none;
-            padding: 11px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-        }
+        /* DESKTOP */
+        @media(min-width:801px){
+            body{padding-bottom:0;}
 
-        .purchase-btn:hover {
-            background: #0b4b88;
-        }
+            .mobile-bottom-nav{display:none;}
 
-        .exam-name {
-            color: #0b4b88;
-            font-weight: 700;
-        }
+            .tests-wrapper{padding:30px 20px;}
 
-        @media(max-width: 800px) {
+            .page-title{padding:30px;}
 
-            .tests-layout {
-                grid-template-columns: 1fr;
+            .page-title h1{font-size:30px;}
+
+            .tests-layout{
+                display:grid;
+                grid-template-columns:230px 1fr;
+                gap:20px;
             }
 
-            .test-grid {
-                grid-template-columns: 1fr;
+            .sidebar{
+                display:block;
+                background:white;
+                border-radius:18px;
+                padding:17px;
+                height:max-content;
+                box-shadow:0 6px 22px rgba(16,24,40,.06);
+                position:sticky;
+                top:86px;
             }
 
-            .page-title h1 {
-                font-size: 25px;
+            .sidebar-title{
+                font-size:17px;
+                font-weight:800;
+                color:var(--primary);
+                margin-bottom:12px;
             }
 
-            .tests-wrapper {
-                padding: 25px 15px;
+            .side-link{
+                display:block;
+                padding:11px 12px;
+                margin-bottom:6px;
+                border-radius:10px;
+                color:#344054;
+                font-size:13px;
+                font-weight:700;
             }
 
+            .side-link:hover,
+            .side-link.active{
+                background:#fff4c2;
+                color:var(--primary);
+            }
+
+            .logout-btn{
+                color:#d62828;
+                cursor:pointer;
+                border:0;
+                background:transparent;
+                width:100%;
+                text-align:left;
+                font-family:inherit;
+            }
+
+            .test-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+                gap:15px;
+            }
+
+            .test-btn{width:auto;}
+
+            .test-info{grid-template-columns:repeat(3,1fr);}
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <div class="tests-page">
 
-
-    <!-- HEADER -->
-
     <header class="header">
-
         <div class="container nav-container">
 
-            <a
-                href="index.html"
-                class="logo-box">
-
-                <div class="logo-icon">
-                    📚
-                </div>
-
+            <a href="student-dashboard.html" class="logo-box">
+                <div class="logo-icon">📚</div>
                 <div>
-
-                    <div class="logo-text">
-                        Raj<span>Edge</span>
-                    </div>
-
-                    <div class="logo-subtitle">
-                        Rajasthan Education Hub
-                    </div>
-
+                    <div class="logo-text">Raj<span>Edge</span></div>
+                    <div class="logo-subtitle">Rajasthan Education Hub</div>
                 </div>
-
             </a>
 
-
-            <a
-                href="index.html"
-                class="btn-login">
-
-                Home
-
+            <a href="student-dashboard.html" class="btn-login">
+                Dashboard
             </a>
 
         </div>
-
     </header>
-
-
-
-    <!-- MAIN -->
 
     <main class="tests-wrapper">
 
-
         <div class="page-title">
-
-            <h1>
-                📝 My Tests
-            </h1>
-
-            <p>
-                अपनी खरीदी हुई Test Series के tests देकर अपनी performance check करें।
-            </p>
-
+            <h1>📝 My Tests</h1>
+            <p>अपनी खरीदी हुई Test Series के tests देकर अपनी performance check करें।</p>
         </div>
-
-
 
         <div class="tests-layout">
 
-
-            <!-- SIDEBAR -->
-
             <aside class="sidebar">
 
-                <div class="sidebar-title">
-                    Student Panel
-                </div>
+                <div class="sidebar-title">Student Panel</div>
 
-
-                <a
-                    href="student-dashboard.html"
-                    class="side-link">
-
+                <a href="student-dashboard.html" class="side-link">
                     🏠 Dashboard
-
                 </a>
 
-
-                <a
-                    href="student-courses.html"
-                    class="side-link">
-
+                <a href="student-courses.html" class="side-link">
                     📚 My Courses
-
                 </a>
 
-
-                <a
-                    href="student-tests.html"
-                    class="side-link active">
-
+                <a href="student-tests.html" class="side-link active">
                     📝 My Tests
-
                 </a>
 
-
-                <a
-                    href="student-notes.html"
-                    class="side-link">
-
+                <a href="student-notes.html" class="side-link">
                     📄 My Notes
-
                 </a>
 
-
-                <a
-                    href="student-results.html"
-                    class="side-link">
-
+                <a href="student-results.html" class="side-link">
                     📊 My Results
-
                 </a>
 
-
-                <a
-                    href="student-profile.html"
-                    class="side-link">
-
+                <a href="student-profile.html" class="side-link">
                     👤 My Profile
-
                 </a>
 
-
-                <button
-                    type="button"
-                    id="logoutBtn"
-                    class="side-link logout-btn">
-
+                <button type="button" id="logoutBtn" class="side-link logout-btn">
                     🚪 Logout
-
                 </button>
 
             </aside>
 
-
-
-            <!-- CONTENT -->
-
             <section class="tests-content">
 
-
-                <!-- AVAILABLE TESTS -->
-
                 <div class="section-card">
 
-                    <h2>
-                        🎯 Available Tests
-                    </h2>
+                    <div class="section-head">
+                        <h2>🎯 Available Tests</h2>
+                        <span class="count-badge" id="testCount">Loading...</span>
+                    </div>
 
+                    <div id="testGrid" class="test-grid">
 
-                    <div
-                        id="testGrid"
-                        class="test-grid">
-
-                        <div class="loading-box">
-
+                        <div class="loading-box" style="grid-column:1/-1;">
                             ⏳ आपकी Test Series check हो रही है...
-
                         </div>
 
                     </div>
-
 
                     <div class="negative-note">
-
-                        ⚠️
-                        <strong>
-                            Negative Marking:
-                        </strong>
-
+                        ⚠️ <strong>Negative Marking:</strong>
                         सही उत्तर = +1 अंक,
-
                         गलत उत्तर = −1/3 अंक,
-
                         Unattempted = 0 अंक।
-
                     </div>
 
                 </div>
 
-
-
-                <!-- TEST HISTORY -->
-
                 <div class="section-card">
 
-                    <h2>
-                        📊 My Test History
-                    </h2>
-
+                    <div class="section-head">
+                        <h2>📊 My Test History</h2>
+                        <span class="count-badge" id="historyCount">Loading...</span>
+                    </div>
 
                     <div id="historyContainer">
-
                         <div class="loading-box">
-
                             ⏳ Test history loading...
-
                         </div>
-
                     </div>
 
                 </div>
 
-
-
-                <!-- INFO -->
-
                 <div class="section-card">
 
-                    <h2>
-                        💡 Test Series
-                    </h2>
+                    <h2>💡 Test Series</h2>
 
-
-                    <div class="empty-box">
+                    <div class="empty-box" style="margin-top:13px;">
 
                         <p>
                             ✅ Tests आपके खरीदे हुए Test Series के अनुसार दिखाई देंगे।
@@ -561,36 +654,50 @@
 
                 </div>
 
-
             </section>
-
         </div>
-
     </main>
-
 </div>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Student navigation">
 
+    <a href="student-dashboard.html">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+    </a>
+
+    <a href="student-courses.html">
+        <span class="nav-icon">📚</span>
+        <span>Courses</span>
+    </a>
+
+    <a href="student-tests.html" class="active">
+        <span class="nav-icon">📝</span>
+        <span>Tests</span>
+    </a>
+
+    <a href="student-notes.html">
+        <span class="nav-icon">📄</span>
+        <span>Notes</span>
+    </a>
+
+    <a href="student-profile.html">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+    </a>
+
+</nav>
 
 <!-- SUPABASE -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
-
-
-// ==========================================
-// SUPABASE
-// ==========================================
-
 const SUPABASE_URL =
     "https://xysgwtnclxpacmlgnmer.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -598,128 +705,74 @@ const supabaseClient =
         SUPABASE_KEY
     );
 
-
-
-// ==========================================
-// ESCAPE HTML
-// ==========================================
-
 function escapeHtml(value) {
-
     return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
 }
-
-
-
-// ==========================================
-// CURRENT USER
-// ==========================================
 
 async function getCurrentUser() {
 
     const {
         data,
         error
-    } =
-    await supabaseClient.auth.getUser();
-
+    } = await supabaseClient.auth.getUser();
 
     if (
         error ||
         !data ||
         !data.user
     ) {
-
         window.location.href =
             "student-login.html";
 
         return null;
-
     }
 
-
     return data.user;
-
 }
 
-
-
-// ==========================================
-// GET PAID TEST SERIES COURSES
-// ==========================================
-
-async function getPurchasedTestSeries(
-    user
-) {
+async function getPurchasedTestSeries(user) {
 
     const {
         data,
         error
-    } =
-    await supabaseClient
+    } = await supabaseClient
         .from("enrollments")
         .select(`
             course_id,
             purchase_type,
             payment_status
         `)
-        .eq(
-            "student_id",
-            user.id
-        )
-        .eq(
-            "purchase_type",
-            "test_series"
-        )
-        .eq(
-            "payment_status",
-            "paid"
-        );
-
+        .eq("student_id", user.id)
+        .eq("purchase_type", "test_series")
+        .eq("payment_status", "paid");
 
     if(error){
-
-        console.error(
-            "Enrollment Error:",
-            error
-        );
-
+        console.error("Enrollment Error:", error);
         throw error;
-
     }
-
 
     const courseIds =
         [
             ...new Set(
                 (data || [])
-                    .map(
-                        item =>
-                            item.course_id
-                    )
+                    .map(item => item.course_id)
                     .filter(Boolean)
             )
         ];
 
-
     if(courseIds.length === 0){
-
         return [];
-
     }
-
 
     const {
         data:courses,
         error:courseError
-    } =
-    await supabaseClient
+    } = await supabaseClient
         .from("courses")
         .select(`
             id,
@@ -727,102 +780,59 @@ async function getPurchasedTestSeries(
             slug,
             is_active
         `)
-        .in(
-            "id",
-            courseIds
-        );
-
+        .in("id", courseIds);
 
     if(courseError){
-
-        console.error(
-            "Course Error:",
-            courseError
-        );
-
+        console.error("Course Error:", courseError);
         throw courseError;
-
     }
 
-
-    return (
-        courses || []
-    )
-    .filter(
-        course =>
-            course.is_active !== false
-    );
-
+    return (courses || [])
+        .filter(course => course.is_active !== false);
 }
-
-
-
-// ==========================================
-// LOAD AVAILABLE TESTS
-// ==========================================
 
 async function loadTests(user) {
 
     const grid =
-        document.getElementById(
-            "testGrid"
-        );
+        document.getElementById("testGrid");
 
+    const count =
+        document.getElementById("testCount");
 
     grid.innerHTML = `
-
-        <div class="loading-box">
-
+        <div class="loading-box" style="grid-column:1/-1;">
             ⏳ आपकी खरीदी हुई Test Series check हो रही है...
-
         </div>
-
     `;
 
+    count.textContent = "Loading...";
 
     let purchasedCourses;
-
 
     try {
 
         purchasedCourses =
-            await getPurchasedTestSeries(
-                user
-            );
+            await getPurchasedTestSeries(user);
 
     } catch(error){
 
+        count.textContent = "Error";
+
         grid.innerHTML = `
-
-            <div
-                class="error-box"
-                style="grid-column:1/-1;">
-
+            <div class="error-box" style="grid-column:1/-1;">
                 ❌ Test Series information load नहीं हो सकी।
-
             </div>
-
         `;
 
         return;
-
     }
 
+    if(purchasedCourses.length === 0){
 
-
-    // ======================================
-    // NO PURCHASE
-    // ======================================
-
-    if(
-        purchasedCourses.length === 0
-    ){
+        count.textContent = "0 Tests";
 
         grid.innerHTML = `
-
-            <div
-                class="purchase-box"
-                style="grid-column:1/-1;">
+            <div class="purchase-box" style="grid-column:1/-1;">
 
                 <div style="font-size:45px;">
                     🔒
@@ -833,69 +843,31 @@ async function loadTests(user) {
                 </h3>
 
                 <p>
-
-                    Tests attempt करने के लिए पहले
-                    अपने exam की
-                    <strong>
-                        Full Test Series
-                    </strong>
-                    purchase करें।
-
+                    Tests attempt करने के लिए पहले अपने exam की
+                    <strong>Full Test Series</strong> purchase करें।
                 </p>
 
-                <a
-                    href="student-courses.html"
-                    class="purchase-btn">
-
+                <a href="student-courses.html" class="purchase-btn">
                     📚 My Courses पर जाएँ
-
                 </a>
 
             </div>
-
         `;
 
         return;
-
     }
-
-
 
     const purchasedExamNames =
         purchasedCourses
-            .map(
-                course =>
-                    String(
-                        course.name || ""
-                    )
-                    .trim()
+            .map(course =>
+                String(course.name || "").trim()
             )
             .filter(Boolean);
-
-
-
-    // ======================================
-    // FETCH TESTS
-    // ======================================
-
-    /*
-       IMPORTANT:
-
-       tests table पर RLS लगी हुई है।
-
-       इसलिए database केवल उन्हीं tests को
-       return करेगा जिनके exam/course के लिए
-       current student के पास paid test-series
-       enrollment है।
-
-       Frontend filter केवल extra UI protection है।
-    */
 
     const {
         data:tests,
         error:testError
-    } =
-    await supabaseClient
+    } = await supabaseClient
         .from("tests")
         .select(`
             id,
@@ -908,290 +880,169 @@ async function loadTests(user) {
             description,
             created_at
         `)
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        )
+        .order("created_at", {ascending:false})
         .limit(100);
-
 
     if(testError){
 
-        console.error(
-            "Tests Error:",
-            testError
-        );
+        console.error("Tests Error:", testError);
 
+        count.textContent = "Error";
 
         grid.innerHTML = `
-
-            <div
-                class="error-box"
-                style="grid-column:1/-1;">
-
+            <div class="error-box" style="grid-column:1/-1;">
                 ❌ Tests load नहीं हो सके।
-
             </div>
-
         `;
 
         return;
-
     }
-
-
-
-    // ======================================
-    // ACTIVE TESTS
-    // ======================================
 
     const activeTests =
         (tests || [])
-            .filter(
-                test =>
-
-                    String(
-                        test.status || ""
-                    )
+            .filter(test =>
+                String(test.status || "")
                     .trim()
-                    .toLowerCase()
-                    === "active"
+                    .toLowerCase() === "active"
             );
 
-
-
-    // ======================================
-    // PURCHASED COURSE MATCH
-    // ======================================
-
     const purchasedTests =
-        activeTests.filter(
-            test => {
+        activeTests.filter(test => {
 
-                const testExam =
-                    String(
-                        test.exam || ""
-                    )
+            const testExam =
+                String(test.exam || "")
                     .trim()
                     .toLowerCase();
 
+            return purchasedExamNames.some(examName =>
+                String(examName)
+                    .trim()
+                    .toLowerCase() === testExam
+            );
+        });
 
-                return purchasedExamNames.some(
-                    examName =>
+    if(purchasedTests.length === 0){
 
-                        String(
-                            examName
-                        )
-                        .trim()
-                        .toLowerCase()
-                        === testExam
-                );
-
-            }
-        );
-
-
-
-    // ======================================
-    // NO ACTIVE TEST
-    // ======================================
-
-    if(
-        purchasedTests.length === 0
-    ){
+        count.textContent = "0 Tests";
 
         grid.innerHTML = `
-
-            <div
-                class="empty-box"
-                style="grid-column:1/-1;">
+            <div class="empty-box" style="grid-column:1/-1;">
 
                 <div style="font-size:40px;">
                     📝
                 </div>
 
                 <p>
-
                     आपकी purchased Test Series उपलब्ध है,
                     लेकिन अभी उसके लिए कोई Active Test नहीं बनाया गया है।
-
                 </p>
 
                 <p>
-
-                    <strong>
-                        Purchased Exams:
-                    </strong>
-
-                    ${purchasedExamNames
-                        .map(
-                            escapeHtml
-                        )
-                        .join(", ")}
-
+                    <strong>Purchased Exams:</strong>
+                    ${purchasedExamNames.map(escapeHtml).join(", ")}
                 </p>
 
             </div>
-
         `;
 
         return;
-
     }
 
-
-
-    // ======================================
-    // DISPLAY TESTS
-    // ======================================
+    count.textContent =
+        `${purchasedTests.length} ${
+            purchasedTests.length === 1
+                ? "Test"
+                : "Tests"
+        }`;
 
     grid.innerHTML = "";
 
+    purchasedTests.forEach(test => {
 
-    purchasedTests.forEach(
-        test => {
+        const card =
+            document.createElement("div");
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+        card.className = "test-card";
 
+        const icon =
+            getTestIcon(test.exam);
 
-            card.className =
-                "test-card";
+        const description =
+            test.description ||
+            `${test.exam || "Exam"} परीक्षा के लिए practice test।`;
 
+        card.innerHTML = `
 
-            const icon =
-                getTestIcon(
-                    test.exam
-                );
-
-
-            const description =
-                test.description ||
-                `${test.exam || "Exam"} परीक्षा के लिए practice test।`;
-
-
-            card.innerHTML = `
+            <div class="test-top">
 
                 <div class="test-icon">
                     ${icon}
                 </div>
 
-
                 <span class="test-status">
-                    ✓ Test Series Active
+                    ✓ Series Active
                 </span>
 
+            </div>
 
-                <div class="exam-name">
+            <div class="exam-name">
+                ${escapeHtml(test.exam)}
+            </div>
 
-                    ${escapeHtml(
-                        test.exam
-                    )}
+            <h3>
+                ${escapeHtml(test.name || "Test")}
+            </h3>
 
-                </div>
+            <p>
+                ${escapeHtml(description)}
+            </p>
 
+            <div class="test-info">
 
-                <h3>
+                <span>
+                    📋 ${Number(test.question_count || 0)}
+                    Questions
+                </span>
 
-                    ${escapeHtml(
-                        test.name ||
-                        "Test"
-                    )}
+                <span>
+                    ⏱️ ${Number(test.time_limit || 0)}
+                    Minutes
+                </span>
 
-                </h3>
+                <span>
+                    🎯 ${calculateMarks(test.question_count)}
+                    Marks
+                </span>
 
+            </div>
 
-                <p>
+            <a
+                href="start-test.html?test_id=${encodeURIComponent(test.id)}"
+                class="test-btn">
 
-                    ${escapeHtml(
-                        description
-                    )}
+                ▶ Start Test →
 
-                </p>
+            </a>
 
+        `;
 
-                <div class="test-info">
+        grid.appendChild(card);
 
-                    <span>
-
-                        📋
-                        ${Number(
-                            test.question_count || 0
-                        )}
-                        Questions
-
-                    </span>
-
-
-                    <span>
-
-                        ⏱️
-                        ${Number(
-                            test.time_limit || 0
-                        )}
-                        Minutes
-
-                    </span>
-
-
-                    <span>
-
-                        🎯
-                        ${calculateMarks(
-                            test.question_count
-                        )}
-                        Marks
-
-                    </span>
-
-                </div>
-
-
-                <a
-                    href="start-test.html?test_id=${encodeURIComponent(
-                        test.id
-                    )}"
-                    class="test-btn">
-
-                    Start Test →
-
-                </a>
-
-            `;
-
-
-            grid.appendChild(
-                card
-            );
-
-        }
-    );
-
+    });
 }
-
-
-
-// ==========================================
-// TEST HISTORY
-// ==========================================
 
 async function loadTestHistory(user) {
 
     const container =
-        document.getElementById(
-            "historyContainer"
-        );
+        document.getElementById("historyContainer");
 
+    const historyCount =
+        document.getElementById("historyCount");
 
     const {
         data:attempts,
         error
-    } =
-    await supabaseClient
+    } = await supabaseClient
         .from("test_attempts")
         .select(`
             id,
@@ -1201,103 +1052,68 @@ async function loadTestHistory(user) {
             percentage,
             submitted_at
         `)
-        .eq(
-            "student_id",
-            user.id
-        )
-        .order(
-            "submitted_at",
-            {
-                ascending:false
-            }
-        );
-
+        .eq("student_id", user.id)
+        .order("submitted_at", {ascending:false});
 
     if(error){
 
-        console.error(
-            "History Error:",
-            error
-        );
+        console.error("History Error:", error);
 
+        historyCount.textContent = "Error";
 
         container.innerHTML = `
-
             <div class="error-box">
-
                 ❌ Test history load नहीं हो पाई।
-
             </div>
-
         `;
 
         return;
-
     }
 
+    if(!attempts || attempts.length === 0){
 
-
-    if(
-        !attempts ||
-        attempts.length === 0
-    ){
+        historyCount.textContent = "0 Attempts";
 
         container.innerHTML = `
-
             <div class="empty-box">
-
+                <div style="font-size:34px;">📊</div>
                 <p>
                     अभी आपने कोई test attempt नहीं किया है।
                 </p>
-
                 <p>
                     Test attempt करने के बाद आपका score,
                     percentage और result यहाँ दिखाई देगा।
                 </p>
-
             </div>
-
         `;
 
         return;
-
     }
 
-
-
-    // ======================================
-    // GET TEST IDS
-    // ======================================
+    historyCount.textContent =
+        `${attempts.length} ${
+            attempts.length === 1
+                ? "Attempt"
+                : "Attempts"
+        }`;
 
     const testIds =
         [
             ...new Set(
                 attempts
-                    .map(
-                        item =>
-                            item.test_id
-                    )
+                    .map(item => item.test_id)
                     .filter(Boolean)
             )
         ];
 
-
-
     let testMap = {};
-
-
-
-    // ======================================
-    // TEST METADATA
-    // ======================================
 
     if(testIds.length > 0){
 
         const {
             data:tests,
             error:testError
-        } =
-        await supabaseClient
+        } = await supabaseClient
             .from("tests")
             .select(`
                 id,
@@ -1305,370 +1121,185 @@ async function loadTestHistory(user) {
                 exam,
                 question_count
             `)
-            .in(
-                "id",
-                testIds
-            );
+            .in("id", testIds);
 
+        if(!testError && tests){
 
-        if(
-            !testError &&
-            tests
-        ){
-
-            tests.forEach(
-                test => {
-
-                    testMap[
-                        test.id
-                    ] = test;
-
-                }
-            );
+            tests.forEach(test => {
+                testMap[test.id] = test;
+            });
 
         }
-
     }
-
-
-
-    // ======================================
-    // BUILD TABLE
-    // ======================================
 
     let rows = "";
 
+    attempts.forEach((attempt,index) => {
 
-    attempts.forEach(
-        (
-            attempt,
-            index
-        ) => {
+        const test =
+            testMap[attempt.test_id];
 
+        const testName =
+            test?.name ||
+            `Test #${attempt.test_id}`;
 
-            const test =
-                testMap[
-                    attempt.test_id
-                ];
+        const exam =
+            test?.exam || "-";
 
+        const percentage =
+            Number(attempt.percentage || 0);
 
-            const testName =
-                test?.name ||
-                `Test #${attempt.test_id}`;
+        const score =
+            Number(attempt.score || 0);
 
+        const totalMarks =
+            Number(attempt.total_marks || 0);
 
-            const exam =
-                test?.exam ||
-                "-";
+        const scoreClass =
+            percentage >= 50
+                ? "score-good"
+                : "score-low";
 
+        const date =
+            attempt.submitted_at
+                ? new Date(
+                    attempt.submitted_at
+                ).toLocaleDateString("en-IN")
+                : "-";
 
-            const percentage =
-                Number(
-                    attempt.percentage || 0
-                );
+        rows += `
+            <tr>
 
+                <td>${index + 1}</td>
 
-            const score =
-                Number(
-                    attempt.score || 0
-                );
+                <td>
+                    <strong>
+                        ${escapeHtml(testName)}
+                    </strong>
+                    <br>
+                    <small>
+                        ${escapeHtml(exam)}
+                    </small>
+                </td>
 
+                <td>
+                    ${score.toFixed(2)}
+                    /
+                    ${totalMarks.toFixed(2)}
+                </td>
 
-            const totalMarks =
-                Number(
-                    attempt.total_marks || 0
-                );
+                <td class="${scoreClass}">
+                    ${percentage.toFixed(1)}%
+                </td>
 
+                <td>${date}</td>
 
-            const scoreClass =
-                percentage >= 50
-                    ? "score-good"
-                    : "score-low";
+                <td>
+                    <a
+                        href="student-results.html"
+                        class="history-btn">
+                        View Result
+                    </a>
+                </td>
 
-
-            const date =
-                attempt.submitted_at
-                    ? new Date(
-                        attempt.submitted_at
-                    )
-                    .toLocaleDateString(
-                        "en-IN"
-                    )
-                    : "-";
-
-
-
-            rows += `
-
-                <tr>
-
-                    <td>
-                        ${index + 1}
-                    </td>
-
-
-                    <td>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                testName
-                            )}
-
-                        </strong>
-
-                        <br>
-
-                        <small>
-
-                            ${escapeHtml(
-                                exam
-                            )}
-
-                        </small>
-
-                    </td>
-
-
-                    <td>
-
-                        ${score.toFixed(2)}
-                        /
-                        ${totalMarks.toFixed(2)}
-
-                    </td>
-
-
-                    <td
-                        class="${scoreClass}">
-
-                        ${percentage.toFixed(1)}%
-
-                    </td>
-
-
-                    <td>
-
-                        ${date}
-
-                    </td>
-
-
-                    <td>
-
-                        <a
-                            href="student-results.html"
-                            class="history-btn">
-
-                            View Result
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-
+            </tr>
+        `;
+    });
 
     container.innerHTML = `
-
         <div class="history-table-wrapper">
 
             <table class="history-table">
 
                 <thead>
-
                     <tr>
-
                         <th>#</th>
-
                         <th>Test</th>
-
                         <th>Score</th>
-
                         <th>Percentage</th>
-
                         <th>Date</th>
-
                         <th>Result</th>
-
                     </tr>
-
                 </thead>
 
-
                 <tbody>
-
                     ${rows}
-
                 </tbody>
 
             </table>
 
         </div>
-
     `;
-
 }
-
-
-
-// ==========================================
-// TEST ICON
-// ==========================================
 
 function getTestIcon(exam) {
 
     const normalized =
-        String(
-            exam || ""
-        )
-        .trim()
-        .toLowerCase();
-
+        String(exam || "")
+            .trim()
+            .toLowerCase();
 
     const icons = {
-
-        "reet": "📝",
-
-        "cet": "📋",
-
-        "ldc": "📚",
-
-        "vdo": "🎯",
-
-        "lab assistant": "🔬",
-
-        "rajasthan police hc": "👮",
-
-        "rajasthan gk": "🏰"
-
+        "reet":"📝",
+        "cet":"📋",
+        "ldc":"📚",
+        "vdo":"🎯",
+        "lab assistant":"🔬",
+        "rajasthan police hc":"👮",
+        "rajasthan gk":"🏰"
     };
 
-
-    return (
-        icons[normalized] ||
-        "📝"
-    );
-
+    return icons[normalized] || "📝";
 }
 
-
-
-// ==========================================
-// MARKS
-// ==========================================
-
-function calculateMarks(
-    questionCount
-) {
-
-    return Number(
-        questionCount || 0
-    );
-
+function calculateMarks(questionCount) {
+    return Number(questionCount || 0);
 }
-
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
 
 async function logoutStudent() {
 
-    const {
-        error
-    } =
-    await supabaseClient.auth.signOut();
-
+    const {error} =
+        await supabaseClient.auth.signOut();
 
     if(error){
 
-        console.error(
-            "Logout Error:",
-            error
-        );
-
+        console.error("Logout Error:", error);
 
         alert(
             "Logout नहीं हो पाया। Please try again."
         );
 
         return;
-
     }
-
 
     window.location.href =
         "student-login.html";
-
 }
-
-
-
-// ==========================================
-// INITIALIZE
-// ==========================================
 
 async function initPage() {
 
     const user =
         await getCurrentUser();
 
-
     if(!user){
-
         return;
-
     }
 
-
     await Promise.all([
-
-        loadTests(
-            user
-        ),
-
-        loadTestHistory(
-            user
-        )
-
+        loadTests(user),
+        loadTestHistory(user)
     ]);
-
 }
 
-
-
-// ==========================================
-// LOGOUT BUTTON
-// ==========================================
-
 document
-    .getElementById(
-        "logoutBtn"
-    )
+    .getElementById("logoutBtn")
     .addEventListener(
         "click",
         logoutStudent
     );
 
-
-
-// ==========================================
-// START
-// ==========================================
-
 initPage();
-
 </script>
 
-
 </body>
-
 </html>

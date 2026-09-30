@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>My Notes | RajEdge</title>
 
@@ -12,492 +12,599 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-
-        .notes-page {
-            background: #f5f8fc;
-            min-height: 100vh;
+        :root{
+            --primary:#052a5b;
+            --primary2:#0b4b88;
+            --accent:#f5c542;
+            --bg:#f5f8fc;
+            --text:#142033;
+            --muted:#667085;
+            --border:#e6ebf2;
+            --white:#fff;
+            --success:#16803c;
         }
 
-        .notes-wrapper {
-            max-width: 1200px;
-            margin: auto;
-            padding: 35px 20px;
+        *{box-sizing:border-box;}
+
+        html,body{
+            margin:0;
+            padding:0;
+            background:var(--bg);
+            color:var(--text);
+            font-family:Arial,Helvetica,sans-serif;
         }
 
-        .page-title {
-            background: linear-gradient(135deg, #052a5b, #0b4b88);
-            color: white;
-            padding: 30px;
-            border-radius: 18px;
-            margin-bottom: 25px;
+        body{
+            padding-bottom:78px;
         }
 
-        .page-title h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
+        a{text-decoration:none;}
+
+        .notes-page{
+            min-height:100vh;
+            background:linear-gradient(180deg,#eef4fb 0,#f7f9fc 260px,#f5f8fc 100%);
         }
 
-        .page-title p {
-            margin: 0;
-            opacity: .9;
+        /* HEADER */
+        .header{
+            position:sticky;
+            top:0;
+            z-index:50;
+            background:rgba(255,255,255,.94);
+            backdrop-filter:blur(12px);
+            border-bottom:1px solid rgba(5,42,91,.08);
         }
 
-        .notes-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 25px;
+        .container{
+            width:min(1180px,100%);
+            margin:auto;
+            padding:0 16px;
         }
 
-        .sidebar {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
-            height: fit-content;
+        .nav-container{
+            min-height:66px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
         }
 
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #052a5b;
-            margin-bottom: 15px;
+        .logo-box{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:var(--primary);
         }
 
-        .side-link {
-            display: block;
-            padding: 13px 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            color: #333;
-            text-decoration: none;
-            font-weight: 600;
+        .logo-icon{
+            width:42px;
+            height:42px;
+            border-radius:13px;
+            display:grid;
+            place-items:center;
+            background:linear-gradient(135deg,var(--primary),var(--primary2));
+            color:white;
+            font-size:22px;
+            box-shadow:0 6px 15px rgba(5,42,91,.18);
         }
 
-        .side-link:hover,
-        .side-link.active {
-            background: #fff4c2;
-            color: #052a5b;
+        .logo-text{
+            font-size:21px;
+            font-weight:800;
+            line-height:1;
         }
 
-        .logout-btn {
-            color: #d62828;
+        .logo-text span{color:#0b6dcc;}
+
+        .logo-subtitle{
+            margin-top:4px;
+            color:#7a8494;
+            font-size:10px;
         }
 
-        .notes-content {
-            display: grid;
-            gap: 20px;
+        .btn-login{
+            background:var(--primary);
+            color:#fff;
+            padding:9px 14px;
+            border-radius:10px;
+            font-size:13px;
+            font-weight:700;
         }
 
-        .section-card {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        /* MAIN */
+        .notes-wrapper{
+            width:min(1180px,100%);
+            margin:auto;
+            padding:16px;
         }
 
-        .section-card h2 {
-            margin-top: 0;
-            color: #052a5b;
+        .page-title{
+            position:relative;
+            overflow:hidden;
+            background:linear-gradient(135deg,#052a5b,#0b4b88);
+            color:#fff;
+            padding:22px 18px;
+            border-radius:22px;
+            margin-bottom:16px;
+            box-shadow:0 12px 30px rgba(5,42,91,.16);
         }
 
-        .notes-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
+        .page-title:after{
+            content:"";
+            position:absolute;
+            width:150px;
+            height:150px;
+            border-radius:50%;
+            right:-55px;
+            top:-70px;
+            background:rgba(255,255,255,.08);
         }
 
-        .note-card {
-            border: 1px solid #e5eaf1;
-            border-radius: 15px;
-            padding: 20px;
-            transition: .2s;
-            background: #fff;
+        .page-title h1{
+            position:relative;
+            z-index:1;
+            margin:0 0 7px;
+            font-size:26px;
         }
 
-        .note-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        .page-title p{
+            position:relative;
+            z-index:1;
+            margin:0;
+            opacity:.9;
+            font-size:13px;
+            line-height:1.55;
         }
 
-        .note-icon {
-            font-size: 35px;
-            margin-bottom: 10px;
+        .notes-layout{
+            display:block;
         }
 
-        .note-card h3 {
-            color: #052a5b;
-            margin: 5px 0 8px;
-            font-size: 19px;
+        /* DESKTOP SIDEBAR */
+        .sidebar{
+            display:none;
         }
 
-        .note-description {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
+        .notes-content{
+            display:grid;
+            gap:14px;
         }
 
-        .note-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
+        .section-card{
+            background:#fff;
+            padding:17px;
+            border-radius:18px;
+            border:1px solid rgba(5,42,91,.05);
+            box-shadow:0 6px 22px rgba(16,24,40,.06);
         }
 
-        .note-info span {
-            background: #f3f6fa;
-            color: #444;
-            padding: 6px 10px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: 600;
+        .section-head{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin-bottom:13px;
         }
 
-        .note-status {
-            display: inline-block;
-            background: #e8f7ee;
-            color: #16803c;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .section-card h2{
+            margin:0;
+            color:var(--primary);
+            font-size:19px;
         }
 
-        .note-btn {
-            display: inline-block;
-            background: #052a5b;
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 5px;
+        .count-badge{
+            background:#eef5ff;
+            color:var(--primary2);
+            border-radius:20px;
+            padding:6px 10px;
+            font-size:11px;
+            font-weight:800;
+            white-space:nowrap;
         }
 
-        .note-btn:hover {
-            background: #0b4b88;
+        .notes-grid{
+            display:grid;
+            grid-template-columns:1fr;
+            gap:12px;
         }
 
-        .empty-box {
-            text-align: center;
-            padding: 35px 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            color: #666;
+        .note-card{
+            position:relative;
+            background:#fff;
+            border:1px solid var(--border);
+            border-radius:17px;
+            padding:15px;
+            box-shadow:0 3px 12px rgba(16,24,40,.035);
+            overflow:hidden;
         }
 
-        .loading-box {
-            text-align: center;
-            padding: 40px 20px;
-            color: #555;
+        .note-card:before{
+            content:"";
+            position:absolute;
+            left:0;
+            top:0;
+            bottom:0;
+            width:4px;
+            background:linear-gradient(180deg,#0b4b88,#6ca7e8);
         }
 
-        .error-box {
-            text-align: center;
-            padding: 25px;
-            background: #fff1f1;
-            border: 1px solid #ffcaca;
-            border-radius: 12px;
-            color: #b42318;
+        .note-top{
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap:10px;
         }
 
-        .refresh-btn {
-            display: inline-block;
-            margin-top: 12px;
-            background: #052a5b;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+        .note-icon{
+            width:48px;
+            height:48px;
+            flex:0 0 48px;
+            display:grid;
+            place-items:center;
+            border-radius:14px;
+            background:#eef5ff;
+            font-size:25px;
         }
 
-        .refresh-btn:hover {
-            background: #0b4b88;
+        .note-status{
+            display:inline-flex;
+            align-items:center;
+            gap:4px;
+            background:#eaf8ef;
+            color:var(--success);
+            padding:5px 9px;
+            border-radius:20px;
+            font-size:10px;
+            font-weight:800;
         }
 
-        .login-box {
-            text-align: center;
-            padding: 40px 20px;
-            background: #fff8df;
-            border: 1px solid #f2df91;
-            border-radius: 12px;
-            color: #594800;
+        .note-card h3{
+            color:var(--primary);
+            margin:12px 0 5px;
+            font-size:17px;
+            line-height:1.35;
         }
 
-        .login-box a {
-            display: inline-block;
-            margin-top: 12px;
-            background: #052a5b;
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
+        .note-description{
+            color:var(--muted);
+            font-size:12px;
+            margin:0;
         }
 
-        .security-box {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            background: #f4f8ff;
-            border: 1px solid #dbe8fb;
-            padding: 18px;
-            border-radius: 12px;
+        .note-info{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+            margin:12px 0;
         }
 
-        .security-icon {
-            font-size: 28px;
+        .note-info span{
+            background:#f5f7fa;
+            color:#4b5563;
+            padding:6px 8px;
+            border-radius:7px;
+            font-size:10px;
+            font-weight:700;
         }
 
-        .security-box strong {
-            color: #052a5b;
+        .note-btn{
+            width:100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:7px;
+            background:linear-gradient(135deg,var(--primary),var(--primary2));
+            color:white;
+            padding:11px 14px;
+            border-radius:11px;
+            font-size:13px;
+            font-weight:800;
+            box-shadow:0 5px 12px rgba(5,42,91,.14);
         }
 
-        .security-box p {
-            margin: 5px 0 0;
-            color: #555;
-            line-height: 1.6;
+        .note-btn:active{
+            transform:scale(.98);
         }
 
-        @media(max-width: 800px) {
+        .empty-box,.loading-box,.error-box,.login-box{
+            text-align:center;
+            padding:32px 16px;
+            border-radius:14px;
+            color:#667085;
+            font-size:13px;
+            line-height:1.6;
+        }
 
-            .notes-layout {
-                grid-template-columns: 1fr;
+        .empty-box{background:#f8fafc;}
+        .loading-box{background:#f8fafc;}
+        .error-box{
+            background:#fff1f1;
+            border:1px solid #ffcaca;
+            color:#b42318;
+        }
+
+        .login-box{
+            background:#fff8df;
+            border:1px solid #f2df91;
+            color:#594800;
+        }
+
+        .login-box h3,.empty-box h3{
+            color:var(--primary);
+            margin:9px 0;
+        }
+
+        .login-box a{
+            display:inline-flex;
+            margin-top:8px;
+            background:var(--primary);
+            color:#fff;
+            padding:10px 16px;
+            border-radius:10px;
+            font-weight:700;
+        }
+
+        .refresh-btn{
+            margin-top:12px;
+            background:var(--primary);
+            color:white;
+            border:0;
+            padding:10px 16px;
+            border-radius:9px;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .security-box{
+            display:flex;
+            gap:12px;
+            align-items:flex-start;
+            background:#f4f8ff;
+            border:1px solid #dbe8fb;
+            padding:14px;
+            border-radius:13px;
+        }
+
+        .security-icon{
+            width:40px;
+            height:40px;
+            flex:0 0 40px;
+            display:grid;
+            place-items:center;
+            border-radius:12px;
+            background:#e5f0ff;
+            font-size:20px;
+        }
+
+        .security-box strong{
+            color:var(--primary);
+            font-size:14px;
+        }
+
+        .security-box p{
+            margin:5px 0 0;
+            color:#596579;
+            line-height:1.55;
+            font-size:12px;
+        }
+
+        /* BOTTOM NAV */
+        .mobile-bottom-nav{
+            position:fixed;
+            left:10px;
+            right:10px;
+            bottom:10px;
+            z-index:100;
+            height:64px;
+            background:rgba(255,255,255,.96);
+            backdrop-filter:blur(15px);
+            border:1px solid rgba(5,42,91,.08);
+            border-radius:18px;
+            box-shadow:0 10px 30px rgba(16,24,40,.15);
+            display:grid;
+            grid-template-columns:repeat(5,1fr);
+            align-items:center;
+        }
+
+        .mobile-bottom-nav a{
+            height:100%;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            gap:3px;
+            color:#7b8494;
+            font-size:9px;
+            font-weight:700;
+        }
+
+        .mobile-bottom-nav .nav-icon{
+            font-size:19px;
+            line-height:1;
+        }
+
+        .mobile-bottom-nav a.active{
+            color:var(--primary2);
+        }
+
+        .mobile-bottom-nav a.active .nav-icon{
+            transform:translateY(-1px);
+        }
+
+        /* DESKTOP */
+        @media(min-width:801px){
+            body{padding-bottom:0;}
+
+            .mobile-bottom-nav{display:none;}
+
+            .notes-wrapper{padding:30px 20px;}
+
+            .page-title{padding:30px;}
+
+            .page-title h1{font-size:30px;}
+
+            .notes-layout{
+                display:grid;
+                grid-template-columns:230px 1fr;
+                gap:20px;
             }
 
-            .notes-grid {
-                grid-template-columns: 1fr;
+            .sidebar{
+                display:block;
+                background:white;
+                border-radius:18px;
+                padding:17px;
+                height:max-content;
+                box-shadow:0 6px 22px rgba(16,24,40,.06);
+                position:sticky;
+                top:86px;
             }
 
-            .page-title h1 {
-                font-size: 25px;
+            .sidebar-title{
+                font-size:17px;
+                font-weight:800;
+                color:var(--primary);
+                margin-bottom:12px;
             }
 
+            .side-link{
+                display:block;
+                padding:11px 12px;
+                margin-bottom:6px;
+                border-radius:10px;
+                color:#344054;
+                font-size:13px;
+                font-weight:700;
+            }
+
+            .side-link:hover,.side-link.active{
+                background:#fff4c2;
+                color:var(--primary);
+            }
+
+            .logout-btn{color:#d62828;}
+
+            .notes-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+                gap:15px;
+            }
+
+            .note-btn{width:auto;display:inline-flex;}
         }
 
+        @media(min-width:1100px){
+            .notes-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+        }
     </style>
 </head>
-
 
 <body>
 
 <div class="notes-page">
 
-    <!-- HEADER -->
-
     <header class="header">
-
         <div class="container nav-container">
-
-            <a href="index.html" class="logo-box">
-
-                <div class="logo-icon">
-                    📚
-                </div>
-
+            <a href="student-dashboard.html" class="logo-box">
+                <div class="logo-icon">📚</div>
                 <div>
-
-                    <div class="logo-text">
-                        Raj<span>Edge</span>
-                    </div>
-
-                    <div class="logo-subtitle">
-                        Rajasthan Education Hub
-                    </div>
-
+                    <div class="logo-text">Raj<span>Edge</span></div>
+                    <div class="logo-subtitle">Rajasthan Education Hub</div>
                 </div>
-
             </a>
 
-            <a href="index.html" class="btn-login">
-                Home
-            </a>
-
+            <a href="student-dashboard.html" class="btn-login">Dashboard</a>
         </div>
-
     </header>
-
-
-    <!-- MAIN -->
 
     <main class="notes-wrapper">
 
         <div class="page-title">
-
-            <h1>
-                📄 My Notes
-            </h1>
-
-            <p>
-                आपके purchased courses के study notes और PDFs यहाँ से access करें।
-            </p>
-
+            <h1>📄 My Notes</h1>
+            <p>आपके purchased courses के study notes और PDFs यहाँ से access करें।</p>
         </div>
-
 
         <div class="notes-layout">
 
-
-            <!-- SIDEBAR -->
-
             <aside class="sidebar">
+                <div class="sidebar-title">Student Panel</div>
 
-                <div class="sidebar-title">
-                    Student Panel
-                </div>
-
-
-                <a
-                    href="student-dashboard.html"
-                    class="side-link"
-                >
-                    🏠 Dashboard
-                </a>
-
-
-                <a
-                    href="student-courses.html"
-                    class="side-link"
-                >
-                    📚 My Courses
-                </a>
-
-
-                <a
-                    href="student-tests.html"
-                    class="side-link"
-                >
-                    📝 My Tests
-                </a>
-
-
-                <a
-                    href="student-notes.html"
-                    class="side-link active"
-                >
-                    📄 My Notes
-                </a>
-
-
-                <a
-                    href="student-results.html"
-                    class="side-link"
-                >
-                    📊 My Results
-                </a>
-
-
-                <a
-                    href="student-profile.html"
-                    class="side-link"
-                >
-                    👤 My Profile
-                </a>
-
-
-                <a
-                    href="student-login.html"
-                    class="side-link logout-btn"
-                >
-                    🚪 Logout
-                </a>
-
+                <a href="student-dashboard.html" class="side-link">🏠 Dashboard</a>
+                <a href="student-courses.html" class="side-link">📚 My Courses</a>
+                <a href="student-tests.html" class="side-link">📝 My Tests</a>
+                <a href="student-notes.html" class="side-link active">📄 My Notes</a>
+                <a href="student-results.html" class="side-link">📊 My Results</a>
+                <a href="student-profile.html" class="side-link">👤 My Profile</a>
+                <a href="#" onclick="logoutStudent(); return false;" class="side-link logout-btn">🚪 Logout</a>
             </aside>
-
-
-            <!-- CONTENT -->
 
             <section class="notes-content">
 
-
-                <!-- NOTES -->
-
                 <div class="section-card">
+                    <div class="section-head">
+                        <h2>📚 Available Notes</h2>
+                        <span class="count-badge" id="notesCount">Loading...</span>
+                    </div>
 
-                    <h2>
-                        📚 Available Notes
-                    </h2>
-
-
-                    <div
-                        class="notes-grid"
-                        id="notesGrid"
-                    >
-
-                        <div
-                            class="loading-box"
-                            style="grid-column: 1 / -1;"
-                        >
+                    <div class="notes-grid" id="notesGrid">
+                        <div class="loading-box" style="grid-column:1 / -1;">
                             ⏳ Notes load हो रही हैं...
                         </div>
-
                     </div>
-
                 </div>
-
-
-                <!-- SECURITY INFORMATION -->
 
                 <div class="section-card">
+                    <h2>🔐 Notes Access</h2>
 
-                    <h2>
-                        🔐 Notes Access
-                    </h2>
-
-
-                    <div class="security-box">
-
-                        <div class="security-icon">
-                            🔒
-                        </div>
-
-
+                    <div class="security-box" style="margin-top:13px;">
+                        <div class="security-icon">🔒</div>
                         <div>
-
-                            <strong>
-                                Paid Course Access
-                            </strong>
-
+                            <strong>Paid Course Access</strong>
                             <p>
-                                यहाँ केवल उन्हीं courses के notes दिखाई देंगे
-                                जिनकी Notes purchase आपके account में verified है।
-                                हर note की access Supabase security rules द्वारा
-                                भी verify होती है।
+                                यहाँ केवल उन्हीं courses के notes दिखाई देंगे जिनकी
+                                Notes purchase आपके account में verified है।
+                                Supabase security rules भी access verify करती हैं।
                             </p>
-
                         </div>
-
                     </div>
-
                 </div>
 
-
             </section>
-
         </div>
-
     </main>
-
 </div>
 
-
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Student navigation">
+    <a href="student-dashboard.html">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+    </a>
+    <a href="student-courses.html">
+        <span class="nav-icon">📚</span>
+        <span>Courses</span>
+    </a>
+    <a href="student-tests.html">
+        <span class="nav-icon">📝</span>
+        <span>Tests</span>
+    </a>
+    <a href="student-notes.html" class="active">
+        <span class="nav-icon">📄</span>
+        <span>Notes</span>
+    </a>
+    <a href="student-profile.html">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+    </a>
+</nav>
 
 <script>
-
-
-    // ==========================================
-    // SUPABASE CONFIG
-    // ==========================================
-
     const SUPABASE_URL =
         "https://xysgwtnclxpacmlgnmer.supabase.co";
 
-
     const SUPABASE_KEY =
-        "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+        "sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
 
+    const PDF_BUCKET = "notes-pdfs";
 
     const supabaseClient =
         window.supabase.createClient(
@@ -505,122 +612,52 @@
             SUPABASE_KEY
         );
 
-
-
-    // ==========================================
-    // GET CURRENT USER
-    // ==========================================
-
     async function getCurrentUser() {
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient.auth.getUser();
 
-
         if (error) {
-
-            console.error(
-                "Auth Error:",
-                error
-            );
-
+            console.error("Auth Error:", error);
             return null;
-
         }
 
-
         return data?.user || null;
-
     }
 
-
-
-    // ==========================================
-    // LOAD STUDENT NOTES
-    // ==========================================
-
     async function loadStudentNotes() {
-
         const notesGrid =
-            document.getElementById(
-                "notesGrid"
-            );
+            document.getElementById("notesGrid");
 
+        const notesCount =
+            document.getElementById("notesCount");
 
         notesGrid.innerHTML = `
-
-            <div
-                class="loading-box"
-                style="grid-column: 1 / -1;"
-            >
-
+            <div class="loading-box" style="grid-column:1 / -1;">
                 ⏳ Notes load हो रही हैं...
-
             </div>
-
         `;
 
+        notesCount.textContent = "Loading...";
 
         try {
-
-
-            // ------------------------------------------
-            // 1. CHECK LOGIN
-            // ------------------------------------------
-
-            const user =
-                await getCurrentUser();
-
+            const user = await getCurrentUser();
 
             if (!user) {
-
+                notesCount.textContent = "Login";
                 notesGrid.innerHTML = `
-
-                    <div
-                        class="login-box"
-                        style="grid-column: 1 / -1;"
-                    >
-
-                        🔐
-
-                        <h3>
-                            Student Login Required
-                        </h3>
-
+                    <div class="login-box" style="grid-column:1 / -1;">
+                        <div style="font-size:34px;">🔐</div>
+                        <h3>Student Login Required</h3>
                         <p>
-                            Notes देखने के लिए पहले अपने
-                            student account से login करें।
+                            Notes देखने के लिए पहले अपने student account से login करें।
                         </p>
-
-                        <a href="student-login.html">
-                            Login करें →
-                        </a>
-
+                        <a href="student-login.html">Login करें →</a>
                     </div>
-
                 `;
-
                 return;
-
             }
 
-
-
-            // ------------------------------------------
-            // 2. LOAD ONLY PDF NOTES
-            //
-            // IMPORTANT:
-            // RLS decides which notes this student
-            // is actually allowed to read.
-            // ------------------------------------------
-
-            const {
-                data,
-                error
-            } =
+            const { data, error } =
                 await supabaseClient
                     .from("notes")
                     .select(`
@@ -632,459 +669,278 @@
                         pdf_url,
                         created_at
                     `)
-                    .not(
-                        "pdf_url",
-                        "is",
-                        null
-                    )
-                    .order(
-                        "created_at",
-                        {
-                            ascending: false
-                        }
-                    );
-
+                    .not("pdf_url", "is", null)
+                    .order("created_at", { ascending:false });
 
             if (error) {
-
-                console.error(
-                    "Notes Load Error:",
-                    error
-                );
-
+                console.error("Notes Load Error:", error);
+                notesCount.textContent = "Error";
 
                 notesGrid.innerHTML = `
-
-                    <div
-                        class="error-box"
-                        style="grid-column: 1 / -1;"
-                    >
-
+                    <div class="error-box" style="grid-column:1 / -1;">
                         ❌ Notes load नहीं हो पाईं।
-
                         <br><br>
-
-                        ${escapeHtml(
-                            error.message
-                        )}
-
+                        ${escapeHtml(error.message)}
                         <br>
-
-                        <button
-                            class="refresh-btn"
-                            onclick="loadStudentNotes()"
-                        >
-
+                        <button class="refresh-btn" onclick="loadStudentNotes()">
                             🔄 Retry
-
                         </button>
-
                     </div>
-
                 `;
-
                 return;
-
             }
 
-
-
-            // ------------------------------------------
-            // 3. NO ACCESS / NO NOTES
-            // ------------------------------------------
-
-            if (
-                !data ||
-                data.length === 0
-            ) {
+            if (!data || data.length === 0) {
+                notesCount.textContent = "0 Notes";
 
                 notesGrid.innerHTML = `
-
-                    <div
-                        class="empty-box"
-                        style="grid-column: 1 / -1;"
-                    >
-
-                        🔒
-
-                        <h3>
-                            अभी कोई Notes Available नहीं हैं
-                        </h3>
-
+                    <div class="empty-box" style="grid-column:1 / -1;">
+                        <div style="font-size:38px;">🔒</div>
+                        <h3>अभी कोई Notes Available नहीं हैं</h3>
                         <p>
-                            आपके account में verified
-                            Notes purchase वाले courses के
-                            PDF notes यहाँ दिखाई देंगे।
+                            आपके account में verified Notes purchase वाले courses
+                            के PDF notes यहाँ दिखाई देंगे।
                         </p>
-
                         <p>
-                            अगर आपने अभी purchase किया है,
-                            तो payment approval के बाद
-                            दोबारा यहाँ check करें।
+                            अगर आपने अभी purchase किया है, तो payment approval के
+                            बाद दोबारा यहाँ check करें।
                         </p>
-
                     </div>
-
                 `;
-
                 return;
-
             }
 
-
-
-            // ------------------------------------------
-            // 4. CREATE NOTE CARDS
-            // ------------------------------------------
+            notesCount.textContent =
+                `${data.length} ${data.length === 1 ? "Note" : "Notes"}`;
 
             notesGrid.innerHTML =
-                data
-                    .map(
-                        note =>
-                            createNoteCard(note)
-                    )
-                    .join("");
+                data.map(note => createNoteCard(note)).join("");
 
+        } catch (error) {
+            console.error("Unexpected Notes Error:", error);
 
-        }
-        catch (error) {
-
-            console.error(
-                "Unexpected Notes Error:",
-                error
-            );
-
+            notesCount.textContent = "Error";
 
             notesGrid.innerHTML = `
-
-                <div
-                    class="error-box"
-                    style="grid-column: 1 / -1;"
-                >
-
+                <div class="error-box" style="grid-column:1 / -1;">
                     ❌ कुछ unexpected error आ गया।
-
                     <br><br>
-
-                    ${escapeHtml(
-                        error.message
-                    )}
-
+                    ${escapeHtml(error.message)}
                     <br>
-
-                    <button
-                        class="refresh-btn"
-                        onclick="loadStudentNotes()"
-                    >
-
+                    <button class="refresh-btn" onclick="loadStudentNotes()">
                         🔄 Retry
-
                     </button>
-
                 </div>
-
             `;
-
         }
-
     }
 
+    /*
+      Bucket private होने के बाद direct public URL काम नहीं करेगा।
+      यह function पुराने pdf_url में saved public URL से storage path निकालकर
+      signed URL बनाता है।
+    */
+    async function getSecurePdfUrl(pdfUrl) {
+        if (!pdfUrl) return null;
 
+        try {
+            const marker =
+                `/storage/v1/object/public/${PDF_BUCKET}/`;
 
-    // ==========================================
-    // CREATE NOTE CARD
-    // ==========================================
+            if (pdfUrl.includes(marker)) {
+                const path =
+                    decodeURIComponent(
+                        pdfUrl.split(marker)[1]
+                    );
+
+                const { data, error } =
+                    await supabaseClient.storage
+                        .from(PDF_BUCKET)
+                        .createSignedUrl(path, 60 * 10);
+
+                if (error) {
+                    console.error("Signed URL Error:", error);
+                    return null;
+                }
+
+                return data?.signedUrl || null;
+            }
+
+            /*
+              अगर future में database में direct storage path save किया जाए,
+              तो वही path यहाँ इस्तेमाल हो सकेगा।
+            */
+            if (
+                !pdfUrl.startsWith("http://") &&
+                !pdfUrl.startsWith("https://")
+            ) {
+                const { data, error } =
+                    await supabaseClient.storage
+                        .from(PDF_BUCKET)
+                        .createSignedUrl(pdfUrl, 60 * 10);
+
+                if (error) {
+                    console.error("Signed Path Error:", error);
+                    return null;
+                }
+
+                return data?.signedUrl || null;
+            }
+
+            return pdfUrl;
+
+        } catch (error) {
+            console.error("Secure PDF Error:", error);
+            return null;
+        }
+    }
+
+    async function openPdf(pdfUrl, button) {
+        if (!pdfUrl) {
+            alert("PDF उपलब्ध नहीं है।");
+            return;
+        }
+
+        const oldText = button.innerHTML;
+        button.innerHTML = "⏳ Opening...";
+        button.style.pointerEvents = "none";
+
+        try {
+            const secureUrl =
+                await getSecurePdfUrl(pdfUrl);
+
+            if (!secureUrl) {
+                alert(
+                    "PDF open नहीं हो पाई। कृपया कुछ देर बाद दोबारा try करें।"
+                );
+                return;
+            }
+
+            window.open(
+                secureUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        } catch (error) {
+            console.error(error);
+            alert("PDF open करने में error आया।");
+        } finally {
+            button.innerHTML = oldText;
+            button.style.pointerEvents = "auto";
+        }
+    }
 
     function createNoteCard(note) {
-
-
         const title =
-            note.title ||
-            "Study Notes";
-
+            note.title || "Study Notes";
 
         const exam =
-            note.exam ||
-            "General";
-
+            note.exam || "General";
 
         const subject =
             note.subject ||
             note.category ||
             "Study Material";
 
-
         const category =
-            note.category ||
-            "Notes";
-
+            note.category || "Notes";
 
         const icon =
-            getNoteIcon(
-                note.exam,
-                note.category
-            );
-
-
-        const pdfUrl =
-            note.pdf_url;
-
-
+            getNoteIcon(note.exam, note.category);
 
         return `
-
             <div class="note-card">
 
+                <div class="note-top">
+                    <div class="note-icon">
+                        ${icon}
+                    </div>
 
-                <div class="note-icon">
-                    ${icon}
+                    <span class="note-status">
+                        🔓 Available
+                    </span>
                 </div>
 
-
-                <span class="note-status">
-                    🔓 Available
-                </span>
-
-
-                <h3>
-                    ${escapeHtml(title)}
-                </h3>
-
+                <h3>${escapeHtml(title)}</h3>
 
                 <p class="note-description">
                     📄 PDF Study Notes
                 </p>
 
-
                 <div class="note-info">
-
-                    <span>
-                        📚 ${escapeHtml(exam)}
-                    </span>
-
-
-                    <span>
-                        📖 ${escapeHtml(subject)}
-                    </span>
-
-
-                    <span>
-                        🏷️ ${escapeHtml(category)}
-                    </span>
-
-
-                    <span>
-                        📄 PDF
-                    </span>
-
+                    <span>📚 ${escapeHtml(exam)}</span>
+                    <span>📖 ${escapeHtml(subject)}</span>
+                    <span>🏷️ ${escapeHtml(category)}</span>
+                    <span>📄 PDF</span>
                 </div>
 
-
-                <a
-                    href="${escapeAttribute(pdfUrl)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <button
+                    type="button"
                     class="note-btn"
+                    onclick="openPdf(
+                        '${escapeJs(note.pdf_url)}',
+                        this
+                    )"
                 >
-
-                    View PDF →
-
-                </a>
+                    📖 View PDF →
+                </button>
 
             </div>
-
         `;
-
     }
 
-
-
-    // ==========================================
-    // NOTE ICON
-    // ==========================================
-
-    function getNoteIcon(
-        exam,
-        category
-    ) {
-
-
+    function getNoteIcon(exam, category) {
         const text =
-            (
-                (exam || "") +
-                " " +
-                (category || "")
-            ).toLowerCase();
+            ((exam || "") + " " + (category || ""))
+            .toLowerCase();
 
-
-
-        if (
-            text.includes("reet")
-        ) {
-
-            return "📗";
-
-        }
-
-
-
-        if (
-            text.includes("cet")
-        ) {
-
-            return "📙";
-
-        }
-
-
-
-        if (
-            text.includes("current")
-        ) {
-
-            return "📰";
-
-        }
-
-
-
-        if (
-            text.includes("gk")
-        ) {
-
-            return "📘";
-
-        }
-
-
-
-        if (
-            text.includes("ldc")
-        ) {
-
-            return "📕";
-
-        }
-
-
-
-        if (
-            text.includes("vdo")
-        ) {
-
-            return "📒";
-
-        }
-
-
-
-        if (
-            text.includes("lab")
-        ) {
-
-            return "🔬";
-
-        }
-
-
-
-        if (
-            text.includes("police")
-        ) {
-
-            return "👮";
-
-        }
-
-
+        if (text.includes("reet")) return "📗";
+        if (text.includes("cet")) return "📙";
+        if (text.includes("current")) return "📰";
+        if (text.includes("gk")) return "📘";
+        if (text.includes("ldc")) return "📕";
+        if (text.includes("vdo")) return "📒";
+        if (text.includes("lab")) return "🔬";
+        if (text.includes("police")) return "👮";
 
         return "📚";
-
     }
 
-
-
-    // ==========================================
-    // HTML ESCAPE
-    // ==========================================
-
-    function escapeHtml(
-        value
-    ) {
-
-        return String(
-            value ?? ""
-        )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
-
-
-    // ==========================================
-    // ATTRIBUTE ESCAPE
-    // ==========================================
-
-    function escapeAttribute(
-        value
-    ) {
-
-        return String(
-            value ?? ""
-        )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        );
-
+    function escapeJs(value) {
+        return String(value ?? "")
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'")
+            .replace(/"/g, '\\"')
+            .replace(/\r/g, "\\r")
+            .replace(/\n/g, "\\n");
     }
 
+    async function logoutStudent() {
+        try {
+            await supabaseClient.auth.signOut();
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
 
-
-    // ==========================================
-    // PAGE LOAD
-    // ==========================================
+        window.location.href = "student-login.html";
+    }
 
     document.addEventListener(
         "DOMContentLoaded",
-        function () {
-
+        function() {
             loadStudentNotes();
-
         }
     );
-
 </script>
 
 </body>
