@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="hi">
 <head>
 
@@ -282,6 +282,67 @@
         font-size:25px;
     }
 
+}
+
+
+/* ===== PREMIUM MOBILE APP UI ===== */
+body{margin:0;background:#f5f8fc;}
+.profile-page{padding-bottom:90px;}
+.page-title{
+  background:linear-gradient(135deg,#052a5b 0%,#0b4b88 55%,#1463a5 100%);
+  box-shadow:0 12px 30px rgba(5,42,91,.16);
+}
+.profile-card{box-shadow:0 8px 28px rgba(5,42,91,.07);border:1px solid #edf1f6;}
+.profile-avatar{box-shadow:0 8px 20px rgba(245,196,0,.18);}
+.stat-card{border:1px solid #edf1f6;}
+.mobile-bottom-nav{
+  display:none;
+  position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(14px);
+  border:1px solid #e8edf3;border-radius:18px;
+  box-shadow:0 10px 35px rgba(5,42,91,.18);
+  padding:7px 5px;
+}
+.mobile-bottom-nav a{
+  flex:1;text-decoration:none;color:#687386;text-align:center;
+  font-size:10px;font-weight:700;padding:7px 2px;border-radius:12px;
+}
+.mobile-bottom-nav a.active{background:#fff4c2;color:#052a5b;}
+.mobile-bottom-nav .nav-icon{display:block;font-size:20px;line-height:22px;margin-bottom:2px;}
+@media(max-width:800px){
+  .profile-page{padding-bottom:88px;}
+  .profile-wrapper{padding:16px 12px 25px;}
+  .header .nav-container{padding-left:14px;padding-right:14px;}
+  .page-title{padding:22px 18px;border-radius:18px;margin-bottom:16px;}
+  .page-title h1{font-size:23px;}
+  .page-title p{font-size:13px;line-height:1.5;}
+  .profile-layout{display:block;}
+  .sidebar{display:none;}
+  .profile-content{gap:14px;}
+  .profile-card{padding:18px;border-radius:16px;}
+  .profile-header{gap:14px;padding-bottom:18px;margin-bottom:18px;}
+  .profile-avatar{width:62px;height:62px;font-size:30px;}
+  .profile-header h2{font-size:20px;}
+  .profile-header p{font-size:13px;}
+  .profile-grid{grid-template-columns:1fr;gap:10px;}
+  .profile-field{padding:13px 14px;border-radius:11px;}
+  .profile-field label{font-size:11px;margin-bottom:4px;}
+  .profile-field span{font-size:14px;}
+  .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+  .stat-card{padding:13px 5px;border-radius:12px;}
+  .stat-icon{font-size:22px;margin-bottom:4px;}
+  .stat-number{font-size:19px;}
+  .stat-label{font-size:10px;line-height:1.25;}
+  .security-box{padding:15px;}
+  .security-box h3{font-size:16px;}
+  .security-box p,.info-box{font-size:13px;line-height:1.55;}
+  .profile-btn{width:100%;box-sizing:border-box;text-align:center;padding:12px 16px;}
+  .mobile-bottom-nav{display:flex;}
+}
+@media(max-width:380px){
+  .stats-grid{gap:5px;}
+  .stat-number{font-size:17px;}
+  .stat-label{font-size:9px;}
 }
 
 </style>
@@ -650,6 +711,25 @@ load होता है।
 
 </div>
 
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Student navigation">
+  <a href="student-dashboard.html">
+    <span class="nav-icon">🏠</span><span>Home</span>
+  </a>
+  <a href="student-courses.html">
+    <span class="nav-icon">📚</span><span>Courses</span>
+  </a>
+  <a href="student-tests.html">
+    <span class="nav-icon">📝</span><span>Tests</span>
+  </a>
+  <a href="student-notes.html">
+    <span class="nav-icon">📄</span><span>Notes</span>
+  </a>
+  <a href="student-profile.html" class="active">
+    <span class="nav-icon">👤</span><span>Profile</span>
+  </a>
+</nav>
 
 <script>
 
