@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
@@ -156,6 +156,51 @@
             }
         }
     </style>
+
+<style>
+/* RajEdge premium mobile registration layer */
+body{margin:0;background:#eef4fb;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.register-page{
+  min-height:100vh;padding:22px 14px;box-sizing:border-box;
+  background:linear-gradient(180deg,#eef5ff 0%,#f8fbff 52%,#eef3f9 100%);
+}
+.register-card{
+  max-width:520px!important;padding:24px 20px!important;border:1px solid rgba(5,42,91,.08);
+  border-radius:24px!important;box-shadow:0 18px 55px rgba(5,42,91,.12)!important;
+}
+.register-logo-icon{
+  width:64px;height:64px;margin:0 auto 10px;border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#052a5b,#0b4b88);box-shadow:0 10px 25px rgba(5,42,91,.18)
+}
+.register-logo h1{font-size:32px}
+.register-logo p{font-size:13px}
+.register-card h2{font-size:21px;margin:8px 0 20px}
+.form-group{margin-bottom:14px}
+.form-group label{font-size:13px;margin-bottom:6px}
+.form-group input,.form-group select{
+  min-height:50px;padding:13px 14px;border-radius:13px;border:1px solid #d9e2ee;
+  background:#fbfdff;transition:.2s
+}
+.form-group input:focus,.form-group select:focus{
+  border-color:#0b4b88;box-shadow:0 0 0 3px rgba(11,75,136,.10)
+}
+.register-btn{
+  min-height:52px;border-radius:14px;margin-top:6px;
+  background:linear-gradient(135deg,#052a5b,#0b4b88);
+  box-shadow:0 10px 24px rgba(5,42,91,.20)
+}
+.message{border-radius:13px}
+.login-text{margin-top:18px}
+.back-home{margin-top:13px}
+@media(max-width:500px){
+  .register-page{padding:12px 10px}
+  .register-card{padding:22px 16px!important;border-radius:22px!important}
+  .register-logo{margin-bottom:16px}
+  .register-logo h1{font-size:29px}
+}
+</style>
+
 </head>
 
 <body>
@@ -295,8 +340,9 @@
                     type="password"
                     id="password"
                     placeholder="Create a password"
+                    autocomplete="new-password"
                     required
-                >
+                ><div style="font-size:12px;color:#7a8696;margin:-8px 0 14px 2px;">कम से कम 6 characters रखें।</div>
 
             </div>
 
@@ -311,6 +357,7 @@
                     type="password"
                     id="confirmPassword"
                     placeholder="Confirm your password"
+                    autocomplete="new-password"
                     required
                 >
 
