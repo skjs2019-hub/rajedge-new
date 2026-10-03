@@ -503,52 +503,21 @@ async function approvePayment(paymentId){
     if(!confirm("Is payment ko APPROVE karna hai? Student ko paid access milega.")) return;
 
     try{
-        const {error: paymentError} = await supabaseClient
-            .from("payment_requests")
-            .update({
-                payment_status: "approved",
-                verified_at: new Date().toISOString(),
-                admin_note: "Payment approved by admin."
-            })
-            .eq("id", payment.id);
+        // Approval + enrollment creation now happens inside a SECURITY DEFINER RPC.
+        // This avoids browser-side RLS failures on the enrollments table.
+        const {data, error} = await supabaseClient.rpc(
+            "approve_payment_request",
+            {
+                p_payment_id: payment.id,
+                p_admin_note: "Payment approved by admin."
+            }
+        );
 
-        if(paymentError) throw paymentError;
+        if(error) throw error;
 
-        const {data: existingEnrollment, error: existingError} =
-            await supabaseClient
-                .from("enrollments")
-                .select("id")
-                .eq("student_id", payment.student_id)
-                .eq("course_id", payment.course_id)
-                .eq("purchase_type", payment.purchase_type)
-                .maybeSingle();
-
-        if(existingError) throw existingError;
-
-        if(existingEnrollment){
-            const {error: updateError} = await supabaseClient
-                .from("enrollments")
-                .update({
-                    amount: payment.amount,
-                    payment_status: "paid",
-                    payment_id: payment.utr_number
-                })
-                .eq("id", existingEnrollment.id);
-
-            if(updateError) throw updateError;
-        }else{
-            const {error: insertError} = await supabaseClient
-                .from("enrollments")
-                .insert({
-                    student_id: payment.student_id,
-                    course_id: payment.course_id,
-                    purchase_type: payment.purchase_type,
-                    amount: payment.amount,
-                    payment_status: "paid",
-                    payment_id: payment.utr_number
-                });
-
-            if(insertError) throw insertError;
+        if(!data || data.success !== true){
+            console.error("Unexpected approval response:", data);
+            throw new Error("Payment approval response was invalid.");
         }
 
         showSuccess("✅ Payment approved. Student ko paid access mil gaya.");
