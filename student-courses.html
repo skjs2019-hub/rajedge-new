@@ -2,1220 +2,1690 @@
 <html lang="hi">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="theme-color" content="#123b75">
 
     <title>My Courses | RajEdge</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- QR CODE LIBRARY -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
     <style>
-/* =========================================================
-   RAJEDGE STUDENT COURSES - PREMIUM MOBILE UI
-========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
-    color: #172033;
-}
-
-.courses-page {
-    min-height: 100vh;
-    background: #f4f7fb;
-}
-
-/* ================= HEADER ================= */
-
-.header {
-    background: rgba(255,255,255,.96) !important;
-    border-bottom: 1px solid #e7ebf2;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 3px 15px rgba(0,0,0,.04);
-}
-
-.nav-container {
-    min-height: 68px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.logo-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: #172033;
-}
-
-.logo-icon {
-    width: 43px;
-    height: 43px;
-    border-radius: 13px;
-    background: linear-gradient(135deg,#073b7a,#1265b5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    box-shadow: 0 6px 16px rgba(7,59,122,.18);
-}
-
-.logo-text {
-    font-size: 22px;
-    font-weight: 800;
-}
-
-.logo-text span {
-    color: #f4a900;
-}
-
-.logo-subtitle {
-    font-size: 10px;
-    color: #7b8798;
-}
-
-.btn-login {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #073b7a;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    padding: 10px 15px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-/* ================= MAIN ================= */
-
-.courses-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    padding: 24px 18px 100px;
-}
-
-/* ================= PAGE TITLE ================= */
-
-.page-title {
-    position: relative;
-    overflow: hidden;
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(255,255,255,.16),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #062d63,
-            #0b5ca8
-        );
-    color: white;
-    padding: 27px 22px;
-    border-radius: 22px;
-    margin-bottom: 20px;
-    box-shadow: 0 12px 30px rgba(5,42,91,.14);
-}
-
-.page-title::after {
-    content: "📚";
-    position: absolute;
-    right: 18px;
-    top: 3px;
-    font-size: 90px;
-    opacity: .10;
-}
-
-.course-badge {
-    display: inline-flex;
-    background: rgba(255,255,255,.16);
-    border: 1px solid rgba(255,255,255,.20);
-    color: white;
-    padding: 6px 11px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-    margin-bottom: 10px;
-}
-
-.page-title h1 {
-    position: relative;
-    z-index: 2;
-    margin: 0 0 7px;
-    font-size: 29px;
-}
-
-.page-title p {
-    position: relative;
-    z-index: 2;
-    margin: 0;
-    color: rgba(255,255,255,.86);
-    font-size: 14px;
-}
-
-/* ================= LAYOUT ================= */
-
-.courses-layout {
-    display: grid;
-    grid-template-columns: 235px 1fr;
-    gap: 20px;
-}
-
-.sidebar {
-    background: white;
-    border: 1px solid #e8edf4;
-    border-radius: 18px;
-    padding: 14px;
-    height: fit-content;
-    position: sticky;
-    top: 88px;
-    box-shadow: 0 7px 22px rgba(23,32,51,.05);
-}
-
-.sidebar-title {
-    color: #073b7a;
-    font-size: 16px;
-    font-weight: 800;
-    padding: 8px 10px 14px;
-    border-bottom: 1px solid #edf0f5;
-    margin-bottom: 8px;
-}
-
-.side-link {
-    display: block;
-    width: 100%;
-    border: none;
-    background: transparent;
-    text-align: left;
-    text-decoration: none;
-    color: #4a586d;
-    padding: 11px 12px;
-    margin-bottom: 4px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.side-link:hover,
-.side-link.active {
-    background: #edf5ff;
-    color: #073b7a;
-}
-
-.logout-btn {
-    color: #c62828 !important;
-}
-
-.courses-content {
-    display: grid;
-    gap: 17px;
-}
-
-/* ================= CARDS ================= */
-
-.section-card {
-    background: white;
-    border: 1px solid #e7ecf3;
-    border-radius: 18px;
-    padding: 22px;
-    box-shadow: 0 6px 22px rgba(23,32,51,.045);
-}
-
-.section-card h2 {
-    margin: 0 0 17px;
-    color: #073b7a;
-    font-size: 20px;
-}
-
-/* ================= COURSE GRID ================= */
-
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 16px;
-}
-
-.course-card {
-    background: white;
-    border: 1px solid #e5eaf1;
-    border-radius: 17px;
-    padding: 18px;
-    transition: .2s;
-    box-shadow: 0 4px 14px rgba(23,32,51,.035);
-}
-
-.course-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(23,32,51,.09);
-}
-
-.course-card-icon {
-    width: 54px;
-    height: 54px;
-    border-radius: 15px;
-    background: #edf5ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin-bottom: 12px;
-}
-
-.course-card h3 {
-    margin: 0 0 7px;
-    color: #073b7a;
-    font-size: 19px;
-}
-
-.course-card p {
-    margin: 0 0 13px;
-    color: #68758a;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.course-status {
-    display: inline-flex;
-    padding: 5px 9px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 800;
-    margin-bottom: 11px;
-}
-
-.status-purchased {
-    background: #e8f7ee;
-    color: #16803c;
-}
-
-.status-not-purchased {
-    background: #ffeded;
-    color: #bd2222;
-}
-
-/* ================= PRICE ================= */
-
-.price-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-.price-label {
-    color: #68758a;
-    font-size: 12px;
-}
-
-.price-value {
-    color: #073b7a;
-    font-size: 20px;
-    font-weight: 800;
-}
-
-/* ================= BUTTONS ================= */
-
-.course-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 43px;
-    border: none;
-    border-radius: 10px;
-    background: #073b7a;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.course-btn:hover {
-    background: #0b5ca8;
-    transform: translateY(-1px);
-}
-
-.buy-btn {
-    background: #f4a900;
-    color: #172033;
-}
-
-.buy-btn:hover {
-    background: #e29c00;
-}
-
-.secondary-btn {
-    background: #edf5ff;
-    color: #073b7a;
-}
-
-.test-btn {
-    background: #f4a900;
-    color: #172033;
-}
-
-/* ================= COURSE DETAIL ================= */
-
-.course-hero {
-    display: grid;
-    grid-template-columns: 82px 1fr;
-    gap: 18px;
-    align-items: center;
-}
-
-.course-big-icon {
-    width: 82px;
-    height: 82px;
-    border-radius: 20px;
-    background: #edf5ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-}
-
-.course-hero h2 {
-    margin: 0 0 7px;
-    color: #073b7a;
-    font-size: 27px;
-}
-
-.course-hero p {
-    margin: 0;
-    color: #68758a;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.paid-badge,
-.test-only-badge {
-    display: inline-flex;
-    margin-top: 9px;
-    padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.paid-badge {
-    background: #e8f7ee;
-    color: #16803c;
-}
-
-.test-only-badge {
-    background: #fff6d9;
-    color: #876600;
-}
-
-/* ================= STATS ================= */
-
-.quick-stats {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.stat-box {
-    background: #f7f9fc;
-    border: 1px solid #e7ecf3;
-    border-radius: 14px;
-    padding: 15px 10px;
-    text-align: center;
-}
-
-.stat-icon {
-    font-size: 23px;
-}
-
-.stat-number {
-    color: #073b7a;
-    font-size: 20px;
-    font-weight: 800;
-    margin-top: 3px;
-}
-
-.stat-label {
-    color: #718096;
-    font-size: 11px;
-    margin-top: 3px;
-}
-
-/* ================= RESOURCES ================= */
-
-.resource-grid {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 14px;
-}
-
-.resource-card {
-    background: white;
-    border: 1px solid #e5eaf1;
-    border-radius: 15px;
-    padding: 17px;
-    transition: .2s;
-}
-
-.resource-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 23px rgba(23,32,51,.07);
-}
-
-.resource-icon {
-    font-size: 30px;
-    margin-bottom: 6px;
-}
-
-.resource-card h3 {
-    margin: 4px 0 7px;
-    color: #073b7a;
-    font-size: 17px;
-}
-
-.resource-card p {
-    color: #68758a;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 13px;
-}
-
-.resource-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 40px;
-    background: #073b7a;
-    color: white;
-    text-decoration: none;
-    border: none;
-    border-radius: 9px;
-    padding: 9px 13px;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-/* ================= TEST SERIES ================= */
-
-.test-series-box {
-    background: linear-gradient(135deg,#fff9df,#fffdf6);
-    border: 1px solid #f3df85;
-    border-radius: 15px;
-    padding: 18px;
-    margin-bottom: 15px;
-}
-
-.test-series-box h3 {
-    color: #073b7a;
-    margin: 0 0 7px;
-    font-size: 17px;
-}
-
-.test-series-box p {
-    color: #68758a;
-    margin: 0 0 13px;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.test-series-price {
-    color: #073b7a;
-    font-size: 23px;
-    font-weight: 800;
-    margin-bottom: 12px;
-}
-
-.test-series-unlocked {
-    background: #eaf8ef;
-    border-color: #b8e5c8;
-}
-
-.test-series-unlocked .test-series-price {
-    color: #16803c;
-}
-
-/* ================= INFO ================= */
-
-.info-note {
-    background: #fff9df;
-    border-left: 4px solid #f4a900;
-    border-radius: 9px;
-    padding: 15px;
-    color: #596273;
-    font-size: 13px;
-    line-height: 1.7;
-}
-
-/* ================= STATES ================= */
-
-.loading-box,
-.empty-box,
-.error-box {
-    text-align: center;
-    padding: 30px 18px;
-    border-radius: 14px;
-    line-height: 1.6;
-}
-
-.loading-box {
-    color: #667085;
-}
-
-.empty-box {
-    background: #f7f9fc;
-    color: #667085;
-}
-
-.error-box {
-    background: #fff1f1;
-    border: 1px solid #ffd0d0;
-    color: #b42318;
-}
-
-.locked-notes-box,
-.locked-test-box {
-    background: #fff9df;
-    border: 1px solid #f3df85;
-    border-radius: 14px;
-    padding: 22px;
-    text-align: center;
-    color: #68758a;
-    line-height: 1.7;
-}
-
-/* ================= BACK ================= */
-
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    background: white;
-    color: #073b7a;
-    text-decoration: none;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 9px 13px;
-    margin-bottom: 14px;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-/* ================= PAYMENT MODAL ================= */
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(8,20,38,.70);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    z-index: 9999;
-}
-
-.modal-overlay.show {
-    display: flex;
-}
-
-.payment-modal {
-    width: 100%;
-    max-width: 480px;
-    max-height: 94vh;
-    overflow-y: auto;
-    background: white;
-    border-radius: 20px;
-    padding: 22px;
-    box-shadow: 0 25px 60px rgba(0,0,0,.25);
-}
-
-.payment-modal h2 {
-    margin: 0 0 6px;
-    color: #073b7a;
-    font-size: 21px;
-}
-
-.payment-course-name {
-    color: #68758a;
-    font-size: 13px;
-    margin-bottom: 15px;
-}
-
-.payment-amount {
-    background: #f5f8fc;
-    border: 1px solid #e5eaf1;
-    border-radius: 13px;
-    padding: 14px;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.payment-amount span {
-    display: block;
-    color: #68758a;
-    font-size: 12px;
-}
-
-.payment-amount strong {
-    display: block;
-    margin-top: 3px;
-    color: #073b7a;
-    font-size: 27px;
-}
-
-.qr-payment-box {
-    text-align: center;
-}
-
-.qr-title {
-    color: #073b7a;
-    font-weight: 800;
-    font-size: 14px;
-}
-
-.qr-subtitle {
-    color: #718096;
-    font-size: 11px;
-    line-height: 1.5;
-    margin: 5px 0;
-}
-
-.qr-box {
-    width: 185px;
-    height: 185px;
-    margin: 10px auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border: 1px solid #dfe5ec;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 5px 18px rgba(0,0,0,.06);
-}
-
-#upiQr img,
-#upiQr canvas {
-    max-width: 175px;
-    max-height: 175px;
-}
-
-.upi-box {
-    background: #fff9df;
-    border-left: 4px solid #f4a900;
-    border-radius: 9px;
-    padding: 12px;
-    margin-bottom: 13px;
-    font-size: 12px;
-}
-
-.upi-id-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-top: 7px;
-}
-
-.upi-id-text {
-    color: #073b7a;
-    font-weight: 800;
-    word-break: break-all;
-}
-
-.copy-upi-btn {
-    border: none;
-    background: #073b7a;
-    color: white;
-    border-radius: 7px;
-    padding: 7px 10px;
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.upi-pay-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #16803c;
-    color: white;
-    text-decoration: none;
-    border-radius: 9px;
-    padding: 12px;
-    margin-bottom: 14px;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.payment-instruction {
-    background: #f7f9fc;
-    border: 1px solid #e5eaf1;
-    border-radius: 10px;
-    padding: 11px;
-    margin-bottom: 14px;
-    color: #596273;
-    font-size: 12px;
-    line-height: 1.7;
-}
-
-.payment-instruction strong {
-    color: #073b7a;
-}
-
-.form-group {
-    margin-bottom: 13px;
-}
-
-.form-group label {
-    display: block;
-    color: #073b7a;
-    font-size: 12px;
-    font-weight: 800;
-    margin-bottom: 6px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid #d9e0e8;
-    border-radius: 9px;
-    outline: none;
-    font-size: 13px;
-}
-
-.form-group input:focus {
-    border-color: #0b5ca8;
-    box-shadow: 0 0 0 3px rgba(11,92,168,.08);
-}
-
-.modal-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 9px;
-    margin-top: 16px;
-}
-
-.modal-btn {
-    border: none;
-    border-radius: 9px;
-    padding: 12px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.modal-cancel {
-    background: #edf1f5;
-    color: #333;
-}
-
-.modal-submit {
-    background: #073b7a;
-    color: white;
-}
-
-.modal-submit:disabled {
-    opacity: .55;
-    cursor: not-allowed;
-}
-
-.modal-message {
-    display: none;
-    padding: 11px;
-    border-radius: 8px;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.modal-message.success {
-    display: block;
-    background: #e8f7ee;
-    color: #16803c;
-}
-
-.modal-message.error {
-    display: block;
-    background: #fff1f1;
-    color: #b42318;
-}
-
-/* ================= ACCESS DENIED ================= */
-
-.access-denied {
-    max-width: 550px;
-    margin: 55px auto;
-    background: white;
-    border-radius: 20px;
-    padding: 40px 22px;
-    text-align: center;
-    box-shadow: 0 10px 35px rgba(0,0,0,.07);
-}
-
-.access-denied-icon {
-    font-size: 58px;
-}
-
-.access-denied h2 {
-    color: #073b7a;
-}
-
-.access-denied p {
-    color: #68758a;
-    line-height: 1.7;
-}
-
-/* ================= MOBILE BOTTOM NAV ================= */
-
-.mobile-bottom-nav {
-    display: none;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:800px) {
-
-    body {
-        padding-bottom: 72px;
-    }
-
-    .nav-container {
-        min-height: 62px;
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    .logo-icon {
-        width: 39px;
-        height: 39px;
-        font-size: 19px;
-    }
-
-    .logo-text {
-        font-size: 20px;
-    }
-
-    .logo-subtitle {
-        display: none;
-    }
-
-    .btn-login {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .courses-wrapper {
-        padding: 15px 13px 90px;
-    }
-
-    .page-title {
-        padding: 22px 17px;
-        border-radius: 19px;
-    }
-
-    .page-title h1 {
-        font-size: 24px;
-    }
-
-    .page-title p {
-        font-size: 12px;
-        max-width: 80%;
-    }
-
-    .page-title::after {
-        font-size: 58px;
-        right: 8px;
-        top: 10px;
-    }
-
-    .courses-layout {
-        display: block;
-    }
-
-    .sidebar {
-        display: none;
-    }
-
-    .courses-content {
-        gap: 13px;
-    }
-
-    .section-card {
-        padding: 16px;
-        border-radius: 16px;
-    }
-
-    .section-card h2 {
-        font-size: 18px;
-    }
-
-    .course-grid,
-    .resource-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .course-card {
-        padding: 16px;
-        border-radius: 15px;
-    }
-
-    .course-card h3 {
-        font-size: 18px;
-    }
-
-    .course-card-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 25px;
-    }
-
-    .quick-stats {
-        grid-template-columns: repeat(3,1fr);
-        gap: 7px;
-    }
-
-    .stat-box {
-        padding: 12px 5px;
-        border-radius: 12px;
-    }
-
-    .stat-icon {
-        font-size: 20px;
-    }
-
-    .stat-number {
-        font-size: 18px;
-    }
-
-    .stat-label {
-        font-size: 9px;
-    }
-
-    .course-hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .course-big-icon {
-        margin: auto;
-        width: 70px;
-        height: 70px;
-        font-size: 34px;
-    }
-
-    .course-hero h2 {
-        font-size: 23px;
-    }
-
-    .course-hero p {
-        font-size: 12px;
-    }
-
-    .mobile-bottom-nav {
-        position: fixed;
-        display: grid;
-        grid-template-columns: repeat(5,1fr);
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 68px;
-        background: rgba(255,255,255,.97);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid #e2e7ef;
-        box-shadow: 0 -5px 22px rgba(0,0,0,.08);
-        z-index: 9998;
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .mobile-bottom-nav a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-        text-decoration: none;
-        color: #7b8798;
-        font-size: 10px;
-        font-weight: 800;
-    }
-
-    .mobile-bottom-nav .nav-icon {
-        font-size: 20px;
-        line-height: 1;
-    }
-
-    .mobile-bottom-nav a.active {
-        color: #073b7a;
-    }
-
-    .mobile-bottom-nav a.active .nav-icon {
-        transform: translateY(-2px);
-    }
-
-    .payment-modal {
-        padding: 18px;
-        border-radius: 18px;
-    }
-
-    .qr-box {
-        width: 170px;
-        height: 170px;
-    }
-
-    #upiQr img,
-    #upiQr canvas {
-        max-width: 160px;
-        max-height: 160px;
-    }
-
-    .modal-actions {
-        grid-template-columns: 1fr;
-    }
-
-    .upi-id-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .copy-upi-btn {
-        width: 100%;
-    }
-}
-
-@media(max-width:380px) {
-
-    .logo-text {
-        font-size: 18px;
-    }
-
-    .btn-login {
-        padding: 7px 9px;
-    }
-
-    .quick-stats {
-        gap: 5px;
-    }
-
-    .stat-number {
-        font-size: 16px;
-    }
-}
+
+        :root {
+            --primary: #123b75;
+            --primary2: #1769aa;
+            --blue: #2878c8;
+            --gold: #f5b800;
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #172033;
+            --muted: #6d788b;
+            --border: #e5eaf1;
+            --green: #16803c;
+            --red: #c62828;
+            --shadow: 0 8px 25px rgba(20,32,51,.07);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            padding-bottom: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid #e7ebf1;
+
+            box-shadow:
+                0 4px 18px rgba(15,23,42,.05);
+        }
+
+        .header-inner {
+            width: min(1180px,100%);
+            min-height: 68px;
+            margin: auto;
+            padding: 0 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 14px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary2)
+                );
+
+            color: white;
+            font-size: 22px;
+
+            box-shadow:
+                0 7px 17px rgba(18,59,117,.20);
+        }
+
+        .brand-name {
+            color: var(--primary);
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: var(--primary2);
+        }
+
+        .brand-subtitle {
+            color: #8a94a4;
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            background: #edf5ff;
+            color: var(--primary);
+
+            padding: 9px 12px;
+
+            border-radius: 11px;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: min(1180px,100%);
+            margin: auto;
+            padding: 16px 16px 100px;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(255,255,255,.17),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #123b75,
+                    #1769aa
+                );
+
+            color: white;
+
+            padding: 24px 19px;
+
+            border-radius: 23px;
+
+            margin-bottom: 16px;
+
+            box-shadow:
+                0 13px 32px rgba(18,59,117,.18);
+        }
+
+        .hero::after {
+            content: "📚";
+
+            position: absolute;
+            right: 12px;
+            bottom: -20px;
+
+            font-size: 105px;
+
+            opacity: .09;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            background: rgba(255,255,255,.13);
+
+            border: 1px solid rgba(255,255,255,.12);
+
+            border-radius: 20px;
+
+            padding: 7px 10px;
+
+            font-size: 9px;
+            font-weight: 900;
+
+            margin-bottom: 9px;
+        }
+
+        .hero h1 {
+            margin: 0 0 7px;
+
+            font-size: 27px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            margin: 0;
+
+            max-width: 620px;
+
+            color: rgba(255,255,255,.87);
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .main-layout {
+            display: grid;
+
+            grid-template-columns: 220px 1fr;
+
+            gap: 17px;
+        }
+
+        .sidebar {
+            height: max-content;
+
+            position: sticky;
+            top: 84px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 19px;
+
+            padding: 14px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-title {
+            color: var(--primary);
+
+            font-size: 15px;
+            font-weight: 900;
+
+            padding: 8px 10px 12px;
+
+            border-bottom: 1px solid #edf0f5;
+
+            margin-bottom: 7px;
+        }
+
+        .side-link {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            border: 0;
+            background: transparent;
+
+            color: #68758a;
+
+            padding: 11px;
+
+            border-radius: 10px;
+
+            margin-bottom: 3px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            text-align: left;
+
+            cursor: pointer;
+        }
+
+        .side-link:hover,
+        .side-link.active {
+            background: #edf5ff;
+            color: var(--primary);
+        }
+
+        .logout-link {
+            color: var(--red);
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            display: grid;
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 19px;
+
+            padding: 17px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+        .section-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 39px;
+            height: 39px;
+
+            border-radius: 12px;
+
+            background: #edf5ff;
+
+            display: grid;
+            place-items: center;
+
+            font-size: 19px;
+        }
+
+        .section-head h2 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 17px;
+        }
+
+        .section-sub {
+            margin: 3px 0 0;
+
+            color: #8a94a4;
+
+            font-size: 10px;
+        }
+
+        .section-count {
+            background: #edf5ff;
+
+            color: var(--primary2);
+
+            border-radius: 20px;
+
+            padding: 6px 9px;
+
+            font-size: 9px;
+            font-weight: 900;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           COURSE GRID
+        ========================= */
+
+        .summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+        .summary-card { background:white; border:1px solid var(--border); border-radius:16px; padding:13px; box-shadow:var(--shadow); }
+        .summary-icon { font-size:20px; }
+        .summary-number { margin-top:4px; color:var(--primary); font-size:20px; font-weight:900; }
+        .summary-label { margin-top:3px; color:#8993a4; font-size:9px; font-weight:700; }
+
+        .course-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
+
+            gap: 12px;
+        }
+
+        .course-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 15px;
+
+            transition: .2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 28px rgba(15,23,42,.08);
+        }
+
+        .course-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--primary2),
+                    #68a7df
+                );
+        }
+
+        .course-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 12px;
+        }
+
+        .course-icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf5ff,
+                    #f7faff
+                );
+
+            display: grid;
+            place-items: center;
+
+            font-size: 27px;
+        }
+
+        .status {
+            display: inline-flex;
+
+            padding: 6px 8px;
+
+            border-radius: 20px;
+
+            font-size: 8px;
+            font-weight: 900;
+
+            white-space: nowrap;
+        }
+
+        .status-paid {
+            background: #e8f7ee;
+            color: var(--green);
+        }
+
+        .status-locked {
+            background: #fff0f0;
+            color: var(--red);
+        }
+
+        .course-card h3 {
+            margin: 0 0 6px;
+
+            color: var(--primary);
+
+            font-size: 17px;
+        }
+
+        .course-card p {
+            margin: 0 0 12px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: #f8fafc;
+
+            border: 1px solid #edf0f4;
+
+            padding: 9px 10px;
+
+            border-radius: 10px;
+
+            margin-bottom: 9px;
+        }
+
+        .price-box span {
+            color: #7d8797;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .price-box strong {
+            color: var(--primary);
+
+            font-size: 17px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .btn {
+            width: 100%;
+
+            min-height: 42px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 5px;
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            transition: .2s;
+        }
+
+        .btn:active {
+            transform: scale(.98);
+        }
+
+        .btn-primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary2)
+                );
+
+            color: white;
+        }
+
+        .btn-gold {
+            background: #f5c542;
+            color: #172033;
+        }
+
+        .btn-test {
+            background: #fff4c9;
+            color: #765900;
+        }
+
+        .btn-light {
+            background: #edf5ff;
+            color: var(--primary);
+        }
+
+
+        /* =========================
+           TEST AREA
+        ========================= */
+
+        .test-area {
+            margin-top: 12px;
+
+            padding-top: 12px;
+
+            border-top: 1px solid #edf0f5;
+        }
+
+        .test-title {
+            color: #4b5563;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            margin-bottom: 8px;
+        }
+
+        .test-active {
+            background: #eaf8ef;
+
+            border: 1px solid #bce6ca;
+
+            color: var(--green);
+
+            border-radius: 10px;
+
+            padding: 9px;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            text-align: center;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================
+           DETAIL
+        ========================= */
+
+        .course-detail {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .big-course-icon {
+            width: 76px;
+            height: 76px;
+
+            flex: 0 0 76px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf5ff,
+                    #f8fbff
+                );
+
+            display: grid;
+            place-items: center;
+
+            font-size: 38px;
+        }
+
+        .course-detail h2 {
+            margin: 0 0 5px;
+
+            color: var(--primary);
+
+            font-size: 24px;
+        }
+
+        .course-detail p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 8px;
+
+            margin-top: 16px;
+        }
+
+        .stat {
+            background: #f8fafc;
+
+            border: 1px solid #e8edf3;
+
+            border-radius: 13px;
+
+            text-align: center;
+
+            padding: 11px 5px;
+        }
+
+        .stat-icon {
+            font-size: 18px;
+        }
+
+        .stat-number {
+            margin-top: 3px;
+
+            color: var(--primary);
+
+            font-size: 18px;
+
+            font-weight: 900;
+        }
+
+        .stat-label {
+            margin-top: 3px;
+
+            color: #8993a4;
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           RESOURCE
+        ========================= */
+
+        .resource-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
+
+            gap: 11px;
+        }
+
+        .resource {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 15px;
+
+            padding: 14px;
+        }
+
+        .resource-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background: #edf5ff;
+
+            display: grid;
+            place-items: center;
+
+            font-size: 21px;
+
+            margin-bottom: 8px;
+        }
+
+        .resource h3 {
+            margin: 0 0 5px;
+
+            color: var(--primary);
+
+            font-size: 14px;
+
+            line-height: 1.4;
+        }
+
+        .resource p {
+            margin: 0 0 11px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+        .resource-btn {
+            width: 100%;
+
+            min-height: 38px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary);
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           TEST BOX
+        ========================= */
+
+        .test-box {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff9df,
+                    #fffdf6
+                );
+
+            border: 1px solid #f0dc80;
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        .test-box.unlocked {
+            background:
+                linear-gradient(
+                    135deg,
+                    #eaf8ef,
+                    #f8fff9
+                );
+
+            border-color: #b8e5c8;
+        }
+
+        .test-box h3 {
+            margin: 0 0 6px;
+
+            color: var(--primary);
+
+            font-size: 15px;
+        }
+
+        .test-box p {
+            margin: 0 0 10px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .test-price {
+            color: var(--primary);
+
+            font-size: 20px;
+
+            font-weight: 900;
+
+            margin-bottom: 9px;
+        }
+
+
+        /* =========================
+           LOCKED
+        ========================= */
+
+        .locked {
+            text-align: center;
+
+            padding: 25px 14px;
+
+            background: #fffaf0;
+
+            border: 1px solid #f3df85;
+
+            border-radius: 14px;
+
+            color: #68758a;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        .locked-icon {
+            font-size: 39px;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info {
+            background: #f7f9fc;
+
+            border: 1px solid #e5eaf1;
+
+            border-radius: 12px;
+
+            padding: 13px;
+
+            color: #596273;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        .info strong {
+            color: var(--primary);
+        }
+
+
+        /* =========================
+           LOADING / ERROR
+        ========================= */
+
+        .loading,
+        .empty,
+        .error {
+            padding: 30px 16px;
+
+            text-align: center;
+
+            border-radius: 14px;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .loading {
+            color: #718096;
+        }
+
+        .empty {
+            background: #f7f9fc;
+
+            color: #68758a;
+        }
+
+        .error {
+            background: #fff1f1;
+
+            border: 1px solid #ffd1d1;
+
+            color: #b42318;
+        }
+
+
+        /* =========================
+           PAYMENT MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 99999;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px;
+
+            background: rgba(7,17,31,.75);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+
+            max-width: 470px;
+
+            max-height: 94vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 21px;
+
+            padding: 19px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.27);
+        }
+
+        .modal-header {
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 12px;
+        }
+
+        .modal-header h2 {
+            margin: 0 0 4px;
+
+            color: var(--primary);
+
+            font-size: 19px;
+        }
+
+        .modal-header p {
+            margin: 0;
+
+            color: #748094;
+
+            font-size: 10px;
+        }
+
+        .close-modal {
+            width: 34px;
+            height: 34px;
+
+            border: 0;
+
+            border-radius: 50%;
+
+            background: #f0f3f7;
+
+            color: #536071;
+
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+        .payment-amount {
+            text-align: center;
+
+            background: #f6f8fb;
+
+            border: 1px solid #e4e9f0;
+
+            border-radius: 13px;
+
+            padding: 11px;
+
+            margin-bottom: 12px;
+        }
+
+        .payment-amount span {
+            display: block;
+
+            color: #788396;
+
+            font-size: 9px;
+        }
+
+        .payment-amount strong {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 26px;
+
+            margin-top: 3px;
+        }
+
+        .qr-title {
+            text-align: center;
+
+            color: var(--primary);
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .qr-subtitle {
+            text-align: center;
+
+            color: #7b8798;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+
+            margin: 4px 0;
+        }
+
+        .qr-box {
+            width: 185px;
+            height: 185px;
+
+            margin: 9px auto 12px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+
+            border: 1px solid #dfe5ec;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+        #upiQr img,
+        #upiQr canvas {
+            max-width: 175px;
+            max-height: 175px;
+        }
+
+        .upi-box {
+            background: #fff9df;
+
+            border-left: 4px solid #f4a900;
+
+            border-radius: 9px;
+
+            padding: 10px;
+
+            margin-bottom: 11px;
+
+            font-size: 10px;
+        }
+
+        .upi-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 8px;
+
+            margin-top: 6px;
+        }
+
+        .upi-text {
+            color: var(--primary);
+
+            font-weight: 900;
+
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            border: 0;
+
+            background: var(--primary);
+
+            color: white;
+
+            border-radius: 7px;
+
+            padding: 7px 9px;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            cursor: pointer;
+        }
+
+        .upi-pay {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #16803c;
+
+            color: white;
+
+            border-radius: 9px;
+
+            padding: 11px;
+
+            margin-bottom: 11px;
+
+            font-size: 11px;
+
+            font-weight: 900;
+        }
+
+        .instruction {
+            background: #f7f9fc;
+
+            border: 1px solid #e5eaf1;
+
+            border-radius: 10px;
+
+            padding: 10px;
+
+            color: #596273;
+
+            font-size: 9px;
+
+            line-height: 1.7;
+
+            margin-bottom: 11px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            border: 1px solid #d9e0e8;
+
+            border-radius: 9px;
+
+            padding: 11px;
+
+            outline: none;
+
+            font-size: 11px;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary2);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(23,105,170,.08);
+        }
+
+        .message {
+            display: none;
+
+            padding: 9px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            margin-bottom: 9px;
+        }
+
+        .message.success {
+            display: block;
+
+            background: #e8f7ee;
+
+            color: var(--green);
+        }
+
+        .message.error {
+            display: block;
+
+            background: #fff1f1;
+
+            color: #b42318;
+        }
+
+        .modal-actions {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .modal-btn {
+            border: 0;
+
+            border-radius: 9px;
+
+            padding: 11px;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #edf1f5;
+            color: #333;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .submit-btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================
+           BOTTOM NAV
+        ========================= */
+
+        .bottom-nav {
+            display: none;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:800px) {
+
+            body {
+                padding-bottom: 78px;
+            }
+
+            .header-inner {
+                min-height: 62px;
+                padding: 0 12px;
+            }
+
+            .brand-icon {
+                width: 39px;
+                height: 39px;
+
+                border-radius: 12px;
+
+                font-size: 19px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .dashboard-btn {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+
+            .page {
+                padding:
+                    12px 12px 90px;
+            }
+
+            .hero {
+                border-radius: 20px;
+
+                padding: 20px 16px;
+
+                margin-bottom: 13px;
+            }
+
+            .hero h1 {
+                font-size: 23px;
+            }
+
+            .hero p {
+                font-size: 11px;
+            }
+
+            .hero::after {
+                font-size: 70px;
+            }
+
+            .main-layout {
+                display: block;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                gap: 11px;
+            }
+
+            .card {
+                padding: 14px;
+                border-radius: 17px;
+            }
+
+            .summary-grid { grid-template-columns:repeat(3,1fr); gap:7px; }
+        .summary-card { padding:10px 7px; }
+        .summary-number { font-size:17px; }
+
+        .course-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .course-card {
+                padding: 14px;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-detail {
+                align-items: flex-start;
+            }
+
+            .big-course-icon {
+                width: 65px;
+                height: 65px;
+
+                flex-basis: 65px;
+
+                border-radius: 17px;
+
+                font-size: 31px;
+            }
+
+            .course-detail h2 {
+                font-size: 20px;
+            }
+
+            .modal-card {
+                padding: 16px;
+            }
+
+            .modal-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .upi-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+
+            .bottom-nav {
+                position: fixed;
+
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+
+                height: 65px;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(5,1fr);
+
+                z-index: 9998;
+
+                background:
+                    rgba(255,255,255,.97);
+
+                backdrop-filter: blur(16px);
+
+                border: 1px solid rgba(18,59,117,.09);
+
+                border-radius: 19px;
+
+                box-shadow:
+                    0 10px 30px rgba(16,24,40,.16);
+            }
+
+            .bottom-nav a {
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+                justify-content: center;
+
+                gap: 3px;
+
+                color: #7b8494;
+
+                font-size: 8px;
+
+                font-weight: 900;
+            }
+
+            .bottom-nav .nav-icon {
+                font-size: 19px;
+                line-height: 1;
+            }
+
+            .bottom-nav a.active {
+                color: var(--primary2);
+            }
+        }
+
+        @media(max-width:380px) {
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .course-card h3 {
+                font-size: 16px;
+            }
+
+            .stat-number {
+                font-size: 15px;
+            }
+        }
 
     </style>
-
 </head>
 
 
 <body>
 
-<div class="courses-page">
 
-    <header class="header">
+<!-- =========================
+     HEADER
+========================= -->
 
-        <div class="container nav-container">
+<header class="app-header">
 
-            <a
-                href="index.html"
-                class="logo-box"
-            >
+    <div class="header-inner">
 
-                <div class="logo-icon">
-                    📚
+        <a href="student-dashboard.html"
+           class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Raj<span>Edge</span>
                 </div>
 
-                <div>
-
-                    <div class="logo-text">
-                        Raj<span>Edge</span>
-                    </div>
-
-                    <div class="logo-subtitle">
-                        Rajasthan Education Hub
-                    </div>
-
+                <div class="brand-subtitle">
+                    Rajasthan Education Hub
                 </div>
 
-            </a>
+            </div>
 
-            <a
-                href="student-dashboard.html"
-                class="btn-login"
-            >
-                Dashboard
-            </a>
-
-        </div>
-
-    </header>
+        </a>
 
 
-    <main
-        class="courses-wrapper"
-        id="mainWrapper"
-    >
+        <a href="student-dashboard.html"
+           class="dashboard-btn">
 
-        <div class="loading-box">
-            ⏳ Courses load हो रहे हैं...
-        </div>
+            🏠 Dashboard
 
-    </main>
+        </a>
 
-</div>
+    </div>
+
+</header>
 
 
-<!-- ==========================================
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="page"
+      id="mainWrapper">
+
+    <div class="loading">
+        ⏳ Courses load हो रहे हैं...
+    </div>
+
+</main>
+
+
+<!-- =========================
      PAYMENT MODAL
-========================================== -->
+========================= -->
 
-<div
-    class="modal-overlay"
-    id="paymentModal"
->
+<div class="modal"
+     id="paymentModal">
 
-    <div class="payment-modal">
+    <div class="modal-card">
 
-        <h2 id="paymentTitle">
-            💳 Payment
-        </h2>
+        <div class="modal-header">
 
-        <div
-            class="payment-course-name"
-            id="paymentCourseName"
-        >
-            Course
+            <div>
+
+                <h2 id="paymentTitle">
+                    💳 Payment
+                </h2>
+
+                <p id="paymentCourseName">
+                    Course
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-modal"
+                id="closePaymentButton">
+
+                ×
+
+            </button>
+
         </div>
 
 
@@ -1232,23 +1702,19 @@ body {
         </div>
 
 
-        <div class="qr-payment-box">
+        <div class="qr-title">
+            📱 Scan & Pay via UPI
+        </div>
 
-            <div class="qr-title">
-                📱 Scan & Pay via UPI
-            </div>
+        <div class="qr-subtitle">
+            QR scan करके payment करें।
+        </div>
 
-            <div class="qr-subtitle">
-                QR scan करके payment करें।<br>
-                QR में amount automatically set रहेगा।
-            </div>
 
-            <div
-                class="qr-box"
-                id="upiQr"
-            >
-                QR generate हो रहा है...
-            </div>
+        <div class="qr-box"
+             id="upiQr">
+
+            QR generate हो रहा है...
 
         </div>
 
@@ -1259,21 +1725,23 @@ body {
                 💳 UPI ID
             </strong>
 
-            <div class="upi-id-row">
+            <div class="upi-row">
 
                 <span
-                    class="upi-id-text"
-                    id="upiIdText"
-                >
+                    class="upi-text"
+                    id="upiIdText">
+
                     7568283200-3@ybl
+
                 </span>
 
                 <button
                     type="button"
-                    class="copy-upi-btn"
-                    onclick="copyUpiId()"
-                >
+                    class="copy-btn"
+                    id="copyUpiButton">
+
                     📋 Copy
+
                 </button>
 
             </div>
@@ -1281,16 +1749,16 @@ body {
         </div>
 
 
-        <a
-            href="#"
-            id="upiPayButton"
-            class="upi-pay-btn"
-        >
+        <a href="#"
+           id="upiPayButton"
+           class="upi-pay">
+
             📲 Pay via UPI App
+
         </a>
 
 
-        <div class="payment-instruction">
+        <div class="instruction">
 
             <strong>
                 Payment Process:
@@ -1310,14 +1778,14 @@ body {
 
             <br>
 
-            4️⃣ Admin payment verify करने के बाद access unlock करेगा।
+            4️⃣ Admin verification के बाद access unlock होगा।
 
         </div>
 
 
         <div class="form-group">
 
-            <label for="utrInput">
+            <label>
                 UTR / Transaction ID
             </label>
 
@@ -1331,29 +1799,30 @@ body {
         </div>
 
 
-        <div
-            class="modal-message"
-            id="paymentMessage"
-        ></div>
+        <div id="paymentMessage"
+             class="message">
+        </div>
 
 
         <div class="modal-actions">
 
             <button
                 type="button"
-                class="modal-btn modal-cancel"
-                onclick="closePaymentModal()"
-            >
+                class="modal-btn cancel-btn"
+                id="closePaymentButton">
+
                 Cancel
+
             </button>
 
             <button
                 type="button"
-                class="modal-btn modal-submit"
+                class="modal-btn submit-btn"
                 id="submitPaymentBtn"
-                onclick="submitPaymentRequest()"
-            >
+                id="submitPaymentButton">
+
                 Submit Payment
+
             </button>
 
         </div>
@@ -1365,9 +1834,10 @@ body {
 
 <script>
 
-/* ==========================================
+
+/* =========================
    SUPABASE
-========================================== */
+========================= */
 
 const SUPABASE_URL =
     "https://xysgwtnclxpacmlgnmer.supabase.co";
@@ -1382,26 +1852,39 @@ const supabaseClient =
     );
 
 
-/* ==========================================
+/* =========================
    UPI
-========================================== */
+========================= */
 
 const RAJEDGE_UPI_ID =
     "7568283200-3@ybl";
 
 
-/* ==========================================
+/* =========================
    GLOBAL
-========================================== */
+========================= */
 
 let currentUser = null;
 let currentCourse = null;
 let selectedCourse = null;
 
+const purchaseActions = new Map();
+function registerPurchaseAction(course, purchaseType, price) {
+    const id = "purchase_" + purchaseActions.size + "_" + Date.now();
+    purchaseActions.set(id, { id: course.id, name: course.name, price, purchaseType });
+    return id;
+}
+function handlePurchaseAction(id) {
+    const option = purchaseActions.get(id);
+    if (!option) return;
+    if (option.purchaseType === "test_series") openTestSeriesPaymentModal(option);
+    else openCoursePaymentModal(option);
+}
 
-/* ==========================================
-   URL
-========================================== */
+
+/* =========================
+   COURSE ID
+========================= */
 
 function getCourseIdFromUrl() {
 
@@ -1414,57 +1897,83 @@ function getCourseIdFromUrl() {
 }
 
 
-/* ==========================================
+/* =========================
    USER
-========================================== */
+========================= */
 
 async function getCurrentUser() {
 
-    const {
-        data: {
-            session
-        },
-        error
-    } =
-        await supabaseClient.auth.getSession();
+    try {
 
-    if (error) {
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            console.error(error);
+            return null;
+        }
+
+
+        const session =
+            data?.session;
+
+
+        if (
+            !session ||
+            !session.user
+        ) {
+
+            window.location.replace(
+                "student-login.html"
+            );
+
+            return null;
+        }
+
+
+        currentUser =
+            session.user;
+
+
+        return currentUser;
+
+    }
+
+    catch(error) {
 
         console.error(error);
 
-        return null;
-    }
-
-    if (!session) {
-
-        window.location.href =
-            "student-login.html";
+        window.location.replace(
+            "student-login.html"
+        );
 
         return null;
+
     }
 
-    currentUser =
-        session.user;
-
-    return currentUser;
 }
 
 
-/* ==========================================
-   PAGE INITIALIZE
-========================================== */
+/* =========================
+   INITIALIZE
+========================= */
 
 async function initializePage() {
 
     const user =
         await getCurrentUser();
 
-    if (!user) {
-        return;
-    }
+
+    if (!user) return;
+
 
     const courseId =
         getCourseIdFromUrl();
+
 
     if (courseId) {
 
@@ -1481,16 +1990,19 @@ async function initializePage() {
 }
 
 
-/* ==========================================
+/* =========================
    LOAD MY COURSES
-========================================== */
+========================= */
 
 async function loadMyCourses() {
+
+    purchaseActions.clear();
 
     const main =
         document.getElementById(
             "mainWrapper"
         );
+
 
     try {
 
@@ -1520,9 +2032,9 @@ async function loadMyCourses() {
                     }
                 );
 
-        if (coursesError) {
+
+        if (coursesError)
             throw coursesError;
-        }
 
 
         const {
@@ -1544,15 +2056,15 @@ async function loadMyCourses() {
                     currentUser.id
                 );
 
-        if (enrollmentError) {
+
+        if (enrollmentError)
             throw enrollmentError;
-        }
 
 
         const coursePurchases =
             new Map();
 
-        const testSeriesPurchases =
+        const testPurchases =
             new Map();
 
 
@@ -1562,9 +2074,7 @@ async function loadMyCourses() {
                 if (
                     enrollment.payment_status !==
                     "paid"
-                ) {
-                    return;
-                }
+                ) return;
 
 
                 if (
@@ -1587,7 +2097,7 @@ async function loadMyCourses() {
                     "test_series"
                 ) {
 
-                    testSeriesPurchases.set(
+                    testPurchases.set(
                         String(
                             enrollment.course_id
                         ),
@@ -1602,33 +2112,35 @@ async function loadMyCourses() {
 
         main.innerHTML = `
 
-            <a
-                href="student-dashboard.html"
-                class="back-btn"
-            >
-                ← Dashboard
-            </a>
+            <div class="hero">
 
+                <div class="hero-content">
 
-            <div class="page-title">
+                    <div class="hero-badge">
+                        📚 MY LEARNING
+                    </div>
 
-                <span class="course-badge">
-                    📚 STUDENT PANEL
-                </span>
+                    <h1>
+                        My Courses
+                    </h1>
 
-                <h1>
-                    My Courses
-                </h1>
+                    <p>
+                        अपने courses, PDF Notes और
+                        Test Series एक ही जगह से access करें।
+                    </p>
 
-                <p>
-                    अपने courses और Test Series यहाँ manage करें।
-                </p>
+                </div>
 
             </div>
 
+            <div class="summary-grid">
+                <div class="summary-card"><div class="summary-icon">📚</div><div class="summary-number">${coursePurchases.size}</div><div class="summary-label">Course Access</div></div>
+                <div class="summary-card"><div class="summary-icon">📝</div><div class="summary-number">${testPurchases.size}</div><div class="summary-label">Test Series</div></div>
+                <div class="summary-card"><div class="summary-icon">🎯</div><div class="summary-number">${courses?.length || 0}</div><div class="summary-label">Available Courses</div></div>
+            </div>
 
-            <div class="courses-layout">
 
+            <div class="main-layout">
 
                 <aside class="sidebar">
 
@@ -1636,77 +2148,101 @@ async function loadMyCourses() {
                         Student Panel
                     </div>
 
+                    <a href="student-dashboard.html"
+                       class="side-link">
 
-                    <a
-                        href="student-dashboard.html"
-                        class="side-link"
-                    >
                         🏠 Dashboard
+
                     </a>
 
+                    <a href="student-courses.html"
+                       class="side-link active">
 
-                    <a
-                        href="student-courses.html"
-                        class="side-link active"
-                    >
                         📚 My Courses
+
                     </a>
 
+                    <a href="student-tests.html"
+                       class="side-link">
 
-                    <a
-                        href="student-tests.html"
-                        class="side-link"
-                    >
                         📝 My Tests
+
                     </a>
 
+                    <a href="student-notes.html"
+                       class="side-link">
 
-                    <a
-                        href="student-notes.html"
-                        class="side-link"
-                    >
                         📄 My Notes
+
                     </a>
 
+                    <a href="student-results.html"
+                       class="side-link">
 
-                    <a
-                        href="student-results.html"
-                        class="side-link"
-                    >
                         📊 My Results
+
                     </a>
 
+                    <a href="student-profile.html"
+                       class="side-link">
 
-                    <a
-                        href="student-profile.html"
-                        class="side-link"
-                    >
                         👤 My Profile
-                    </a>
 
+                    </a>
 
                     <button
-                        class="side-link logout-btn"
-                        onclick="logoutStudent()"
-                    >
+                        class="side-link logout-link"
+                        id="logoutButton">
+
                         🚪 Logout
+
                     </button>
 
                 </aside>
 
 
-                <section class="courses-content">
+                <section class="content">
 
-                    <div class="section-card">
+                    <div class="card">
 
-                        <h2>
-                            📚 Available Courses
-                        </h2>
+                        <div class="section-head">
+
+                            <div class="section-left">
+
+                                <div class="section-icon">
+                                    📚
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Available Courses
+                                    </h2>
+
+                                    <p class="section-sub">
+                                        Learn • Practice • Improve
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <span
+                                class="section-count"
+                                id="courseCount">
+
+                                ${courses?.length || 0}
+
+                            </span>
+
+                        </div>
+
 
                         <div
                             class="course-grid"
-                            id="courseGrid"
-                        ></div>
+                            id="courseGrid">
+
+                        </div>
 
                     </div>
 
@@ -1731,9 +2267,8 @@ async function loadMyCourses() {
             grid.innerHTML = `
 
                 <div
-                    class="empty-box"
-                    style="grid-column:1/-1;"
-                >
+                    class="empty"
+                    style="grid-column:1/-1;">
 
                     📚 अभी कोई active course available नहीं है।
 
@@ -1746,172 +2281,197 @@ async function loadMyCourses() {
 
 
         grid.innerHTML =
-            courses
-                .map(
-                    course => {
+            courses.map(
+                course => {
 
-                        const courseEnrollment =
-                            coursePurchases.get(
-                                String(course.id)
-                            );
+                    const courseEnrollment =
+                        coursePurchases.get(
+                            String(course.id)
+                        );
 
-                        const testSeriesEnrollment =
-                            testSeriesPurchases.get(
-                                String(course.id)
-                            );
-
-                        const coursePurchased =
-                            !!courseEnrollment;
-
-                        const testSeriesPurchased =
-                            !!testSeriesEnrollment;
-
-                        const icon =
-                            getCourseIcon(
-                                course.name
-                            );
-
-                        let statusText = "";
+                    const testEnrollment =
+                        testPurchases.get(
+                            String(course.id)
+                        );
 
 
-                        if (
-                            coursePurchased &&
-                            testSeriesPurchased
-                        ) {
+                    const coursePurchased =
+                        !!courseEnrollment;
 
-                            statusText =
-                                "✅ Course + Test Series Purchased";
-
-                        }
-
-                        else if (
-                            coursePurchased
-                        ) {
-
-                            statusText =
-                                "✅ Course Purchased";
-
-                        }
-
-                        else if (
-                            testSeriesPurchased
-                        ) {
-
-                            statusText =
-                                "📝 Test Series Purchased";
-
-                        }
-
-                        else {
-
-                            statusText =
-                                "🔒 Not Purchased";
-
-                        }
+                    const testPurchased =
+                        !!testEnrollment;
 
 
-                        const statusClass =
-                            (
-                                coursePurchased ||
-                                testSeriesPurchased
-                            )
-                                ? "status-purchased"
-                                : "status-not-purchased";
+                    const purchased =
+                        coursePurchased ||
+                        testPurchased;
 
 
-                        let mainButton = "";
+                    const icon =
+                        getCourseIcon(
+                            course.name
+                        );
 
 
-                        if (coursePurchased) {
-
-                            mainButton = `
-
-                                <a
-                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}"
-                                    class="course-btn"
-                                >
-                                    📚 Open Course
-                                </a>
-
-                            `;
-
-                        }
-
-                        else if (testSeriesPurchased) {
-
-                            mainButton = `
-
-                                <a
-                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}#tests"
-                                    class="course-btn"
-                                >
-                                    📝 Open Test Series
-                                </a>
-
-                            `;
-
-                        }
-
-                        else {
-
-                            mainButton = `
-
-                                <a
-                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}"
-                                    class="course-btn secondary-btn"
-                                >
-                                    👁 View Course
-                                </a>
-
-                            `;
-
-                        }
+                    let statusText =
+                        "🔒 LOCKED";
 
 
-                        return `
+                    if (
+                        coursePurchased &&
+                        testPurchased
+                    ) {
 
-                            <div class="course-card">
+                        statusText =
+                            "✓ FULL ACCESS";
 
-                                <div class="course-card-icon">
+                    }
+
+                    else if (
+                        coursePurchased
+                    ) {
+
+                        statusText =
+                            "✓ COURSE ACTIVE";
+
+                    }
+
+                    else if (
+                        testPurchased
+                    ) {
+
+                        statusText =
+                            "✓ TEST ACTIVE";
+
+                    }
+
+
+                    return `
+
+                        <div class="course-card">
+
+                            <div class="course-top">
+
+                                <div class="course-icon">
                                     ${icon}
                                 </div>
 
+                                <span
+                                    class="status ${
+                                        purchased
+                                            ? "status-paid"
+                                            : "status-locked"
+                                    }">
 
-                                <span class="course-status ${statusClass}">
                                     ${statusText}
+
                                 </span>
 
-
-                                <h3>
-                                    ${escapeHtml(course.name)}
-                                </h3>
+                            </div>
 
 
-                                <p>
-                                    ${escapeHtml(course.name)}
-                                    की preparation के लिए
-                                    PDF Notes और complete Test Series available हैं।
-                                </p>
+                            <h3>
+                                ${escapeHtml(course.name)}
+                            </h3>
+
+
+                            <p>
+                                ${escapeHtml(course.name)}
+                                की preparation के लिए
+                                PDF Notes और Test Series
+                                available हैं।
+                            </p>
+
+
+                            ${
+                                coursePurchased
+
+                                ?
+
+                                `
+
+                                <div class="price-box">
+
+                                    <span>
+                                        Course Active
+                                    </span>
+
+                                    <strong>
+                                        ${formatPrice(
+                                            courseEnrollment.amount
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <a
+                                    href="student-courses.html?course_id=${encodeURIComponent(course.id)}"
+                                    class="btn btn-primary">
+
+                                    📚 Open Course
+
+                                </a>
+
+                                `
+
+                                :
+
+                                `
+
+                                <div class="price-box">
+
+                                    <span>
+                                        Course Price
+                                    </span>
+
+                                    <strong>
+                                        ${formatPrice(
+                                            course.notes_price
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-gold"
+                                    data-purchase-action="${registerPurchaseAction(course, "course", course.notes_price)}"
+
+                                    💳 Buy Course
+
+                                </button>
+
+                                `
+                            }
+
+
+                            <div class="test-area">
+
+                                <div class="test-title">
+                                    📝 Test Series
+                                </div>
 
 
                                 ${
-                                    coursePurchased
+                                    testPurchased
 
                                     ?
 
                                     `
 
-                                    <div class="price-row">
-
-                                        <div class="price-label">
-                                            Course
-                                        </div>
-
-                                        <div class="price-value">
-                                            ${formatPrice(courseEnrollment.amount)}
-                                        </div>
-
+                                    <div class="test-active">
+                                        ✓ Full Test Series Active
                                     </div>
+
+                                    <a
+                                        href="student-courses.html?course_id=${encodeURIComponent(course.id)}#tests"
+                                        class="btn btn-test">
+
+                                        📝 Open Test Series
+
+                                    </a>
 
                                     `
 
@@ -1919,162 +2479,70 @@ async function loadMyCourses() {
 
                                     `
 
-                                    <div class="price-row">
+                                    <div class="price-box">
 
-                                        <div class="price-label">
-                                            Course Price
-                                        </div>
+                                        <span>
+                                            Test Series
+                                        </span>
 
-                                        <div class="price-value">
-                                            ${formatPrice(course.notes_price)}
-                                        </div>
+                                        <strong>
+                                            ${formatPrice(
+                                                course.test_series_price
+                                            )}
+                                        </strong>
 
                                     </div>
 
+
                                     <button
                                         type="button"
-                                        class="course-btn buy-btn"
-                                        onclick='openCoursePaymentModal(
-                                            ${JSON.stringify({
-                                                id: course.id,
-                                                name: course.name,
-                                                price: course.notes_price,
-                                                purchaseType: "course"
-                                            }).replace(/'/g, "&#39;")}
-                                        )'
-                                    >
-                                        💳 Buy Course
+                                        class="btn btn-test"
+                                        data-purchase-action="${registerPurchaseAction(course, "test_series", course.test_series_price)}"
+
+                                        📝 Buy Test Series
+
                                     </button>
 
                                     `
                                 }
 
-
-                                <div style="
-                                    margin-top:18px;
-                                    padding-top:16px;
-                                    border-top:1px solid #edf0f5;
-                                ">
-
-                                    <div
-                                        style="
-                                            font-size:13px;
-                                            color:#666;
-                                            margin-bottom:8px;
-                                            font-weight:700;
-                                        "
-                                    >
-                                        📝 Test Series
-                                    </div>
-
-
-                                    ${
-                                        testSeriesPurchased
-
-                                        ?
-
-                                        `
-
-                                        <span class="course-status status-purchased">
-                                            ✅ Test Series Purchased
-                                        </span>
-
-                                        `
-
-                                        :
-
-                                        `
-
-                                        <div class="price-row">
-
-                                            <div class="price-label">
-                                                Full Test Series
-                                            </div>
-
-                                            <div class="price-value">
-                                                ${formatPrice(course.test_series_price)}
-                                            </div>
-
-                                        </div>
-
-                                        `
-                                    }
-
-
-                                    ${mainButton}
-
-
-                                    ${
-                                        !testSeriesPurchased
-
-                                        ?
-
-                                        `
-
-                                        <button
-                                            type="button"
-                                            class="course-btn test-btn"
-                                            style="margin-top:8px;"
-                                            onclick='openTestSeriesPaymentModal(
-                                                ${JSON.stringify({
-                                                    id: course.id,
-                                                    name: course.name,
-                                                    price: course.test_series_price,
-                                                    purchaseType: "test_series"
-                                                }).replace(/'/g, "&#39;")}
-                                            )'
-                                        >
-                                            📝 Buy Full Test Series
-                                        </button>
-
-                                        `
-
-                                        :
-
-                                        ""
-
-                                    }
-
-                                </div>
-
                             </div>
 
-                        `;
+                        </div>
 
-                    }
-                )
-                .join("");
+                    `;
 
+                }
+            ).join("");
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
-            "My Courses Error:",
+            "Courses Error:",
             error
         );
 
 
         main.innerHTML = `
 
-            <div class="error-box">
+            <div class="error">
 
                 ❌ Courses load नहीं हो पाए।
 
                 <br><br>
 
-                ${escapeHtml(
-                    error.message
-                )}
+                ${escapeHtml(error.message)}
 
                 <br><br>
 
                 <a
                     href="student-dashboard.html"
-                    class="resource-btn"
-                >
+                    class="btn btn-primary">
+
                     ← Dashboard
+
                 </a>
 
             </div>
@@ -2086,18 +2554,21 @@ async function loadMyCourses() {
 }
 
 
-/* ==========================================
-   LOAD COURSE DETAILS
-========================================== */
+/* =========================
+   COURSE DETAILS
+========================= */
 
 async function loadCourseDetails(
     courseId
 ) {
 
+    purchaseActions.clear();
+
     const main =
         document.getElementById(
             "mainWrapper"
         );
+
 
     try {
 
@@ -2122,9 +2593,8 @@ async function loadCourseDetails(
                 .maybeSingle();
 
 
-        if (courseError) {
+        if (courseError)
             throw courseError;
-        }
 
 
         if (!course) {
@@ -2143,7 +2613,7 @@ async function loadCourseDetails(
         ) {
 
             showAccessDenied(
-                "Course Currently Unavailable",
+                "Course Unavailable",
                 "यह course अभी active नहीं है।"
             );
 
@@ -2179,39 +2649,36 @@ async function loadCourseDetails(
                 );
 
 
-        if (enrollmentError) {
+        if (enrollmentError)
             throw enrollmentError;
-        }
 
 
         const courseEnrollment =
-            (enrollments || [])
-                .find(
-                    item =>
-                        item.purchase_type ===
-                        "course"
-                ) || null;
+            (enrollments || []).find(
+                item =>
+                    item.purchase_type ===
+                    "course"
+            ) || null;
 
 
-        const testSeriesEnrollment =
-            (enrollments || [])
-                .find(
-                    item =>
-                        item.purchase_type ===
-                        "test_series"
-                ) || null;
+        const testEnrollment =
+            (enrollments || []).find(
+                item =>
+                    item.purchase_type ===
+                    "test_series"
+            ) || null;
 
 
         const coursePurchased =
             !!courseEnrollment;
 
-        const testSeriesPurchased =
-            !!testSeriesEnrollment;
+        const testPurchased =
+            !!testEnrollment;
 
 
         if (
             !coursePurchased &&
-            !testSeriesPurchased
+            !testPurchased
         ) {
 
             showAccessDenied(
@@ -2227,29 +2694,42 @@ async function loadCourseDetails(
             course;
 
 
-        let pageBadge = "";
-        let pageTitle = "";
-        let paidStatusHtml = "";
+        const totalAmount =
+            [
+                courseEnrollment?.amount,
+                testEnrollment?.amount
+            ]
+            .filter(
+                value =>
+                    value !== null &&
+                    value !== undefined &&
+                    value !== ""
+            )
+            .reduce(
+                (total,value) =>
+                    total +
+                    Number(value || 0),
+                0
+            );
+
+
+        let badge =
+            "📝 TEST ACCESS";
+
+        let description =
+            "आपकी Test Series access active है।";
 
 
         if (
             coursePurchased &&
-            testSeriesPurchased
+            testPurchased
         ) {
 
-            pageBadge =
+            badge =
                 "🔐 FULL ACCESS";
 
-            pageTitle =
-                "आपका Course और Test Series दोनों active हैं।";
-
-            paidStatusHtml = `
-
-                <span class="paid-badge">
-                    ✅ Course + Test Series Purchased & Active
-                </span>
-
-            `;
+            description =
+                "Course और Test Series दोनों active हैं।";
 
         }
 
@@ -2257,97 +2737,40 @@ async function loadCourseDetails(
             coursePurchased
         ) {
 
-            pageBadge =
+            badge =
                 "📚 COURSE ACCESS";
 
-            pageTitle =
+            description =
                 "आपका Course access active है।";
 
-            paidStatusHtml = `
-
-                <span class="paid-badge">
-                    ✅ Course Purchased & Active
-                </span>
-
-            `;
-
         }
-
-        else {
-
-            pageBadge =
-                "📝 TEST SERIES ACCESS";
-
-            pageTitle =
-                "आपकी Test Series access active है।";
-
-            paidStatusHtml = `
-
-                <span class="test-only-badge">
-                    ✅ Test Series Purchased & Active
-                </span>
-
-            `;
-
-        }
-
-
-        const purchasedAmounts = [
-
-            courseEnrollment?.amount,
-            testSeriesEnrollment?.amount
-
-        ].filter(
-            value =>
-                value !== null &&
-                value !== undefined &&
-                value !== ""
-        );
-
-
-        const totalPurchasedAmount =
-            purchasedAmounts.reduce(
-                (
-                    total,
-                    value
-                ) =>
-                    total +
-                    Number(
-                        value || 0
-                    ),
-                0
-            );
 
 
         main.innerHTML = `
 
-            <a
-                href="student-courses.html"
-                class="back-btn"
-            >
-                ← My Courses
-            </a>
+            <div class="hero">
 
+                <div class="hero-content">
 
-            <div class="page-title">
+                    <div class="hero-badge">
+                        ${badge}
+                    </div>
 
-                <span class="course-badge">
-                    ${pageBadge}
-                </span>
+                    <h1>
+                        ${escapeHtml(course.name)}
+                    </h1>
 
-                <h1>
-                    ${escapeHtml(course.name)}
-                </h1>
+                    <p>
+                        ${description}
+                        अपनी preparation यहीं से continue करें।
+                    </p>
 
-                <p>
-                    ${pageTitle}
-                </p>
+                </div>
 
             </div>
 
 
-            <div class="courses-layout">
-
+            <div class="main-layout">
 
                 <aside class="sidebar">
 
@@ -2355,79 +2778,71 @@ async function loadCourseDetails(
                         Student Panel
                     </div>
 
+                    <a href="student-dashboard.html"
+                       class="side-link">
 
-                    <a
-                        href="student-dashboard.html"
-                        class="side-link"
-                    >
                         🏠 Dashboard
+
                     </a>
 
+                    <a href="student-courses.html"
+                       class="side-link active">
 
-                    <a
-                        href="student-courses.html"
-                        class="side-link active"
-                    >
                         📚 My Courses
+
                     </a>
 
+                    <a href="student-tests.html"
+                       class="side-link">
 
-                    <a
-                        href="student-tests.html"
-                        class="side-link"
-                    >
                         📝 My Tests
+
                     </a>
 
+                    <a href="student-notes.html"
+                       class="side-link">
 
-                    <a
-                        href="student-notes.html"
-                        class="side-link"
-                    >
                         📄 My Notes
+
                     </a>
 
+                    <a href="student-results.html"
+                       class="side-link">
 
-                    <a
-                        href="student-results.html"
-                        class="side-link"
-                    >
                         📊 My Results
+
                     </a>
 
+                    <a href="student-profile.html"
+                       class="side-link">
 
-                    <a
-                        href="student-profile.html"
-                        class="side-link"
-                    >
                         👤 My Profile
-                    </a>
 
+                    </a>
 
                     <button
-                        class="side-link logout-btn"
-                        onclick="logoutStudent()"
-                    >
+                        class="side-link logout-link"
+                        id="logoutButton">
+
                         🚪 Logout
+
                     </button>
 
                 </aside>
 
 
-                <section class="courses-content">
+                <section class="content">
 
 
-                    <div
-                        class="section-card"
-                        id="courseDetailsCard"
-                    >
+                    <!-- COURSE HEADER -->
 
-                        <div class="course-hero">
+                    <div class="card">
 
-                            <div class="course-big-icon">
+                        <div class="course-detail">
+
+                            <div class="big-course-icon">
                                 ${getCourseIcon(course.name)}
                             </div>
-
 
                             <div>
 
@@ -2435,25 +2850,20 @@ async function loadCourseDetails(
                                     ${escapeHtml(course.name)}
                                 </h2>
 
-
                                 <p>
-                                    ${escapeHtml(course.name)}
-                                    की complete preparation के लिए
-                                    PDF Notes और Test Series यहाँ available हैं।
+                                    Complete preparation,
+                                    PDF Notes और Test Series
+                                    एक ही जगह।
                                 </p>
-
-
-                                ${paidStatusHtml}
 
                             </div>
 
                         </div>
 
 
-                        <div class="quick-stats">
+                        <div class="stats">
 
-
-                            <div class="stat-box">
+                            <div class="stat">
 
                                 <div class="stat-icon">
                                     📄
@@ -2461,23 +2871,24 @@ async function loadCourseDetails(
 
                                 <div
                                     class="stat-number"
-                                    id="notesCount"
-                                >
+                                    id="notesCount">
+
                                     ${
                                         coursePurchased
                                             ? "—"
                                             : "🔒"
                                     }
+
                                 </div>
 
                                 <div class="stat-label">
-                                    Notes Available
+                                    Notes
                                 </div>
 
                             </div>
 
 
-                            <div class="stat-box">
+                            <div class="stat">
 
                                 <div class="stat-icon">
                                     📝
@@ -2485,34 +2896,34 @@ async function loadCourseDetails(
 
                                 <div
                                     class="stat-number"
-                                    id="testsCount"
-                                >
+                                    id="testsCount">
+
                                     —
+
                                 </div>
 
                                 <div class="stat-label">
-                                    Tests Available
+                                    Tests
                                 </div>
 
                             </div>
 
 
-                            <div class="stat-box">
+                            <div class="stat">
 
                                 <div class="stat-icon">
                                     💰
                                 </div>
 
                                 <div class="stat-number">
-                                    ${formatPrice(totalPurchasedAmount)}
+                                    ${formatPrice(totalAmount)}
                                 </div>
 
                                 <div class="stat-label">
-                                    Purchased Amount
+                                    Paid
                                 </div>
 
                             </div>
-
 
                         </div>
 
@@ -2521,17 +2932,36 @@ async function loadCourseDetails(
 
                     <!-- NOTES -->
 
-                    <div class="section-card">
+                    <div class="card">
 
-                        <h2>
-                            📄 Course Notes
-                        </h2>
+                        <div class="section-head">
+
+                            <div class="section-left">
+
+                                <div class="section-icon">
+                                    📄
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Course Notes
+                                    </h2>
+
+                                    <p class="section-sub">
+                                        PDF Study Material
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
                         <div
                             class="resource-grid"
-                            id="notesGrid"
-                        >
+                            id="notesGrid">
 
                             ${
                                 coursePurchased
@@ -2540,7 +2970,7 @@ async function loadCourseDetails(
 
                                 `
 
-                                <div class="loading-box">
+                                <div class="loading">
                                     ⏳ Notes load हो रहे हैं...
                                 </div>
 
@@ -2551,36 +2981,31 @@ async function loadCourseDetails(
                                 `
 
                                 <div
-                                    class="locked-notes-box"
-                                    style="grid-column:1/-1;"
-                                >
+                                    class="locked"
+                                    style="grid-column:1/-1;">
 
-                                    <div style="font-size:45px;">
+                                    <div class="locked-icon">
                                         🔒
                                     </div>
 
-                                    <h3 style="color:#052a5b;">
+                                    <strong>
                                         Course Notes Locked
-                                    </h3>
+                                    </strong>
 
-                                    <p>
-                                        आपने अभी केवल Test Series purchase की है।
-                                        PDF Notes access करने के लिए Course purchase करें।
-                                    </p>
+                                    <br>
+
+                                    PDF Notes access करने के लिए
+                                    Course purchase करें।
+
+                                    <br><br>
 
                                     <button
                                         type="button"
-                                        class="course-btn buy-btn"
-                                        onclick='openCoursePaymentModal(
-                                            ${JSON.stringify({
-                                                id: course.id,
-                                                name: course.name,
-                                                price: course.notes_price,
-                                                purchaseType: "course"
-                                            }).replace(/'/g, "&#39;")}
-                                        )'
-                                    >
+                                        class="btn btn-gold"
+                                        data-purchase-action="${registerPurchaseAction(course, "course", course.notes_price)}"
+
                                         💳 Buy Course
+
                                     </button>
 
                                 </div>
@@ -2593,16 +3018,35 @@ async function loadCourseDetails(
                     </div>
 
 
-                    <!-- TEST SERIES -->
+                    <!-- TESTS -->
 
                     <div
-                        class="section-card"
-                        id="tests"
-                    >
+                        class="card"
+                        id="tests">
 
-                        <h2>
-                            📝 Test Series
-                        </h2>
+                        <div class="section-head">
+
+                            <div class="section-left">
+
+                                <div class="section-icon">
+                                    📝
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Test Series
+                                    </h2>
+
+                                    <p class="section-sub">
+                                        Practice Tests
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
                         <div id="testSeriesStatus"></div>
@@ -2610,10 +3054,9 @@ async function loadCourseDetails(
 
                         <div
                             class="resource-grid"
-                            id="testsGrid"
-                        >
+                            id="testsGrid">
 
-                            <div class="loading-box">
+                            <div class="loading">
                                 ⏳ Tests load हो रहे हैं...
                             </div>
 
@@ -2622,84 +3065,103 @@ async function loadCourseDetails(
                     </div>
 
 
-                    <!-- INFO -->
+                    <!-- ACCESS -->
 
-                    <div class="section-card">
+                    <div class="card">
 
-                        <h2>
-                            🔐 Access Information
-                        </h2>
+                        <div class="section-head">
+
+                            <div class="section-left">
+
+                                <div class="section-icon">
+                                    🔐
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Access Status
+                                    </h2>
+
+                                    <p class="section-sub">
+                                        Your course permissions
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
-                        <div class="info-note">
+                        <div class="info">
 
                             ${
                                 coursePurchased
+
                                 ?
+
                                 `
 
                                 <strong>
-                                    ✅ Course access active है।
+                                    ✅ Course active
                                 </strong>
 
-                                <br><br>
+                                <br>
 
-                                📄 आप इस course के PDF Notes access कर सकते हैं।
+                                PDF Notes access available है।
 
                                 `
+
                                 :
+
                                 `
 
                                 <strong>
-                                    🔒 Course Notes access active नहीं है।
+                                    🔒 Course inactive
                                 </strong>
 
-                                <br><br>
+                                <br>
 
-                                📄 PDF Notes के लिए Course अलग से purchase करना होगा।
+                                PDF Notes के लिए Course purchase करें।
 
                                 `
                             }
 
-
                             <br><br>
-
 
                             ${
-                                testSeriesPurchased
+                                testPurchased
+
                                 ?
+
                                 `
 
                                 <strong>
-                                    ✅ Test Series access active है।
+                                    ✅ Test Series active
                                 </strong>
 
-                                <br><br>
+                                <br>
 
-                                📝 आपकी पूरी Test Series active है।
-                                नीचे दिए गए सभी active tests attempt कर सकते हैं।
+                                सभी active tests attempt कर सकते हैं।
 
                                 `
+
                                 :
+
                                 `
 
                                 <strong>
-                                    🔒 Test Series access active नहीं है।
+                                    🔒 Test Series inactive
                                 </strong>
 
-                                <br><br>
+                                <br>
 
-                                📝 Test Series purchase करने के बाद
-                                सभी active tests unlock होंगे।
+                                Full Test Series purchase करने पर
+                                सभी tests unlock होंगे।
 
                                 `
                             }
-
-
-                            <br><br>
-
-                            🔐 Payment approval के बाद access
-                            आपके student account से जुड़ जाता है।
 
                         </div>
 
@@ -2721,28 +3183,26 @@ async function loadCourseDetails(
 
         await loadCourseTests(
             course,
-            testSeriesPurchased
+            testPurchased
         );
 
 
         if (
-            window.location.hash ===
-            "#tests"
+            window.location.hash === "#tests"
         ) {
 
             setTimeout(
-                function() {
+                () => {
 
-                    const testsSection =
+                    const section =
                         document.getElementById(
                             "tests"
                         );
 
-                    if (testsSection) {
+                    if (section) {
 
-                        testsSection.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
+                        section.scrollIntoView({
+                            behavior: "smooth"
                         });
 
                     }
@@ -2755,7 +3215,7 @@ async function loadCourseDetails(
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
             "Course Details Error:",
@@ -2765,23 +3225,22 @@ async function loadCourseDetails(
 
         main.innerHTML = `
 
-            <div class="error-box">
+            <div class="error">
 
                 ❌ Course details load नहीं हो पाए।
 
                 <br><br>
 
-                ${escapeHtml(
-                    error.message
-                )}
+                ${escapeHtml(error.message)}
 
                 <br><br>
 
                 <a
                     href="student-courses.html"
-                    class="resource-btn"
-                >
+                    class="btn btn-primary">
+
                     ← My Courses
+
                 </a>
 
             </div>
@@ -2793,13 +3252,13 @@ async function loadCourseDetails(
 }
 
 
-/* ==========================================
-   LOAD NOTES
-========================================== */
+/* =========================
+   COURSE NOTES
+========================= */
 
 async function loadCourseNotes(
     course,
-    coursePurchased = true
+    coursePurchased
 ) {
 
     const notesGrid =
@@ -2808,14 +3267,10 @@ async function loadCourseNotes(
         );
 
 
-    if (!notesGrid) {
-        return;
-    }
-
-
-    if (!coursePurchased) {
-        return;
-    }
+    if (
+        !notesGrid ||
+        !coursePurchased
+    ) return;
 
 
     try {
@@ -2852,23 +3307,22 @@ async function loadCourseNotes(
                 );
 
 
-        if (error) {
+        if (error)
             throw error;
-        }
 
 
         const count =
             notes?.length || 0;
 
 
-        const notesCount =
+        const countElement =
             document.getElementById(
                 "notesCount"
             );
 
 
-        if (notesCount) {
-            notesCount.innerText =
+        if (countElement) {
+            countElement.innerText =
                 count;
         }
 
@@ -2881,17 +3335,11 @@ async function loadCourseNotes(
             notesGrid.innerHTML = `
 
                 <div
-                    class="empty-box"
-                    style="grid-column:1/-1;"
-                >
+                    class="empty"
+                    style="grid-column:1/-1;">
 
                     📄 इस course के लिए अभी
                     कोई PDF notes available नहीं हैं।
-
-                    <br><br>
-
-                    Admin द्वारा notes upload होने के बाद
-                    यहाँ दिखाई देंगे।
 
                 </div>
 
@@ -2901,69 +3349,110 @@ async function loadCourseNotes(
         }
 
 
+        const cards = [];
+
+
+        for (
+            const note of notes
+        ) {
+
+            let pdfUrl =
+                note.pdf_url;
+
+
+            const marker =
+                "/storage/v1/object/public/notes-pdfs/";
+
+
+            if (
+                pdfUrl &&
+                pdfUrl.includes(marker)
+            ) {
+
+                const filePath =
+                    pdfUrl.split(marker)[1];
+
+
+                if (filePath) {
+
+                    const {
+                        data: signedData,
+                        error: signedError
+                    } =
+                        await supabaseClient
+                            .storage
+                            .from("notes-pdfs")
+                            .createSignedUrl(
+                                decodeURIComponent(
+                                    filePath
+                                ),
+                                600
+                            );
+
+
+                    if (
+                        !signedError &&
+                        signedData?.signedUrl
+                    ) {
+
+                        pdfUrl =
+                            signedData.signedUrl;
+
+                    }
+
+                }
+
+            }
+
+
+            cards.push(`
+
+                <div class="resource">
+
+                    <div class="resource-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            note.title ||
+                            "Course Note"
+                        )}
+                    </h3>
+
+                    <p>
+                        ${
+                            note.subject
+                                ? escapeHtml(note.subject)
+                                : note.category
+                                ? escapeHtml(note.category)
+                                : "Study Material"
+                        }
+                    </p>
+
+                    <a
+                        href="${escapeHtml(pdfUrl || "#")}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="resource-btn">
+
+                        📖 PDF Open करें
+
+                    </a>
+
+                </div>
+
+            `);
+
+        }
+
+
         notesGrid.innerHTML =
-
-            notes
-                .map(
-                    note => `
-
-                        <div
-                            class="resource-card"
-                        >
-
-                            <div class="resource-icon">
-                                📄
-                            </div>
-
-
-                            <h3>
-                                ${escapeHtml(
-                                    note.title ||
-                                    "Course Note"
-                                )}
-                            </h3>
-
-
-                            <p>
-
-                                ${
-                                    note.subject
-                                        ? escapeHtml(
-                                            note.subject
-                                        )
-                                        : note.category
-                                        ? escapeHtml(
-                                            note.category
-                                        )
-                                        : "Study Material"
-                                }
-
-                            </p>
-
-
-                            <a
-                                href="${escapeHtml(
-                                    note.pdf_url
-                                )}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="resource-btn"
-                            >
-
-                                📖 PDF Open करें
-
-                            </a>
-
-                        </div>
-
-                    `
-                )
-                .join("");
-
+            cards.join("");
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
             "Notes Error:",
@@ -2971,14 +3460,14 @@ async function loadCourseNotes(
         );
 
 
-        const notesCount =
+        const countElement =
             document.getElementById(
                 "notesCount"
             );
 
 
-        if (notesCount) {
-            notesCount.innerText =
+        if (countElement) {
+            countElement.innerText =
                 "0";
         }
 
@@ -2986,17 +3475,14 @@ async function loadCourseNotes(
         notesGrid.innerHTML = `
 
             <div
-                class="error-box"
-                style="grid-column:1/-1;"
-            >
+                class="error"
+                style="grid-column:1/-1;">
 
                 ❌ Notes load नहीं हो पाए।
 
                 <br><br>
 
-                ${escapeHtml(
-                    error.message
-                )}
+                ${escapeHtml(error.message)}
 
             </div>
 
@@ -3007,13 +3493,13 @@ async function loadCourseNotes(
 }
 
 
-/* ==========================================
-   LOAD TEST SERIES
-========================================== */
+/* =========================
+   COURSE TESTS
+========================= */
 
 async function loadCourseTests(
     course,
-    testSeriesPurchased
+    testPurchased
 ) {
 
     const testsGrid =
@@ -3021,16 +3507,14 @@ async function loadCourseTests(
             "testsGrid"
         );
 
-
     const statusBox =
         document.getElementById(
             "testSeriesStatus"
         );
 
 
-    if (!testsGrid) {
+    if (!testsGrid)
         return;
-    }
 
 
     try {
@@ -3068,9 +3552,8 @@ async function loadCourseTests(
                 );
 
 
-        if (error) {
+        if (error)
             throw error;
-        }
 
 
         const count =
@@ -3089,26 +3572,23 @@ async function loadCourseTests(
         }
 
 
-        if (testSeriesPurchased) {
+        if (testPurchased) {
 
             statusBox.innerHTML = `
 
-                <div
-                    class="test-series-box test-series-unlocked"
-                >
+                <div class="test-box unlocked">
 
                     <h3>
                         ✅ Full Test Series Unlocked
                     </h3>
 
                     <p>
-                        आपने ${escapeHtml(course.name)}
-                        की पूरी Test Series purchase कर ली है।
-                        अब नीचे दिए गए सभी active tests attempt कर सकते हैं।
+                        ${escapeHtml(course.name)}
+                        की पूरी Test Series active है।
                     </p>
 
-                    <div class="test-series-price">
-                        ✅ Purchased
+                    <div class="test-price">
+                        ✓ Purchased
                     </div>
 
                 </div>
@@ -3121,36 +3601,30 @@ async function loadCourseTests(
 
             statusBox.innerHTML = `
 
-                <div class="test-series-box">
+                <div class="test-box">
 
                     <h3>
-                        🔒 Full Test Series Locked
+                        🔒 Test Series Locked
                     </h3>
 
                     <p>
-                        ${escapeHtml(course.name)}
-                        की पूरी Test Series खरीदें और
-                        इस exam के सभी active tests unlock करें।
+                        Full Test Series purchase करें
+                        और सभी active tests unlock करें।
                     </p>
 
-                    <div class="test-series-price">
-                        ${formatPrice(course.test_series_price)}
+                    <div class="test-price">
+                        ${formatPrice(
+                            course.test_series_price
+                        )}
                     </div>
-
 
                     <button
                         type="button"
-                        class="course-btn test-btn"
-                        onclick='openTestSeriesPaymentModal(
-                            ${JSON.stringify({
-                                id: course.id,
-                                name: course.name,
-                                price: course.test_series_price,
-                                purchaseType: "test_series"
-                            }).replace(/'/g, "&#39;")}
-                        )'
-                    >
+                        class="btn btn-test"
+                        data-purchase-action="${registerPurchaseAction(course, "test_series", course.test_series_price)}"
+
                         📝 Buy Full Test Series
+
                     </button>
 
                 </div>
@@ -3168,11 +3642,11 @@ async function loadCourseTests(
             testsGrid.innerHTML = `
 
                 <div
-                    class="empty-box"
-                    style="grid-column:1/-1;"
-                >
+                    class="empty"
+                    style="grid-column:1/-1;">
 
-                    📝 इस exam के लिए अभी कोई active test available नहीं है।
+                    📝 इस exam के लिए अभी
+                    कोई active test available नहीं है।
 
                 </div>
 
@@ -3182,108 +3656,23 @@ async function loadCourseTests(
         }
 
 
-        if (!testSeriesPurchased) {
+        if (!testPurchased) {
 
             testsGrid.innerHTML =
-
-                tests
-                    .map(
-                        test => `
-
-                            <div
-                                class="resource-card"
-                            >
-
-                                <div class="resource-icon">
-                                    🔒
-                                </div>
-
-
-                                <h3>
-                                    ${escapeHtml(
-                                        test.name
-                                    )}
-                                </h3>
-
-
-                                <p>
-
-                                    ${
-                                        test.description
-                                            ? escapeHtml(
-                                                test.description
-                                            )
-                                            : "Test Series"
-                                    }
-
-                                    <br><br>
-
-                                    <strong>
-                                        Questions:
-                                    </strong>
-
-                                    ${test.question_count}
-
-                                    <br>
-
-                                    <strong>
-                                        Time:
-                                    </strong>
-
-                                    ${test.time_limit}
-                                    Minutes
-
-                                </p>
-
-
-                                <button
-                                    type="button"
-                                    class="resource-btn test-btn"
-                                    onclick='openTestSeriesPaymentModal(
-                                        ${JSON.stringify({
-                                            id: course.id,
-                                            name: course.name,
-                                            price: course.test_series_price,
-                                            purchaseType: "test_series"
-                                        }).replace(/'/g, "&#39;")}
-                                    )'
-                                >
-
-                                    🔒 Unlock Test Series
-
-                                </button>
-
-                            </div>
-
-                        `
-                    )
-                    .join("");
-
-            return;
-        }
-
-
-        testsGrid.innerHTML =
-
-            tests
-                .map(
+                tests.map(
                     test => `
 
-                        <div
-                            class="resource-card"
-                        >
+                        <div class="resource">
 
                             <div class="resource-icon">
-                                📝
+                                🔒
                             </div>
-
 
                             <h3>
                                 ${escapeHtml(
                                     test.name
                                 )}
                             </h3>
-
 
                             <p>
 
@@ -3297,43 +3686,102 @@ async function loadCourseTests(
 
                                 <br><br>
 
-                                <strong>
-                                    Questions:
-                                </strong>
-
-                                ${test.question_count}
+                                Questions:
+                                ${escapeHtml(
+                                    test.question_count
+                                )}
 
                                 <br>
 
-                                <strong>
-                                    Time:
-                                </strong>
-
-                                ${test.time_limit}
+                                Time:
+                                ${escapeHtml(
+                                    test.time_limit
+                                )}
                                 Minutes
 
                             </p>
 
+                            <button
+                                type="button"
+                                class="resource-btn"
+                                style="
+                                    background:#f5c542;
+                                    color:#172033;
+                                "
+                                data-purchase-action="${registerPurchaseAction(course, "test_series", course.test_series_price)}"
 
-                            <a
-                                href="start-test.html?test_id=${encodeURIComponent(test.id)}"
-                                class="resource-btn test-btn"
-                            >
+                                🔒 Unlock Test
 
-                                ▶ Start Test
-
-                            </a>
+                            </button>
 
                         </div>
 
                     `
-                )
-                .join("");
+                ).join("");
 
+            return;
+        }
+
+
+        testsGrid.innerHTML =
+            tests.map(
+                test => `
+
+                    <div class="resource">
+
+                        <div class="resource-icon">
+                            📝
+                        </div>
+
+                        <h3>
+                            ${escapeHtml(
+                                test.name
+                            )}
+                        </h3>
+
+                        <p>
+
+                            ${
+                                test.description
+                                    ? escapeHtml(
+                                        test.description
+                                    )
+                                    : "Test Series"
+                            }
+
+                            <br><br>
+
+                            Questions:
+                            ${escapeHtml(
+                                test.question_count
+                            )}
+
+                            <br>
+
+                            Time:
+                            ${escapeHtml(
+                                test.time_limit
+                            )}
+                            Minutes
+
+                        </p>
+
+                        <a
+                            href="start-test.html?test_id=${encodeURIComponent(test.id)}"
+                            class="resource-btn">
+
+                            ▶ Start Test
+
+                        </a>
+
+                    </div>
+
+                `
+            ).join("");
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
             "Tests Error:",
@@ -3356,17 +3804,14 @@ async function loadCourseTests(
         testsGrid.innerHTML = `
 
             <div
-                class="error-box"
-                style="grid-column:1/-1;"
-            >
+                class="error"
+                style="grid-column:1/-1;">
 
                 ❌ Tests load नहीं हो पाए।
 
                 <br><br>
 
-                ${escapeHtml(
-                    error.message
-                )}
+                ${escapeHtml(error.message)}
 
             </div>
 
@@ -3377,27 +3822,18 @@ async function loadCourseTests(
 }
 
 
-/* ==========================================
-   COURSE PAYMENT MODAL
-========================================== */
+/* =========================
+   COURSE PAYMENT
+========================= */
 
-function openCoursePaymentModal(
-    course
-) {
+function openCoursePaymentModal(course) {
 
     selectedCourse = {
 
-        id:
-            course.id,
-
-        name:
-            course.name,
-
-        price:
-            course.price,
-
-        purchaseType:
-            "course"
+        id: course.id,
+        name: course.name,
+        price: course.price,
+        purchaseType: "course"
 
     };
 
@@ -3409,27 +3845,18 @@ function openCoursePaymentModal(
 }
 
 
-/* ==========================================
-   TEST SERIES PAYMENT MODAL
-========================================== */
+/* =========================
+   TEST PAYMENT
+========================= */
 
-function openTestSeriesPaymentModal(
-    course
-) {
+function openTestSeriesPaymentModal(course) {
 
     selectedCourse = {
 
-        id:
-            course.id,
-
-        name:
-            course.name,
-
-        price:
-            course.price,
-
-        purchaseType:
-            "test_series"
+        id: course.id,
+        name: course.name,
+        price: course.price,
+        purchaseType: "test_series"
 
     };
 
@@ -3441,15 +3868,14 @@ function openTestSeriesPaymentModal(
 }
 
 
-/* ==========================================
-   UPI PAYMENT URL
-========================================== */
+/* =========================
+   UPI URL
+========================= */
 
 function generateUpiPaymentUrl() {
 
-    if (!selectedCourse) {
+    if (!selectedCourse)
         return "";
-    }
 
 
     const amount =
@@ -3461,87 +3887,74 @@ function generateUpiPaymentUrl() {
     if (
         !Number.isFinite(amount) ||
         amount <= 0
-    ) {
-        return "";
-    }
+    ) return "";
 
 
-    const courseName =
-        selectedCourse.name ||
-        "RajEdge Course";
-
-
-    const transactionNote =
+    const note =
         selectedCourse.purchaseType ===
         "test_series"
 
-            ?
+        ?
 
-            "RajEdge Test Series - " +
-            courseName
+        "RajEdge Test Series - " +
+        selectedCourse.name
 
-            :
+        :
 
-            "RajEdge Course - " +
-            courseName;
+        "RajEdge Course - " +
+        selectedCourse.name;
 
 
     return (
         "upi://pay" +
-
         "?pa=" +
         encodeURIComponent(
             RAJEDGE_UPI_ID
         ) +
-
         "&pn=" +
         encodeURIComponent(
             "RajEdge"
         ) +
-
         "&am=" +
         encodeURIComponent(
             amount.toFixed(2)
         ) +
-
         "&cu=INR" +
-
         "&tn=" +
         encodeURIComponent(
-            transactionNote
+            note
         )
     );
 
 }
 
 
-/* ==========================================
-   GENERATE QR
-========================================== */
+/* =========================
+   QR
+========================= */
 
 function generatePaymentQR() {
 
-    const qrContainer =
+    const container =
         document.getElementById(
             "upiQr"
         );
 
 
-    if (!qrContainer) {
+    if (!container)
         return;
-    }
 
 
-    qrContainer.innerHTML = "";
+    container.innerHTML = "";
 
 
-    const upiUrl =
+    const url =
         generateUpiPaymentUrl();
 
 
-    if (!upiUrl) {
+    if (!url) {
 
-        qrContainer.innerHTML =
+        container.innerText =
             "QR generate नहीं हो पाया।";
 
         return;
@@ -3553,7 +3966,7 @@ function generatePaymentQR() {
         "undefined"
     ) {
 
-        qrContainer.innerHTML =
+        container.innerText =
             "QR library load नहीं हुई।";
 
         return;
@@ -3561,11 +3974,11 @@ function generatePaymentQR() {
 
 
     new QRCode(
-        qrContainer,
+        container,
         {
-            text: upiUrl,
-            width: 180,
-            height: 180,
+            text: url,
+            width: 175,
+            height: 175,
             correctLevel:
                 QRCode.CorrectLevel.M
         }
@@ -3574,67 +3987,42 @@ function generatePaymentQR() {
 }
 
 
-/* ==========================================
-   UPDATE UPI PAYMENT UI
-========================================== */
+/* =========================
+   PAYMENT UI
+========================= */
 
 function updateUpiPaymentUI() {
 
-    if (!selectedCourse) {
+    if (!selectedCourse)
         return;
-    }
 
 
-    const amount =
+    document.getElementById(
+        "paymentAmount"
+    ).innerText =
         formatPrice(
             selectedCourse.price
         );
 
 
-    const amountText =
-        document.getElementById(
-            "paymentAmount"
-        );
+    document.getElementById(
+        "upiIdText"
+    ).innerText =
+        RAJEDGE_UPI_ID;
 
 
-    if (amountText) {
-
-        amountText.innerText =
-            amount;
-
-    }
-
-
-    const upiIdText =
-        document.getElementById(
-            "upiIdText"
-        );
-
-
-    if (upiIdText) {
-
-        upiIdText.innerText =
-            RAJEDGE_UPI_ID;
-
-    }
-
-
-    const payButton =
+    const button =
         document.getElementById(
             "upiPayButton"
         );
 
 
-    if (payButton) {
-
-        const upiUrl =
-            generateUpiPaymentUrl();
+    const url =
+        generateUpiPaymentUrl();
 
 
-        payButton.href =
-            upiUrl || "#";
-
-    }
+    button.href =
+        url || "#";
 
 
     generatePaymentQR();
@@ -3642,9 +4030,9 @@ function updateUpiPaymentUI() {
 }
 
 
-/* ==========================================
-   COPY UPI ID
-========================================== */
+/* =========================
+   COPY UPI
+========================= */
 
 async function copyUpiId() {
 
@@ -3657,25 +4045,25 @@ async function copyUpiId() {
 
         const button =
             document.querySelector(
-                ".copy-upi-btn"
+                ".copy-btn"
             );
 
 
         if (button) {
 
-            const oldText =
+            const old =
                 button.innerText;
 
 
             button.innerText =
-                "✅ Copied";
+                "✓ Copied";
 
 
             setTimeout(
-                function() {
+                () => {
 
                     button.innerText =
-                        oldText;
+                        old;
 
                 },
                 1500
@@ -3685,7 +4073,7 @@ async function copyUpiId() {
 
     }
 
-    catch (error) {
+    catch {
 
         alert(
             "UPI ID: " +
@@ -3697,13 +4085,11 @@ async function copyUpiId() {
 }
 
 
-/* ==========================================
-   PAYMENT UI
-========================================== */
+/* =========================
+   OPEN PAYMENT MODAL
+========================= */
 
-function openPaymentModalUI(
-    title
-) {
+function openPaymentModalUI(title) {
 
     document.getElementById(
         "paymentTitle"
@@ -3727,8 +4113,7 @@ function openPaymentModalUI(
 
     document.getElementById(
         "utrInput"
-    ).value =
-        "";
+    ).value = "";
 
 
     const message =
@@ -3738,24 +4123,22 @@ function openPaymentModalUI(
 
 
     message.className =
-        "modal-message";
-
+        "message";
 
     message.innerText =
         "";
 
 
-    const submitBtn =
+    const submit =
         document.getElementById(
             "submitPaymentBtn"
         );
 
 
-    submitBtn.disabled =
+    submit.disabled =
         false;
 
-
-    submitBtn.innerText =
+    submit.innerText =
         "Submit Payment";
 
 
@@ -3771,9 +4154,9 @@ function openPaymentModalUI(
 }
 
 
-/* ==========================================
+/* =========================
    CLOSE PAYMENT
-========================================== */
+========================= */
 
 function closePaymentModal() {
 
@@ -3790,10 +4173,9 @@ function closePaymentModal() {
 }
 
 
-/* ==========================================
-   SUBMIT PAYMENT REQUEST
-   SECURE RPC
-========================================== */
+/* =========================
+   SUBMIT PAYMENT
+========================= */
 
 async function submitPaymentRequest() {
 
@@ -3817,11 +4199,6 @@ async function submitPaymentRequest() {
 
         return;
     }
-
-
-    const purchaseType =
-        selectedCourse.purchaseType ||
-        "course";
 
 
     const utrInput =
@@ -3864,14 +4241,8 @@ async function submitPaymentRequest() {
         );
 
 
-    if (!submitBtn) {
-        return;
-    }
-
-
     submitBtn.disabled =
         true;
-
 
     submitBtn.innerText =
         "Submitting...";
@@ -3890,7 +4261,7 @@ async function submitPaymentRequest() {
                         selectedCourse.id,
 
                     p_purchase_type:
-                        purchaseType,
+                        selectedCourse.purchaseType,
 
                     p_utr_number:
                         utr
@@ -3898,9 +4269,8 @@ async function submitPaymentRequest() {
             );
 
 
-        if (error) {
+        if (error)
             throw error;
-        }
 
 
         if (
@@ -3929,45 +4299,37 @@ async function submitPaymentRequest() {
 
 
         showPaymentMessage(
-
             "success",
 
-            purchaseType ===
+            selectedCourse.purchaseType ===
             "test_series"
 
-                ?
+            ?
 
-                "✅ Test Series payment request successfully submit हो गई है। Admin verification के बाद पूरे exam की Test Series unlock हो जाएगी।"
+            "✅ Test Series payment request submit हो गई है। Admin verification के बाद access unlock होगा।"
 
-                :
+            :
 
-                "✅ Course payment request successfully submit हो गई है। Admin verification के बाद आपका course access active हो जाएगा।"
-
+            "✅ Course payment request submit हो गई है। Admin verification के बाद access unlock होगा।"
         );
 
 
-        if (utrInput) {
-
-            utrInput.value =
-                "";
-
-        }
+        if (utrInput)
+            utrInput.value = "";
 
 
         submitBtn.innerText =
             "Submitted";
 
-
         submitBtn.disabled =
             true;
 
-
     }
 
-    catch (error) {
+    catch(error) {
 
         console.error(
-            "Payment Request Error:",
+            "Payment Error:",
             error
         );
 
@@ -3984,19 +4346,9 @@ async function submitPaymentRequest() {
         ) {
 
             message =
-                purchaseType ===
-                "test_series"
-
-                    ?
-
-                    "इस Test Series की payment request पहले से pending है। Admin approval का इंतजार करें।"
-
-                    :
-
-                    "इस Course की payment request पहले से pending है। Admin approval का इंतजार करें।";
+                "इस purchase की payment request पहले से pending है। Admin approval का इंतजार करें।";
 
         }
-
 
         else if (
             message.includes(
@@ -4005,19 +4357,9 @@ async function submitPaymentRequest() {
         ) {
 
             message =
-                purchaseType ===
-                "test_series"
-
-                    ?
-
-                    "✅ यह Test Series आपके account में पहले से active है।"
-
-                    :
-
-                    "✅ यह Course आपके account में पहले से active है।";
+                "✅ यह purchase आपके account में पहले से active है।";
 
         }
-
 
         else if (
             message.includes(
@@ -4030,7 +4372,6 @@ async function submitPaymentRequest() {
 
         }
 
-
         else if (
             message.includes(
                 "Login required"
@@ -4041,7 +4382,6 @@ async function submitPaymentRequest() {
                 "कृपया पहले login करें।";
 
         }
-
 
         else if (
             message.includes(
@@ -4055,18 +4395,6 @@ async function submitPaymentRequest() {
         }
 
 
-        else if (
-            message.includes(
-                "Invalid purchase type"
-            )
-        ) {
-
-            message =
-                "Purchase type सही नहीं है। कृपया page refresh करके फिर कोशिश करें।";
-
-        }
-
-
         showPaymentMessage(
             "error",
             message
@@ -4076,7 +4404,6 @@ async function submitPaymentRequest() {
         submitBtn.disabled =
             false;
 
-
         submitBtn.innerText =
             "Submit Payment";
 
@@ -4085,9 +4412,9 @@ async function submitPaymentRequest() {
 }
 
 
-/* ==========================================
-   PAYMENT MESSAGE
-========================================== */
+/* =========================
+   MESSAGE
+========================= */
 
 function showPaymentMessage(
     type,
@@ -4100,14 +4427,12 @@ function showPaymentMessage(
         );
 
 
-    if (!box) {
+    if (!box)
         return;
-    }
 
 
     box.className =
-        "modal-message " +
-        type;
+        "message " + type;
 
 
     box.innerText =
@@ -4116,9 +4441,9 @@ function showPaymentMessage(
 }
 
 
-/* ==========================================
+/* =========================
    ACCESS DENIED
-========================================== */
+========================= */
 
 function showAccessDenied(
     title,
@@ -4133,31 +4458,52 @@ function showAccessDenied(
 
     main.innerHTML = `
 
-        <div class="access-denied">
+        <div
+            class="card"
+            style="
+                max-width:550px;
+                margin:45px auto;
+                text-align:center;
+            ">
 
-            <div class="access-denied-icon">
+            <div
+                style="
+                    font-size:55px;
+                    margin-bottom:8px;
+                ">
+
                 🔒
+
             </div>
 
+            <h2
+                style="
+                    color:#123b75;
+                ">
 
-            <h2>
                 ${escapeHtml(title)}
+
             </h2>
 
+            <p
+                style="
+                    color:#68758a;
+                    line-height:1.7;
+                    font-size:12px;
+                ">
 
-            <p>
                 ${escapeHtml(message)}
-            </p>
 
+            </p>
 
             <br>
 
-
             <a
                 href="student-courses.html"
-                class="resource-btn"
-            >
+                class="btn btn-primary">
+
                 ← My Courses
+
             </a>
 
         </div>
@@ -4167,13 +4513,11 @@ function showAccessDenied(
 }
 
 
-/* ==========================================
+/* =========================
    COURSE ICON
-========================================== */
+========================= */
 
-function getCourseIcon(
-    name
-) {
+function getCourseIcon(name) {
 
     const text =
         String(
@@ -4181,60 +4525,34 @@ function getCourseIcon(
         ).toLowerCase();
 
 
-    if (
-        text.includes("reet")
-    ) {
+    if (text.includes("reet"))
         return "📘";
-    }
 
-
-    if (
-        text.includes("cet")
-    ) {
+    if (text.includes("cet"))
         return "📗";
-    }
 
-
-    if (
-        text.includes("ldc")
-    ) {
+    if (text.includes("ldc"))
         return "📕";
-    }
 
-
-    if (
-        text.includes("vdo")
-    ) {
+    if (text.includes("vdo"))
         return "📙";
-    }
 
-
-    if (
-        text.includes("lab")
-    ) {
+    if (text.includes("lab"))
         return "🔬";
-    }
 
-
-    if (
-        text.includes("police")
-    ) {
+    if (text.includes("police"))
         return "👮";
-    }
-
 
     return "📚";
 
 }
 
 
-/* ==========================================
+/* =========================
    PRICE
-========================================== */
+========================= */
 
-function formatPrice(
-    price
-) {
+function formatPrice(price) {
 
     if (
         price === null ||
@@ -4243,6 +4561,7 @@ function formatPrice(
     ) {
 
         return "Not set";
+
     }
 
 
@@ -4250,73 +4569,45 @@ function formatPrice(
         Number(price);
 
 
-    if (
-        Number.isNaN(number)
-    ) {
-
+    if (Number.isNaN(number))
         return "Not set";
-    }
 
 
-    if (
-        number === 0
-    ) {
-
+    if (number === 0)
         return "Free";
-    }
 
 
-    return "₹" +
+    return (
+        "₹" +
         number.toLocaleString(
             "en-IN"
-        );
-
-}
-
-
-/* ==========================================
-   HTML ESCAPE
-========================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
-
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
-
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
-
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
-
-    .replaceAll(
-        "'",
-        "&#039;"
+        )
     );
 
 }
 
 
-/* ==========================================
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================
    LOGOUT
-========================================== */
+========================= */
 
 async function logoutStudent() {
 
@@ -4325,15 +4616,16 @@ async function logoutStudent() {
         .signOut();
 
 
-    window.location.href =
-        "student-login.html";
+    window.location.replace(
+        "student-login.html"
+    );
 
 }
 
 
-/* ==========================================
-   CLOSE MODAL OUTSIDE CLICK
-========================================== */
+/* =========================
+   OUTSIDE MODAL CLICK
+========================= */
 
 document.getElementById(
     "paymentModal"
@@ -4342,8 +4634,7 @@ document.getElementById(
     function(event) {
 
         if (
-            event.target ===
-            this
+            event.target === this
         ) {
 
             closePaymentModal();
@@ -4354,9 +4645,22 @@ document.getElementById(
 );
 
 
-/* ==========================================
+document.getElementById("closePaymentButton")?.addEventListener("click", closePaymentModal);
+document.getElementById("copyUpiButton")?.addEventListener("click", copyUpiId);
+document.getElementById("submitPaymentButton")?.addEventListener("click", submitPaymentRequest);
+
+document.addEventListener("click", function(event) {
+    if (event.target.closest("#logoutButton")) { event.preventDefault(); logoutStudent(); return; }
+    const button = event.target.closest("[data-purchase-action]");
+    if (!button) return;
+    event.preventDefault();
+    handlePurchaseAction(button.dataset.purchaseAction);
+});
+
+
+/* =========================
    PAGE LOAD
-========================================== */
+========================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -4370,46 +4674,80 @@ document.addEventListener(
 </script>
 
 
-</body>
-<!-- ================= MOBILE BOTTOM NAV ================= -->
+<!-- =========================
+     MOBILE NAV
+========================= -->
 
-<nav class="mobile-bottom-nav">
+<nav class="bottom-nav">
 
-    <a
-        href="student-dashboard.html"
-    >
-        <span class="nav-icon">🏠</span>
-        <span>Home</span>
+    <a href="student-dashboard.html">
+
+        <span class="nav-icon">
+            🏠
+        </span>
+
+        <span>
+            Home
+        </span>
+
     </a>
+
 
     <a
         href="student-courses.html"
-        class="active"
-    >
-        <span class="nav-icon">📚</span>
-        <span>Courses</span>
+        class="active">
+
+        <span class="nav-icon">
+            📚
+        </span>
+
+        <span>
+            Courses
+        </span>
+
     </a>
 
-    <a
-        href="student-tests.html"
-    >
-        <span class="nav-icon">📝</span>
-        <span>Tests</span>
+
+    <a href="student-tests.html">
+
+        <span class="nav-icon">
+            📝
+        </span>
+
+        <span>
+            Tests
+        </span>
+
     </a>
 
-    <a
-        href="student-notes.html"
-    >
-        <span class="nav-icon">📄</span>
-        <span>Notes</span>
+
+    <a href="student-notes.html">
+
+        <span class="nav-icon">
+            📄
+        </span>
+
+        <span>
+            Notes
+        </span>
+
     </a>
 
-    <a
-        href="student-profile.html"
-    >
-        <span class="nav-icon">👤</span>
-        <span>Profile</span>
+
+    <a href="student-profile.html">
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        <span>
+            Profile
+        </span>
+
     </a>
 
 </nav>
+
+
+</body>
 </html>

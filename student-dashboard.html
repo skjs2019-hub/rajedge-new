@@ -1,1305 +1,3668 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#063b5c">
 
-    <title>Student Dashboard | RajEdge</title>
+<title>RajEdge | Student Home</title>
 
-    <link rel="stylesheet" href="style.css">
+<style>
 
-    <style>
-*{box-sizing:border-box}.dashboard-page{background:#f4f7fb;min-height:100vh;color:#172033}.dashboard-wrapper{width:100%;max-width:1200px;margin:auto;padding:26px 18px 90px}.welcome-box{position:relative;overflow:hidden;background:radial-gradient(circle at 90% 10%,rgba(255,255,255,.16),transparent 28%),linear-gradient(135deg,#052a5b,#0b5ca8);color:#fff;padding:30px;border-radius:22px;margin-bottom:20px;box-shadow:0 10px 30px rgba(5,42,91,.16)}.welcome-box h1{position:relative;z-index:1;margin:0 0 7px;font-size:30px;line-height:1.25}.welcome-box p{position:relative;z-index:1;margin:0;color:rgba(255,255,255,.88);font-size:14px}.dashboard-grid{display:grid;grid-template-columns:235px 1fr;gap:20px;align-items:start}.sidebar{background:#fff;border:1px solid #e8edf4;border-radius:18px;padding:14px;box-shadow:0 6px 22px rgba(23,32,51,.055);height:fit-content;position:sticky;top:82px}.sidebar-title{font-size:16px;font-weight:800;color:#052a5b;padding:7px 11px 13px}.side-link{display:block;width:100%;padding:12px 13px;margin-bottom:5px;border:0;border-radius:11px;color:#425066;background:transparent;text-decoration:none;font-weight:700;font-size:14px;text-align:left;cursor:pointer;transition:.2s}.side-link:hover,.side-link.active{background:#edf5ff;color:#073b7a}.logout-btn{color:#c62828!important}.logout-btn:hover{background:#fff0f0!important}.dashboard-content{display:grid;gap:16px;min-width:0}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.stat-card{background:#fff;border:1px solid #e8edf4;padding:18px;border-radius:17px;box-shadow:0 6px 22px rgba(23,32,51,.05);min-width:0}.stat-card h3{margin:0 0 7px;color:#718096;font-size:13px;font-weight:700}.stat-number{font-size:28px;font-weight:800;color:#073b7a;line-height:1.15}.dashboard-card{background:#fff;border:1px solid #e8edf4;padding:21px;border-radius:18px;box-shadow:0 6px 22px rgba(23,32,51,.05)}.dashboard-card h2{margin:0 0 14px;color:#052a5b;font-size:19px}.progress-box{margin:14px 0}.progress-info{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-weight:700;font-size:13px}.progress-bar{height:10px;background:#e7edf5;border-radius:20px;overflow:hidden}.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#f5c400,#ffda3d);border-radius:inherit;transition:width .5s ease}#progressMessage{color:#667085;font-size:13px;margin-top:10px}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.quick-box{display:block;padding:17px 10px;background:#f5f8fc;border:1px solid #e8edf4;border-radius:14px;text-align:center;text-decoration:none;color:#052a5b;font-weight:800;font-size:13px;transition:.2s}.quick-box:hover{background:#edf5ff;border-color:#d7e6f7;transform:translateY(-2px)}.test-item{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px;background:#f6f8fb;border:1px solid #e9edf3;border-radius:13px;margin-bottom:9px}.test-item:last-child{margin-bottom:0}.test-info{min-width:0}.test-info strong{display:block;color:#052a5b;margin-bottom:4px;font-size:14px}.test-info span{display:block;font-size:12px;color:#667085}.test-btn{display:inline-flex;align-items:center;justify-content:center;background:#052a5b;color:#fff;padding:9px 13px;border-radius:9px;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap;transition:.2s}.test-btn:hover{background:#0b5ca8}.empty-box{text-align:center;padding:24px 18px;background:#f7f9fc;border:1px dashed #dbe3ed;border-radius:13px;color:#667085;font-size:13px}.loading-text{color:#667085}.error-text{color:#b42318}.mobile-bottom-nav{display:none}@media(max-width:800px){body{padding-bottom:72px}.dashboard-wrapper{padding:16px 13px 88px}.welcome-box{padding:21px 18px;border-radius:20px;margin-bottom:14px;box-shadow:0 8px 25px rgba(5,42,91,.14)}.welcome-box h1{font-size:22px;line-height:1.3}.welcome-box p{font-size:12px;line-height:1.5}.dashboard-grid{display:block}.sidebar{display:none}.dashboard-content{gap:12px}.stats-grid{grid-template-columns:repeat(3,1fr);gap:8px}.stat-card{padding:13px 6px;border-radius:14px;text-align:center}.stat-card h3{font-size:10px;line-height:1.25;min-height:25px;display:flex;align-items:center;justify-content:center}.stat-number{font-size:20px}.dashboard-card{padding:17px;border-radius:16px}.dashboard-card h2{font-size:17px;margin-bottom:11px}.progress-box{margin:12px 0}.progress-info{font-size:12px}.progress-bar{height:9px}#progressMessage{font-size:12px;line-height:1.5}.quick-grid{grid-template-columns:repeat(3,1fr);gap:8px}.quick-box{padding:14px 4px;border-radius:12px;font-size:11px;line-height:1.4}.test-item{flex-direction:column;align-items:stretch;gap:9px;padding:13px;border-radius:12px}.test-info strong{font-size:13px}.test-info span{font-size:11px;line-height:1.5}.test-btn{width:100%;padding:10px;border-radius:9px;font-size:12px}.mobile-bottom-nav{position:fixed;display:grid;grid-template-columns:repeat(5,1fr);left:0;right:0;bottom:0;height:68px;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #e3e8ef;box-shadow:0 -6px 24px rgba(0,0,0,.08);z-index:99999;padding-bottom:env(safe-area-inset-bottom)}.mobile-bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#7b8798;text-decoration:none;font-size:10px;font-weight:700}.mobile-bottom-nav .nav-icon{font-size:20px;line-height:1}.mobile-bottom-nav a.active{color:#073b7a}.mobile-bottom-nav a.active .nav-icon{transform:translateY(-1px)}}@media(max-width:380px){.dashboard-wrapper{padding-left:10px;padding-right:10px}.welcome-box h1{font-size:20px}.stat-card{padding:12px 4px}.stat-card h3{font-size:9px}.stat-number{font-size:18px}.quick-box{font-size:10px}}
-    </style>
+/* =========================================================
+   RAJEDGE STUDENT APP
+========================================================= */
+
+:root{
+  --navy:#063b5c;
+  --navy2:#0b5678;
+  --teal:#16a6a1;
+  --teal2:#55c7a5;
+  --gold:#f5b942;
+
+  --bg:#f4f8fb;
+  --card:#ffffff;
+  --text:#17324a;
+  --muted:#718294;
+
+  --line:#e5edf3;
+  --danger:#d64545;
+
+  --shadow:0 8px 28px rgba(20,55,80,.08);
+  --shadow2:0 14px 35px rgba(6,59,92,.13);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:var(--bg);
+  color:var(--text);
+
+  padding-bottom:78px;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+  max-width:1200px;
+  margin:auto;
+  min-height:100vh;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+
+  border-bottom:1px solid var(--line);
+}
+
+.topbar-inner{
+  height:68px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:42px;
+  height:42px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--navy),
+      #0b7594
+    );
+
+  display:grid;
+  place-items:center;
+
+  color:white;
+
+  font-size:22px;
+  font-weight:900;
+
+  box-shadow:
+    0 6px 16px rgba(6,59,92,.22);
+}
+
+.brand-name{
+  font-size:21px;
+  font-weight:900;
+
+  color:var(--navy);
+
+  letter-spacing:-.5px;
+}
+
+.brand-name span{
+  color:#e8a51c;
+}
+
+.brand-sub{
+  font-size:9px;
+  color:var(--muted);
+  margin-top:-1px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.bell{
+  width:40px;
+  height:40px;
+
+  border:1px solid var(--line);
+
+  background:white;
+
+  border-radius:12px;
+
+  display:grid;
+  place-items:center;
+
+  font-size:18px;
+}
+
+.profile-top{
+  width:40px;
+  height:40px;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--teal),
+      var(--navy2)
+    );
+
+  color:white;
+
+  display:grid;
+  place-items:center;
+
+  font-weight:900;
+
+  border:3px solid white;
+
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main{
+  padding:20px 20px 35px;
+}
+
+/* =========================================================
+   DESKTOP LAYOUT
+========================================================= */
+
+.desktop-layout{
+  display:block;
+}
+
+/* =========================================================
+   DESKTOP SIDEBAR
+========================================================= */
+
+.desktop-side{
+  display:none;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+
+  border-radius:25px;
+
+  padding:24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #063b5c,
+      #087894
+    );
+
+  color:#fff;
+
+  box-shadow:var(--shadow2);
+
+  margin-bottom:17px;
+}
+
+.hero:before{
+  content:"";
+
+  position:absolute;
+
+  width:210px;
+  height:210px;
+
+  border-radius:50%;
+
+  right:-80px;
+  top:-105px;
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+.hero:after{
+  content:"";
+
+  position:absolute;
+
+  width:100px;
+  height:100px;
+
+  border-radius:50%;
+
+  right:80px;
+  bottom:-65px;
+
+  background:
+    rgba(255,255,255,.04);
+}
+
+.hero h1{
+  position:relative;
+  z-index:2;
+
+  margin:0;
+
+  font-size:26px;
+  line-height:1.25;
+
+  max-width:90%;
+}
+
+.hero p{
+  position:relative;
+  z-index:2;
+
+  margin:8px 0 0;
+
+  opacity:.88;
+
+  font-size:13px;
+
+  line-height:1.5;
+}
+
+.hero-row{
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  align-items:center;
+
+  gap:9px;
+
+  margin-top:18px;
+}
+
+.streak{
+  background:
+    rgba(255,255,255,.13);
+
+  border:
+    1px solid rgba(255,255,255,.17);
+
+  border-radius:13px;
+
+  padding:9px 12px;
+
+  font-size:11px;
+
+  backdrop-filter:blur(8px);
+}
+
+.profile-mini{
+  margin-left:auto;
+
+  width:44px;
+  height:44px;
+
+  border-radius:50%;
+
+  background:#fff;
+
+  color:var(--navy);
+
+  display:grid;
+  place-items:center;
+
+  font-weight:900;
+
+  font-size:17px;
+
+  box-shadow:
+    0 5px 14px rgba(0,0,0,.14);
+}
+
+/* =========================================================
+   SLIDER
+========================================================= */
+
+.slider{
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:21px;
+
+  background:#0a496b;
+
+  box-shadow:var(--shadow);
+
+  margin-bottom:20px;
+
+  touch-action:pan-y;
+}
+
+.track{
+  display:flex;
+
+  transition:
+    transform .45s cubic-bezier(.4,0,.2,1);
+}
+
+.slide{
+  min-width:100%;
+
+  padding:21px 48px 25px 21px;
+
+  min-height:170px;
+
+  position:relative;
+
+  color:#fff;
+}
+
+.slide:nth-child(1){
+  background:
+    linear-gradient(
+      135deg,
+      #063b5c,
+      #087894
+    );
+}
+
+.slide:nth-child(2){
+  background:
+    linear-gradient(
+      135deg,
+      #125e61,
+      #16a6a1
+    );
+}
+
+.slide:nth-child(3){
+  background:
+    linear-gradient(
+      135deg,
+      #8d5a13,
+      #d48a17
+    );
+}
+
+.tag{
+  display:inline-block;
+
+  font-size:9px;
+
+  font-weight:900;
+
+  letter-spacing:.5px;
+
+  padding:6px 9px;
+
+  border-radius:99px;
+
+  background:
+    rgba(255,255,255,.14);
+
+  border:
+    1px solid rgba(255,255,255,.2);
+}
+
+.slide h2{
+  font-size:20px;
+
+  line-height:1.25;
+
+  margin:9px 0 6px;
+
+  max-width:75%;
+}
+
+.slide p{
+  font-size:11px;
+
+  line-height:1.5;
+
+  opacity:.9;
+
+  max-width:76%;
+
+  margin:0 0 13px;
+}
+
+.slide-btn{
+  display:inline-block;
+
+  background:#fff;
+
+  color:var(--navy);
+
+  padding:9px 13px;
+
+  border-radius:9px;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,.08);
+}
+
+.slide-icon{
+  position:absolute;
+
+  right:18px;
+  bottom:23px;
+
+  font-size:60px;
+
+  opacity:.17;
+}
+
+.arrow{
+  position:absolute;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  border:0;
+
+  width:31px;
+  height:31px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.18);
+
+  color:#fff;
+
+  z-index:4;
+
+  font-size:22px;
+
+  display:grid;
+  place-items:center;
+}
+
+.prev{
+  left:8px;
+}
+
+.next{
+  right:8px;
+}
+
+.dots{
+  position:absolute;
+
+  bottom:7px;
+
+  left:0;
+  right:0;
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:5px;
+
+  z-index:5;
+}
+
+.dot{
+  width:6px;
+  height:6px;
+
+  border:0;
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.45);
+
+  padding:0;
+}
+
+.dot.active{
+  width:17px;
+
+  background:#fff;
+}
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin:20px 2px 10px;
+}
+
+.section-title h2{
+  font-size:17px;
+
+  margin:0;
+
+  color:var(--navy);
+}
+
+.section-title a{
+  font-size:10px;
+
+  color:#0b7a91;
+
+  font-weight:900;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:10px;
+}
+
+.stat{
+  background:var(--card);
+
+  border:
+    1px solid var(--line);
+
+  border-radius:17px;
+
+  padding:14px;
+
+  box-shadow:var(--shadow);
+
+  transition:.2s;
+}
+
+.stat:hover{
+  transform:translateY(-2px);
+}
+
+.stat-icon{
+  width:35px;
+  height:35px;
+
+  border-radius:11px;
+
+  background:#eef8f7;
+
+  display:grid;
+  place-items:center;
+
+  font-size:17px;
+}
+
+.stat strong{
+  display:block;
+
+  font-size:22px;
+
+  color:var(--navy);
+
+  margin-top:7px;
+}
+
+.stat span{
+  font-size:10px;
+
+  color:var(--muted);
+}
+
+/* =========================================================
+   CONTINUE
+========================================================= */
+
+.continue-card{
+  background:#fff;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:19px;
+
+  padding:15px;
+
+  box-shadow:var(--shadow);
+
+  display:flex;
+
+  align-items:center;
+
+  gap:13px;
+}
+
+.continue-cover{
+  width:58px;
+  height:58px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #063b5c,
+      #16a6a1
+    );
+
+  display:grid;
+  place-items:center;
+
+  color:#fff;
+
+  font-size:25px;
+
+  flex:none;
+}
+
+.continue-info{
+  min-width:0;
+
+  flex:1;
+}
+
+.continue-info strong{
+  display:block;
+
+  color:var(--navy);
+
+  font-size:13px;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+.continue-info span{
+  display:block;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+  margin-top:4px;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+.continue-progress{
+  height:6px;
+
+  background:#e8f0f3;
+
+  border-radius:99px;
+
+  margin-top:8px;
+
+  overflow:hidden;
+}
+
+.continue-progress i{
+  display:block;
+
+  height:100%;
+
+  width:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #16a6a1,
+      #55c7a5
+    );
+
+  border-radius:99px;
+
+  transition:width .5s;
+}
+
+.continue-btn{
+  background:var(--navy);
+
+  color:#fff;
+
+  border-radius:10px;
+
+  padding:9px 11px;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  white-space:nowrap;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-card{
+  background:#fff;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:18px;
+
+  padding:16px;
+
+  box-shadow:var(--shadow);
+}
+
+.progress-head{
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  font-size:12px;
+
+  font-weight:800;
+}
+
+.progress-head b{
+  color:#0b8e89;
+
+  font-size:16px;
+}
+
+.progress-track{
+  height:9px;
+
+  background:#e8f0f3;
+
+  border-radius:99px;
+
+  margin:12px 0 8px;
+
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+
+  width:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #13a39e,
+      #55c7a5
+    );
+
+  border-radius:99px;
+
+  transition:width .7s ease;
+}
+
+.progress-msg{
+  font-size:11px;
+
+  color:var(--muted);
+
+  margin:0;
+
+  line-height:1.5;
+}
+
+/* =========================================================
+   SUBJECTS
+========================================================= */
+
+.subject-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:9px;
+}
+
+.subject{
+  background:#fff;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:16px;
+
+  padding:13px 7px;
+
+  text-align:center;
+
+  box-shadow:var(--shadow);
+
+  transition:.2s;
+}
+
+.subject:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(20,55,80,.11);
+}
+
+.subject-icon{
+  width:40px;
+  height:40px;
+
+  border-radius:12px;
+
+  background:#eef8f7;
+
+  display:grid;
+  place-items:center;
+
+  margin:0 auto 7px;
+
+  font-size:18px;
+}
+
+.subject strong{
+  display:block;
+
+  font-size:10px;
+
+  color:var(--text);
+}
+
+.subject small{
+  display:block;
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  margin-top:3px;
+}
+
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
+
+.quick{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:9px;
+}
+
+.quick a{
+  background:#fff;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:16px;
+
+  padding:13px 6px;
+
+  text-align:center;
+
+  box-shadow:var(--shadow);
+
+  transition:.2s;
+}
+
+.quick a:hover{
+  transform:translateY(-2px);
+}
+
+.quick-icon{
+  width:37px;
+  height:37px;
+
+  border-radius:11px;
+
+  background:#eef8f7;
+
+  display:grid;
+  place-items:center;
+
+  margin:0 auto 7px;
+
+  font-size:17px;
+}
+
+.quick span{
+  font-size:10px;
+
+  font-weight:800;
+
+  color:var(--text);
+}
+
+/* =========================================================
+   TESTS
+========================================================= */
+
+.tests{
+  display:grid;
+
+  gap:9px;
+}
+
+.test{
+  background:#fff;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:16px;
+
+  padding:13px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  box-shadow:var(--shadow);
+}
+
+.test-icon{
+  width:43px;
+  height:43px;
+
+  border-radius:13px;
+
+  background:#eef4fb;
+
+  display:grid;
+  place-items:center;
+
+  font-size:20px;
+
+  flex:none;
+}
+
+.test-info{
+  min-width:0;
+
+  flex:1;
+}
+
+.test-info strong{
+  display:block;
+
+  font-size:12px;
+
+  color:var(--navy);
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+.test-info span{
+  display:block;
+
+  font-size:10px;
+
+  color:var(--muted);
+
+  margin-top:4px;
+}
+
+.test-btn{
+  background:var(--navy);
+
+  color:#fff;
+
+  border-radius:9px;
+
+  padding:8px 10px;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  white-space:nowrap;
+}
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.empty{
+  background:#fff;
+
+  border:
+    1px dashed #ccd9e2;
+
+  border-radius:16px;
+
+  padding:23px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+  line-height:1.6;
+}
+
+.empty a{
+  display:inline-block;
+
+  margin-top:10px;
+
+  background:var(--navy);
+
+  color:#fff;
+
+  padding:9px 13px;
+
+  border-radius:9px;
+
+  font-weight:800;
+}
+
+.loading{
+  color:var(--muted);
+}
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.bottom-nav{
+  position:fixed;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:70px;
+
+  background:
+    rgba(255,255,255,.97);
+
+  backdrop-filter:blur(15px);
+
+  border-top:
+    1px solid var(--line);
+
+  display:flex;
+
+  z-index:100;
+
+  padding-bottom:
+    env(safe-area-inset-bottom);
+}
+
+.bottom-nav a{
+  flex:1;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:4px;
+
+  color:#82909d;
+
+  font-size:9px;
+
+  font-weight:800;
+}
+
+.bottom-nav a.active{
+  color:var(--navy);
+}
+
+.bottom-icon{
+  font-size:19px;
+
+  line-height:1;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:850px){
+
+  body{
+    padding-bottom:0;
+  }
+
+  .topbar-inner{
+    height:74px;
+  }
+
+  .bottom-nav{
+    display:none;
+  }
+
+  main{
+    padding:28px 30px 45px;
+  }
+
+  .desktop-layout{
+    display:grid;
+
+    grid-template-columns:
+      215px 1fr;
+
+    gap:22px;
+
+    align-items:start;
+  }
+
+  .desktop-side{
+    display:block;
+
+    background:#fff;
+
+    border:
+      1px solid var(--line);
+
+    border-radius:20px;
+
+    padding:14px;
+
+    height:max-content;
+
+    position:sticky;
+
+    top:94px;
+
+    box-shadow:var(--shadow);
+  }
+
+  .side-title{
+    font-weight:900;
+
+    color:var(--navy);
+
+    padding:
+      10px 12px 14px;
+  }
+
+  .side-link{
+    display:flex;
+
+    gap:9px;
+
+    align-items:center;
+
+    padding:11px 12px;
+
+    border-radius:11px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    color:#536677;
+
+    margin-bottom:4px;
+
+    border:0;
+
+    background:transparent;
+
+    width:100%;
+
+    text-align:left;
+  }
+
+  .side-link.active,
+  .side-link:hover{
+    background:#edf7f7;
+
+    color:var(--navy);
+  }
+
+  .side-link.logout{
+    cursor:pointer;
+
+    color:var(--danger);
+  }
+
+  .hero h1{
+    font-size:29px;
+  }
+
+  .slide{
+    min-height:195px;
+
+    padding:
+      28px 60px 30px 28px;
+  }
+
+  .stats{
+    gap:14px;
+  }
+
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:430px){
+
+  main{
+    padding:
+      13px 12px 25px;
+  }
+
+  .topbar-inner{
+    padding:0 12px;
+
+    height:62px;
+  }
+
+  .brand-mark{
+    width:37px;
+    height:37px;
+  }
+
+  .brand-name{
+    font-size:19px;
+  }
+
+  .brand-sub{
+    font-size:8px;
+  }
+
+  .profile-top{
+    display:none;
+  }
+
+  .hero{
+    padding:19px;
+
+    border-radius:20px;
+  }
+
+  .hero h1{
+    font-size:22px;
+  }
+
+  .hero p{
+    font-size:11px;
+  }
+
+  .stats{
+    gap:7px;
+  }
+
+  .stat{
+    padding:11px;
+  }
+
+  .stat strong{
+    font-size:19px;
+  }
+
+  .stat span{
+    font-size:9px;
+  }
+
+  .quick{
+    gap:6px;
+  }
+
+  .quick a{
+    padding:11px 4px;
+  }
+
+  .slide{
+    min-height:160px;
+
+    padding:
+      17px 39px 22px 17px;
+  }
+
+  .slide h2{
+    font-size:18px;
+  }
+
+  .slide p{
+    font-size:10px;
+  }
+
+  .slide-icon{
+    font-size:48px;
+
+    right:13px;
+  }
+
+  .continue-card{
+    padding:13px;
+
+    gap:10px;
+  }
+
+  .continue-cover{
+    width:52px;
+    height:52px;
+
+    font-size:22px;
+  }
+
+  .continue-info strong{
+    font-size:11px;
+  }
+
+  .continue-info span{
+    font-size:9px;
+  }
+
+  .continue-btn{
+    padding:
+      8px 9px;
+  }
+
+  .subject-grid{
+    grid-template-columns:
+      repeat(4,1fr);
+
+    gap:6px;
+  }
+
+  .subject{
+    padding:10px 3px;
+  }
+
+  .subject-icon{
+    width:34px;
+    height:34px;
+
+    font-size:16px;
+  }
+
+  .subject strong{
+    font-size:9px;
+  }
+
+  .subject small{
+    font-size:7px;
+  }
+
+  .test{
+    padding:11px;
+  }
+
+}
+
+/* =========================================================
+   VERY SMALL SCREEN
+========================================================= */
+
+@media(max-width:350px){
+
+  .streak{
+    padding:8px;
+
+    font-size:9px;
+  }
+
+  .hero-row{
+    gap:5px;
+  }
+
+  .continue-btn{
+    display:none;
+  }
+
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-
-<div class="dashboard-page">
-
-
-    <!-- HEADER -->
-
-    <header class="header">
-
-        <div class="container nav-container">
-
-            <a
-                href="index.html"
-                class="logo-box">
-
-                <div class="logo-icon">
-                    📚
-                </div>
-
-                <div>
-
-                    <div class="logo-text">
-                        Raj<span>Edge</span>
-                    </div>
-
-                    <div class="logo-subtitle">
-                        Rajasthan Education Hub
-                    </div>
-
-                </div>
-
-            </a>
+<div class="app">
 
 
-            <a
-                href="index.html"
-                class="btn-login">
+<!-- =======================================================
+     TOP BAR
+======================================================= -->
 
-                Home
+<header class="topbar">
 
-            </a>
+  <div class="topbar-inner">
 
+    <a
+      class="brand"
+      href="student-dashboard.html"
+    >
+
+      <div class="brand-mark">
+        R
+      </div>
+
+      <div>
+
+        <div class="brand-name">
+          Raj<span>Edge</span>
         </div>
 
-    </header>
-
-
-
-    <!-- DASHBOARD -->
-
-    <main class="dashboard-wrapper">
-
-
-        <div class="welcome-box">
-
-            <h1 id="welcomeTitle">
-                Welcome Back, Student! 👋
-            </h1>
-
-            <p>
-                अपनी तैयारी जारी रखें और अपने लक्ष्य के करीब पहुँचें।
-            </p>
-
+        <div class="brand-sub">
+          Rajasthan Exam Preparation
         </div>
 
+      </div>
 
+    </a>
 
-        <div class="dashboard-grid">
 
+    <div class="top-actions">
 
-            <!-- SIDEBAR -->
+      <button
+        class="bell"
+        type="button"
+        aria-label="Notifications"
+        onclick="showNotificationMessage()"
+      >
+        🔔
+      </button>
 
-            <aside class="sidebar">
+      <a
+        class="profile-top"
+        id="topProfileInitial"
+        href="student-profile.html"
+      >
+        R
+      </a>
 
-                <div class="sidebar-title">
-                    Student Panel
-                </div>
+    </div>
 
+  </div>
 
-                <a
-                    href="student-dashboard.html"
-                    class="side-link active">
+</header>
 
-                    🏠 Dashboard
 
-                </a>
+<!-- =======================================================
+     MAIN
+======================================================= -->
 
+<main>
 
-                <a
-                    href="student-courses.html"
-                    class="side-link">
+<div class="desktop-layout">
 
-                    📚 My Courses
 
-                </a>
+<!-- =====================================================
+     DESKTOP SIDEBAR
+===================================================== -->
 
+<aside class="desktop-side">
 
-                <a
-                    href="student-tests.html"
-                    class="side-link">
+  <div class="side-title">
+    Student Panel
+  </div>
 
-                    📝 My Tests
 
-                </a>
+  <a
+    class="side-link active"
+    href="student-dashboard.html"
+  >
+    🏠
+    <span>Home</span>
+  </a>
 
 
-                <a
-                    href="student-notes.html"
-                    class="side-link">
+  <a
+    class="side-link"
+    href="student-courses.html"
+  >
+    📚
+    <span>My Courses</span>
+  </a>
 
-                    📄 My Notes
 
-                </a>
+  <a
+    class="side-link"
+    href="student-tests.html"
+  >
+    📝
+    <span>Mock Tests</span>
+  </a>
 
 
-                <a
-                    href="student-results.html"
-                    class="side-link">
+  <a
+    class="side-link"
+    href="student-notes.html"
+  >
+    📄
+    <span>Notes</span>
+  </a>
 
-                    📊 My Results
 
-                </a>
+  <a
+    class="side-link"
+    href="student-results.html"
+  >
+    📊
+    <span>Results</span>
+  </a>
 
 
-                <a
-                    href="student-profile.html"
-                    class="side-link">
+  <a
+    class="side-link"
+    href="student-profile.html"
+  >
+    👤
+    <span>Profile</span>
+  </a>
 
-                    👤 My Profile
 
-                </a>
+  <button
+    class="side-link logout"
+    id="desktopLogout"
+    type="button"
+  >
+    🚪
+    <span>Logout</span>
+  </button>
 
+</aside>
 
-                <button
-                    type="button"
-                    class="side-link logout-btn"
-                    id="logoutBtn">
 
-                    🚪 Logout
+<!-- =====================================================
+     DASHBOARD CONTENT
+===================================================== -->
 
-                </button>
+<section>
 
-            </aside>
 
+<!-- =====================================================
+     HERO
+===================================================== -->
 
+<div class="hero">
 
-            <!-- CONTENT -->
+  <h1 id="welcomeTitle">
+    Welcome Back, Warrior! 👋
+  </h1>
 
-            <section class="dashboard-content">
 
+  <p>
+    आज थोड़ा और पढ़ें, कल अपने लक्ष्य के और करीब जाएँ।
+  </p>
 
-                <!-- STATS -->
 
-                <div class="stats-grid">
+  <div class="hero-row">
 
+    <div class="streak">
+      🔥
+      <b id="streakText">
+        Study Mode
+      </b>
+    </div>
 
-                    <div class="stat-card">
 
-                        <h3>
-                            My Courses
-                        </h3>
+    <div class="streak">
+      🎯
+      Rajasthan Exams
+    </div>
 
-                        <div
-                            class="stat-number"
-                            id="courseCount">
 
-                            ...
+    <a
+      class="profile-mini"
+      id="profileInitial"
+      href="student-profile.html"
+    >
+      R
+    </a>
 
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="stat-card">
-
-                        <h3>
-                            Tests Attempted
-                        </h3>
-
-                        <div
-                            class="stat-number"
-                            id="attemptCount">
-
-                            ...
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="stat-card">
-
-                        <h3>
-                            Average Score
-                        </h3>
-
-                        <div
-                            class="stat-number"
-                            id="averageScore">
-
-                            ...
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- PROGRESS -->
-
-                <div class="dashboard-card">
-
-                    <h2>
-                        📈 Preparation Progress
-                    </h2>
-
-
-                    <div class="progress-box">
-
-                        <div class="progress-info">
-
-                            <span>
-                                Test Preparation
-                            </span>
-
-                            <span id="progressText">
-                                0%
-                            </span>
-
-                        </div>
-
-
-                        <div class="progress-bar">
-
-                            <div
-                                class="progress-fill"
-                                id="progressFill">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <p id="progressMessage">
-
-                        आपकी preparation progress यहाँ automatically update होगी।
-
-                    </p>
-
-                </div>
-
-
-
-                <!-- QUICK ACCESS -->
-
-                <div class="dashboard-card">
-
-                    <h2>
-                        ⚡ Quick Access
-                    </h2>
-
-
-                    <div class="quick-grid">
-
-
-                        <a
-                            href="student-courses.html"
-                            class="quick-box">
-
-                            📚<br>
-                            My Courses
-
-                        </a>
-
-
-                        <a
-                            href="student-tests.html"
-                            class="quick-box">
-
-                            📝<br>
-                            Start Test
-
-                        </a>
-
-
-                        <a
-                            href="student-notes.html"
-                            class="quick-box">
-
-                            📄<br>
-                            Notes
-
-                        </a>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- UPCOMING TESTS -->
-
-                <div class="dashboard-card">
-
-                    <h2>
-                        📝 Upcoming Tests
-                    </h2>
-
-
-                    <div id="upcomingTests">
-
-                        <div class="empty-box">
-
-                            <span class="loading-text">
-
-                                ⏳ Tests loading...
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="student-tests.html"
-                        style="
-                        display:inline-block;
-                        margin-top:10px;
-                        background:#052a5b;
-                        color:white;
-                        padding:10px 18px;
-                        border-radius:8px;
-                        text-decoration:none;
-                        font-weight:600;">
-
-                        View All Tests →
-
-                    </a>
-
-                </div>
-
-
-            </section>
-
-        </div>
-
-    </main>
+  </div>
 
 </div>
 
 
+<!-- =====================================================
+     SLIDER
+===================================================== -->
 
-<!-- SUPABASE -->
+<div
+  class="slider"
+  id="dashboardSlider"
+>
+
+  <div
+    class="track"
+    id="sliderTrack"
+  >
+
+
+    <!-- SLIDE 1 -->
+
+    <div class="slide">
+
+      <span class="tag">
+        📚 MY COURSES
+      </span>
+
+
+      <h2>
+        अपनी तैयारी को एक जगह से manage करें
+      </h2>
+
+
+      <p>
+        Purchased courses, notes और test series तक जल्दी पहुँचें।
+      </p>
+
+
+      <a
+        class="slide-btn"
+        href="student-courses.html"
+      >
+        Explore Courses →
+      </a>
+
+
+      <div class="slide-icon">
+        📚
+      </div>
+
+    </div>
+
+
+    <!-- SLIDE 2 -->
+
+    <div class="slide">
+
+      <span class="tag">
+        📝 MOCK TEST
+      </span>
+
+
+      <h2>
+        Practice करें, Score बढ़ाएँ
+      </h2>
+
+
+      <p>
+        अपने test series के tests attempt करें और performance देखें।
+      </p>
+
+
+      <a
+        class="slide-btn"
+        href="student-tests.html"
+      >
+        Start Test →
+      </a>
+
+
+      <div class="slide-icon">
+        📝
+      </div>
+
+    </div>
+
+
+    <!-- SLIDE 3 -->
+
+    <div class="slide">
+
+      <span class="tag">
+        📄 SMART NOTES
+      </span>
+
+
+      <h2>
+        Notes पढ़ें और revision तेज करें
+      </h2>
+
+
+      <p>
+        अपने purchased study material को mobile पर आसानी से access करें।
+      </p>
+
+
+      <a
+        class="slide-btn"
+        href="student-notes.html"
+      >
+        Open Notes →
+      </a>
+
+
+      <div class="slide-icon">
+        📖
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="arrow prev"
+    id="sliderPrev"
+    type="button"
+    aria-label="Previous"
+  >
+    ‹
+  </button>
+
+
+  <button
+    class="arrow next"
+    id="sliderNext"
+    type="button"
+    aria-label="Next"
+  >
+    ›
+  </button>
+
+
+  <div class="dots">
+
+    <button
+      class="dot active"
+      data-slide="0"
+      type="button"
+    ></button>
+
+    <button
+      class="dot"
+      data-slide="1"
+      type="button"
+    ></button>
+
+    <button
+      class="dot"
+      data-slide="2"
+      type="button"
+    ></button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     TODAY'S STUDY
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    Today's Study
+  </h2>
+
+
+  <a href="student-tests.html">
+    View all
+  </a>
+
+</div>
+
+
+<div class="stats">
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      📚
+    </div>
+
+
+    <strong id="courseCount">
+      0
+    </strong>
+
+
+    <span>
+      My Courses
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      📝
+    </div>
+
+
+    <strong id="attemptCount">
+      0
+    </strong>
+
+
+    <span>
+      Tests Attempted
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-icon">
+      🎯
+    </div>
+
+
+    <strong id="averageScore">
+      0%
+    </strong>
+
+
+    <span>
+      Average Score
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTINUE LEARNING
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    Continue Learning
+  </h2>
+
+
+  <a href="student-courses.html">
+    My Courses
+  </a>
+
+</div>
+
+
+<div class="continue-card">
+
+
+  <div class="continue-cover">
+    📚
+  </div>
+
+
+  <div class="continue-info">
+
+    <strong id="continueCourseName">
+      Continue Your Preparation
+    </strong>
+
+
+    <span id="continueCourseMeta">
+      आपका purchased course यहाँ दिखाई देगा
+    </span>
+
+
+    <div class="continue-progress">
+
+      <i
+        id="continueCourseProgress"
+      ></i>
+
+    </div>
+
+  </div>
+
+
+  <a
+    class="continue-btn"
+    href="student-courses.html"
+  >
+    Open
+  </a>
+
+</div>
+
+
+<!-- =====================================================
+     YOUR PROGRESS
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    Your Progress
+  </h2>
+
+
+  <a href="student-results.html">
+    Details
+  </a>
+
+</div>
+
+
+<div class="progress-card">
+
+
+  <div class="progress-head">
+
+    <span>
+      Overall test performance
+    </span>
+
+
+    <b id="progressText">
+      0%
+    </b>
+
+  </div>
+
+
+  <div class="progress-track">
+
+    <div
+      class="progress-fill"
+      id="progressFill"
+    ></div>
+
+  </div>
+
+
+  <p
+    class="progress-msg"
+    id="progressMessage"
+  >
+    अपनी preparation शुरू करें और पहला test attempt करें।
+  </p>
+
+</div>
+
+
+<!-- =====================================================
+     MY SUBJECTS
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    My Subjects
+  </h2>
+
+
+  <a href="student-notes.html">
+    View All
+  </a>
+
+</div>
+
+
+<div class="subject-grid">
+
+
+  <a
+    class="subject"
+    href="student-notes.html"
+  >
+
+    <div class="subject-icon">
+      🏛️
+    </div>
+
+    <strong>
+      History
+    </strong>
+
+    <small>
+      इतिहास
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-notes.html"
+  >
+
+    <div class="subject-icon">
+      🏜️
+    </div>
+
+    <strong>
+      Geography
+    </strong>
+
+    <small>
+      भूगोल
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-notes.html"
+  >
+
+    <div class="subject-icon">
+      ⚖️
+    </div>
+
+    <strong>
+      Polity
+    </strong>
+
+    <small>
+      राजव्यवस्था
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-notes.html"
+  >
+
+    <div class="subject-icon">
+      📜
+    </div>
+
+    <strong>
+      Rajasthan GK
+    </strong>
+
+    <small>
+      राजस्थान GK
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-notes.html"
+  >
+
+    <div class="subject-icon">
+      📰
+    </div>
+
+    <strong>
+      Current Affairs
+    </strong>
+
+    <small>
+      समसामयिकी
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-tests.html"
+  >
+
+    <div class="subject-icon">
+      🧠
+    </div>
+
+    <strong>
+      Reasoning
+    </strong>
+
+    <small>
+      रीजनिंग
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-tests.html"
+  >
+
+    <div class="subject-icon">
+      🔢
+    </div>
+
+    <strong>
+      Maths
+    </strong>
+
+    <small>
+      गणित
+    </small>
+
+  </a>
+
+
+  <a
+    class="subject"
+    href="student-tests.html"
+  >
+
+    <div class="subject-icon">
+      🎯
+    </div>
+
+    <strong>
+      Practice
+    </strong>
+
+    <small>
+      अभ्यास
+    </small>
+
+  </a>
+
+</div>
+
+
+<!-- =====================================================
+     QUICK ACCESS
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    Quick Access
+  </h2>
+
+</div>
+
+
+<div class="quick">
+
+
+  <a href="student-notes.html">
+
+    <div class="quick-icon">
+      📄
+    </div>
+
+    <span>
+      Notes
+    </span>
+
+  </a>
+
+
+  <a href="student-tests.html">
+
+    <div class="quick-icon">
+      📝
+    </div>
+
+    <span>
+      Mock Test
+    </span>
+
+  </a>
+
+
+  <a href="student-courses.html">
+
+    <div class="quick-icon">
+      📚
+    </div>
+
+    <span>
+      Courses
+    </span>
+
+  </a>
+
+
+  <a href="student-results.html">
+
+    <div class="quick-icon">
+      📊
+    </div>
+
+    <span>
+      Results
+    </span>
+
+  </a>
+
+</div>
+
+
+<!-- =====================================================
+     UPCOMING TESTS
+===================================================== -->
+
+<div class="section-title">
+
+  <h2>
+    Upcoming Tests
+  </h2>
+
+
+  <a href="student-tests.html">
+    See all
+  </a>
+
+</div>
+
+
+<div
+  class="tests"
+  id="upcomingTests"
+>
+
+  <div class="empty">
+
+    <span class="loading">
+      ⏳ Tests loading...
+    </span>
+
+  </div>
+
+</div>
+
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =======================================================
+     MOBILE BOTTOM NAV
+======================================================= -->
+
+<nav class="bottom-nav">
+
+
+  <a
+    class="active"
+    href="student-dashboard.html"
+  >
+
+    <span class="bottom-icon">
+      ⌂
+    </span>
+
+    Home
+
+  </a>
+
+
+  <a href="student-courses.html">
+
+    <span class="bottom-icon">
+      ▣
+    </span>
+
+    Courses
+
+  </a>
+
+
+  <a href="student-tests.html">
+
+    <span class="bottom-icon">
+      ✓
+    </span>
+
+    Tests
+
+  </a>
+
+
+  <a href="student-notes.html">
+
+    <span class="bottom-icon">
+      ▤
+    </span>
+
+    Notes
+
+  </a>
+
+
+  <a href="student-profile.html">
+
+    <span class="bottom-icon">
+      ●
+    </span>
+
+    Profile
+
+  </a>
+
+</nav>
+
+
+<!-- =======================================================
+     SUPABASE
+======================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-
-// ==========================================
-// SUPABASE CONFIG
-// ==========================================
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
 
 const SUPABASE_URL =
-    "https://xysgwtnclxpacmlgnmer.supabase.co";
-
+"https://xysgwtnclxpacmlgnmer.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
+"sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
 
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-// ==========================================
-// HTML ESCAPE
-// ==========================================
+function escapeHtml(value){
 
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
+/* =========================================================
+   NOTIFICATION
+========================================================= */
 
-// ==========================================
-// GET CURRENT STUDENT
-// ==========================================
+function showNotificationMessage(){
 
-async function getCurrentStudent() {
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient.auth.getUser();
-
-
-    if(
-        error ||
-        !data ||
-        !data.user
-    ) {
-
-        window.location.href =
-            "student-login.html";
-
-        return null;
-
-    }
-
-
-    return data.user;
+  alert(
+    "🔔 RajEdge Notifications\n\n" +
+    "अभी कोई नई notification नहीं है।"
+  );
 
 }
 
 
+/* =========================================================
+   AUTH
+========================================================= */
 
-// ==========================================
-// LOAD STUDENT PROFILE
-// ==========================================
+async function getCurrentStudent(){
 
-async function loadStudentProfile(
-    user
-) {
+  try{
 
     const {
-        data,
-        error
+      data,
+      error
     } =
     await supabaseClient
-        .from("student_profiles")
-        .select(`
-            full_name,
-            mobile,
-            email,
-            login_email
-        `)
-        .eq(
-            "id",
-            user.id
-        )
-        .maybeSingle();
+      .auth
+      .getSession();
 
 
     if(error){
 
-        console.error(
-            "Profile Error:",
-            error
-        );
-
-        return;
-
-    }
-
-
-    const studentName =
-        data?.full_name ||
-        "Student";
-
-
-    document.getElementById(
-        "welcomeTitle"
-    ).textContent =
-        `Welcome Back, ${studentName}! 👋`;
-
-}
-
-
-
-// ==========================================
-// LOAD PAID COURSES
-// ==========================================
-
-async function loadCourses(user) {
-
-
-    const {
-        data,
+      console.error(
+        "Dashboard Session Error:",
         error
-    } =
-    await supabaseClient
-        .from("enrollments")
-        .select(`
-            course_id,
-            purchase_type,
-            payment_status
-        `)
-        .eq(
-            "student_id",
-            user.id
-        )
-        .eq(
-            "payment_status",
-            "paid"
-        );
+      );
 
+      window.location.replace(
+        "student-login.html"
+      );
 
-    if(error){
-
-        console.error(
-            "Enrollment Error:",
-            error
-        );
-
-
-        document.getElementById(
-            "courseCount"
-        ).textContent =
-            "0";
-
-
-        return;
-
+      return null;
     }
 
 
-
-    /*
-       Notes + Test Series दोनों purchase
-       होने पर भी एक course को एक ही बार count करेंगे।
-    */
-
-    const uniqueCourses =
-        new Set(
-            (data || [])
-                .map(
-                    item =>
-                        item.course_id
-                )
-                .filter(Boolean)
-        );
-
-
-    document.getElementById(
-        "courseCount"
-    ).textContent =
-        uniqueCourses.size;
-
-}
-
-
-
-// ==========================================
-// LOAD TEST ATTEMPTS
-// ==========================================
-
-async function loadAttempts(user) {
-
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("test_attempts")
-        .select(`
-            id,
-            test_id,
-            score,
-            total_marks,
-            percentage,
-            submitted_at,
-            started_at
-        `)
-        .eq(
-            "student_id",
-            user.id
-        )
-        .order(
-            "submitted_at",
-            {
-                ascending:false
-            }
-        );
-
-
-    if(error){
-
-        console.error(
-            "Attempt Error:",
-            error
-        );
-
-
-        document.getElementById(
-            "attemptCount"
-        ).textContent =
-            "0";
-
-
-        document.getElementById(
-            "averageScore"
-        ).textContent =
-            "0%";
-
-
-        updateProgress(0);
-
-        return;
-
-    }
-
-
-    const attempts =
-        data || [];
-
-
-    const count =
-        attempts.length;
-
-
-    document.getElementById(
-        "attemptCount"
-    ).textContent =
-        count;
-
-
-
-    if(count === 0){
-
-        document.getElementById(
-            "averageScore"
-        ).textContent =
-            "0%";
-
-
-        updateProgress(0);
-
-        return;
-
-    }
-
-
-
-    const totalPercentage =
-        attempts.reduce(
-            (
-                sum,
-                item
-            ) =>
-                sum +
-                (
-                    Number(
-                        item.percentage
-                    ) || 0
-                ),
-            0
-        );
-
-
-
-    const average =
-        totalPercentage /
-        count;
-
-
-
-    document.getElementById(
-        "averageScore"
-    ).textContent =
-        average.toFixed(1) +
-        "%";
-
-
-    updateProgress(
-        average
-    );
-
-}
-
-
-
-// ==========================================
-// PREPARATION PROGRESS
-// ==========================================
-
-function updateProgress(value) {
-
-
-    let progress =
-        Number(value || 0);
-
-
-    progress =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                progress
-            )
-        );
-
-
-    document.getElementById(
-        "progressFill"
-    ).style.width =
-        progress +
-        "%";
-
-
-    document.getElementById(
-        "progressText"
-    ).textContent =
-        Math.round(
-            progress
-        ) +
-        "%";
-
-
-    const message =
-        document.getElementById(
-            "progressMessage"
-        );
-
-
-
-    if(progress === 0){
-
-        message.textContent =
-            "अभी कोई test attempt नहीं किया गया है। अपनी तैयारी शुरू करें।";
-
-    }
-
-    else if(progress < 40){
-
-        message.textContent =
-            "अच्छी शुरुआत है। Regular tests देकर अपनी तैयारी मजबूत करें।";
-
-    }
-
-    else if(progress < 70){
-
-        message.textContent =
-            "आपकी तैयारी आगे बढ़ रही है। लगातार practice जारी रखें।";
-
-    }
-
-    else{
-
-        message.textContent =
-            "बहुत अच्छा! अपनी preparation और मजबूत करने के लिए tests जारी रखें।";
-
-    }
-
-}
-
-
-
-// ==========================================
-// LOAD UPCOMING TESTS
-// ==========================================
-
-async function loadUpcomingTests(user) {
-
-
-    const container =
-        document.getElementById(
-            "upcomingTests"
-        );
-
-
-    // ======================================
-    // 1. GET PAID TEST-SERIES COURSES
-    // ======================================
-
-    const {
-        data:enrollments,
-        error:enrollmentError
-    } =
-    await supabaseClient
-        .from("enrollments")
-        .select(`
-            course_id,
-            purchase_type,
-            payment_status
-        `)
-        .eq(
-            "student_id",
-            user.id
-        )
-        .eq(
-            "purchase_type",
-            "test_series"
-        )
-        .eq(
-            "payment_status",
-            "paid"
-        );
-
-
-    if(enrollmentError){
-
-        console.error(
-            "Test Series Enrollment Error:",
-            enrollmentError
-        );
-
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                ❌ Test Series information load नहीं हो सकी।
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    const courseIds =
-        [
-            ...new Set(
-                (enrollments || [])
-                    .map(
-                        item =>
-                            item.course_id
-                    )
-                    .filter(Boolean)
-            )
-        ];
-
-
-
-    // ======================================
-    // 2. NO TEST SERIES PURCHASE
-    // ======================================
-
-    if(courseIds.length === 0){
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                🔒
-
-                <br><br>
-
-                Upcoming tests देखने के लिए
-                पहले Test Series purchase करें।
-
-                <br><br>
-
-                <a
-                    href="student-courses.html"
-                    style="
-                    display:inline-block;
-                    margin-top:8px;
-                    background:#052a5b;
-                    color:white;
-                    padding:9px 15px;
-                    border-radius:7px;
-                    text-decoration:none;
-                    font-weight:600;">
-
-                    View Courses →
-
-                </a>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    // ======================================
-    // 3. LOAD COURSE NAMES
-    // ======================================
-
-    const {
-        data:courses,
-        error:courseError
-    } =
-    await supabaseClient
-        .from("courses")
-        .select(`
-            id,
-            name
-        `)
-        .in(
-            "id",
-            courseIds
-        );
-
-
-    if(courseError){
-
-        console.error(
-            "Course Error:",
-            courseError
-        );
-
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                ❌ Course information load नहीं हो सकी।
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    const courseNames =
-        (courses || [])
-            .map(
-                course =>
-                    String(
-                        course.name || ""
-                    )
-                    .trim()
-            )
-            .filter(Boolean);
-
-
-
-    if(courseNames.length === 0){
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                अभी कोई purchased Test Series course नहीं मिला।
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    // ======================================
-    // 4. LOAD TESTS
-    // ======================================
-
-    const {
-        data:tests,
-        error:testError
-    } =
-    await supabaseClient
-        .from("tests")
-        .select(`
-            id,
-            exam,
-            name,
-            question_count,
-            time_limit,
-            price,
-            status,
-            created_at
-        `)
-        .in(
-            "exam",
-            courseNames
-        )
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        )
-        .limit(20);
-
-
-    if(testError){
-
-        console.error(
-            "Test Error:",
-            testError
-        );
-
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                ❌ Tests load नहीं हो पाए।
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    // ======================================
-    // 5. CASE-INSENSITIVE ACTIVE FILTER
-    // ======================================
-
-    const activeTests =
-        (tests || [])
-            .filter(
-                test =>
-                    String(
-                        test.status || ""
-                    )
-                    .trim()
-                    .toLowerCase()
-                    === "active"
-            )
-            .slice(
-                0,
-                3
-            );
-
-
-
-    // ======================================
-    // 6. NO ACTIVE TEST
-    // ======================================
-
-    if(
-        activeTests.length === 0
-    ){
-
-        container.innerHTML = `
-
-            <div class="empty-box">
-
-                अभी कोई active test available नहीं है।
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    // ======================================
-    // 7. DISPLAY TESTS
-    // ======================================
-
-    container.innerHTML =
-        activeTests
-            .map(
-                test => `
-
-                    <div class="test-item">
-
-                        <div class="test-info">
-
-                            <strong>
-
-                                ${escapeHtml(
-                                    test.name ||
-                                    "Test"
-                                )}
-
-                            </strong>
-
-                            <span>
-
-                                ${escapeHtml(
-                                    test.exam ||
-                                    "Exam"
-                                )}
-
-                                •
-                                ${Number(
-                                    test.question_count ||
-                                    0
-                                )}
-                                Questions
-
-                                •
-                                ${Number(
-                                    test.time_limit ||
-                                    0
-                                )}
-                                Minutes
-
-                            </span>
-
-                        </div>
-
-
-                        <a
-                            href="start-test.html?test_id=${encodeURIComponent(
-                                test.id
-                            )}"
-                            class="test-btn">
-
-                            Start Test
-
-                        </a>
-
-                    </div>
-
-                `
-            )
-            .join("");
-
-}
-
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
-
-async function logoutStudent() {
-
-
-    const {
-        error
-    } =
-    await supabaseClient.auth.signOut();
-
-
-    if(error){
-
-        console.error(
-            "Logout Error:",
-            error
-        );
-
-
-        alert(
-            "Logout नहीं हो पाया। Please try again."
-        );
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "student-login.html";
-
-}
-
-
-
-// ==========================================
-// MAIN DASHBOARD
-// ==========================================
-
-async function loadDashboard() {
+    const session =
+      data?.session;
 
 
     const user =
-        await getCurrentStudent();
+      session?.user;
 
 
     if(!user){
 
-        return;
+      console.log(
+        "No active student session."
+      );
 
+      window.location.replace(
+        "student-login.html"
+      );
+
+      return null;
     }
 
 
-
-    await loadStudentProfile(
-        user
+    console.log(
+      "RajEdge Student Session:",
+      user.email
     );
 
 
+    return user;
 
-    await Promise.all([
+  }catch(error){
 
-        loadCourses(
-            user
-        ),
+    console.error(
+      "Dashboard Auth Error:",
+      error
+    );
 
-        loadAttempts(
-            user
-        ),
+    window.location.replace(
+      "student-login.html"
+    );
 
-        loadUpcomingTests(
-            user
-        )
-
-    ]);
+    return null;
+  }
 
 }
 
 
+/* =========================================================
+   PROFILE
+========================================================= */
 
-// ==========================================
-// LOGOUT BUTTON
-// ==========================================
+async function loadStudentProfile(user){
 
-document
-    .getElementById(
-        "logoutBtn"
-    )
-    .addEventListener(
-        "click",
-        logoutStudent
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+      .from("student_profiles")
+      .select(
+        "full_name,mobile,email,login_email"
+      )
+      .eq(
+        "id",
+        user.id
+      )
+      .maybeSingle();
+
+
+    if(error){
+
+      console.error(
+        "Profile Error:",
+        error
+      );
+
+      return;
+    }
+
+
+    const name =
+      data?.full_name ||
+      "Warrior";
+
+
+    document.getElementById(
+      "welcomeTitle"
+    ).textContent =
+      `Welcome Back, ${name}! 👋`;
+
+
+    const initial =
+      name
+        .trim()
+        .charAt(0)
+        .toUpperCase() ||
+      "R";
+
+
+    document.getElementById(
+      "profileInitial"
+    ).textContent =
+      initial;
+
+
+    document.getElementById(
+      "topProfileInitial"
+    ).textContent =
+      initial;
+
+
+  }catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   COURSES
+========================================================= */
+
+async function loadCourses(user){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+      .from("enrollments")
+      .select(
+        "course_id,purchase_type,payment_status"
+      )
+      .eq(
+        "student_id",
+        user.id
+      )
+      .eq(
+        "payment_status",
+        "paid"
+      );
+
+
+    if(error){
+
+      console.error(
+        "Enrollment Error:",
+        error
+      );
+
+      return;
+    }
+
+
+    const rows =
+      data || [];
+
+
+    const courseRows =
+      rows.filter(
+        row =>
+          row.purchase_type ===
+          "course"
+      );
+
+
+    const ids =
+      [
+        ...new Set(
+          courseRows
+            .map(
+              x =>
+                x.course_id
+            )
+            .filter(Boolean)
+        )
+      ];
+
+
+    document.getElementById(
+      "courseCount"
+    ).textContent =
+      ids.length;
+
+
+    const courseName =
+      document.getElementById(
+        "continueCourseName"
+      );
+
+
+    const courseMeta =
+      document.getElementById(
+        "continueCourseMeta"
+      );
+
+
+    const progress =
+      document.getElementById(
+        "continueCourseProgress"
+      );
+
+
+    /* NO COURSE */
+
+    if(!ids.length){
+
+      courseName.textContent =
+        "No purchased course yet";
+
+
+      courseMeta.textContent =
+        "Courses से अपनी preparation शुरू करें";
+
+
+      progress.style.width =
+        "0%";
+
+
+      return;
+    }
+
+
+    /* COURSE DATA */
+
+    const {
+      data:courses,
+      error:courseError
+    } =
+    await supabaseClient
+      .from("courses")
+      .select(
+        "id,name"
+      )
+      .in(
+        "id",
+        ids
+      );
+
+
+    if(
+      courseError ||
+      !courses?.length
+    ){
+
+      courseName.textContent =
+        "My Purchased Course";
+
+
+      courseMeta.textContent =
+        ids.length +
+        " course" +
+        (
+          ids.length > 1
+            ? "s"
+            : ""
+        ) +
+        " available";
+
+
+      progress.style.width =
+        "15%";
+
+
+      return;
+    }
+
+
+    const course =
+      courses[0];
+
+
+    courseName.textContent =
+      course.name ||
+      "My Course";
+
+
+    courseMeta.textContent =
+      ids.length > 1
+
+        ? `${ids.length} purchased courses • Notes & Tests available`
+
+        : "Purchased course • Notes & Tests available";
+
+
+    /*
+      Course-specific progress
+      अभी database में separate
+      progress table नहीं है,
+      इसलिए default indicator.
+    */
+
+    progress.style.width =
+      "20%";
+
+
+  }catch(error){
+
+    console.error(
+      "Course loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   TEST ATTEMPTS
+========================================================= */
+
+async function loadAttempts(user){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+      .from("test_attempts")
+      .select(
+        "id,test_id,score,total_marks,percentage,submitted_at,started_at"
+      )
+      .eq(
+        "student_id",
+        user.id
+      )
+      .order(
+        "submitted_at",
+        {
+          ascending:false
+        }
+      );
+
+
+    if(error){
+
+      console.error(
+        "Attempt Error:",
+        error
+      );
+
+      return;
+    }
+
+
+    const attempts =
+      data || [];
+
+
+    document.getElementById(
+      "attemptCount"
+    ).textContent =
+      attempts.length;
+
+
+    if(!attempts.length){
+
+      document.getElementById(
+        "averageScore"
+      ).textContent =
+        "0%";
+
+
+      updateProgress(0);
+
+
+      return;
+    }
+
+
+    const avg =
+      attempts.reduce(
+        (
+          total,
+          item
+        ) =>
+          total +
+          (
+            Number(
+              item.percentage
+            ) || 0
+          ),
+        0
+      ) /
+      attempts.length;
+
+
+    document.getElementById(
+      "averageScore"
+    ).textContent =
+      avg.toFixed(1) +
+      "%";
+
+
+    updateProgress(avg);
+
+
+  }catch(error){
+
+    console.error(
+      "Attempts loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateProgress(value){
+
+  const p =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(value) || 0
+      )
     );
 
 
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    p +
+    "%";
 
-// ==========================================
-// START
-// ==========================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    Math.round(p) +
+    "%";
 
-        loadDashboard();
+
+  const message =
+    document.getElementById(
+      "progressMessage"
+    );
+
+
+  if(p === 0){
+
+    message.textContent =
+      "अपनी preparation शुरू करें और पहला test attempt करें.";
+
+  }
+
+  else if(p < 40){
+
+    message.textContent =
+      "अच्छी शुरुआत है। Regular tests देकर अपनी तैयारी मजबूत करें.";
+
+  }
+
+  else if(p < 70){
+
+    message.textContent =
+      "आपकी preparation आगे बढ़ रही है। लगातार practice जारी रखें.";
+
+  }
+
+  else{
+
+    message.textContent =
+      "बहुत अच्छा! अपनी preparation और मजबूत करने के लिए tests जारी रखें.";
+
+  }
+
+}
+
+
+/* =========================================================
+   UPCOMING TESTS
+========================================================= */
+
+async function loadUpcomingTests(user){
+
+  const box =
+    document.getElementById(
+      "upcomingTests"
+    );
+
+
+  try{
+
+    /* TEST SERIES PURCHASES */
+
+    const {
+      data:enrollments,
+      error:e1
+    } =
+    await supabaseClient
+      .from("enrollments")
+      .select(
+        "course_id"
+      )
+      .eq(
+        "student_id",
+        user.id
+      )
+      .eq(
+        "purchase_type",
+        "test_series"
+      )
+      .eq(
+        "payment_status",
+        "paid"
+      );
+
+
+    if(e1){
+
+      console.error(
+        "Test series enrollment error:",
+        e1
+      );
+
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          ❌ Test Series information load नहीं हो सकी।
+        </div>
+        `;
+
+      return;
+    }
+
+
+    const ids =
+      [
+        ...new Set(
+          (enrollments || [])
+            .map(
+              x =>
+                x.course_id
+            )
+            .filter(Boolean)
+        )
+      ];
+
+
+    if(!ids.length){
+
+      box.innerHTML =
+        `
+        <div class="empty">
+
+          🔒
+
+          <br><br>
+
+          Upcoming tests के लिए पहले Test Series purchase करें।
+
+          <br>
+
+          <a href="student-courses.html">
+            View Courses →
+          </a>
+
+        </div>
+        `;
+
+      return;
+    }
+
+
+    /* COURSE NAMES */
+
+    const {
+      data:courses,
+      error:e2
+    } =
+    await supabaseClient
+      .from("courses")
+      .select(
+        "id,name"
+      )
+      .in(
+        "id",
+        ids
+      );
+
+
+    if(e2){
+
+      console.error(
+        "Test series courses error:",
+        e2
+      );
+
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          ❌ Course information load नहीं हो सकी।
+        </div>
+        `;
+
+      return;
+    }
+
+
+    const names =
+      (courses || [])
+        .map(
+          x =>
+            String(
+              x.name || ""
+            ).trim()
+        )
+        .filter(Boolean);
+
+
+    if(!names.length){
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          अभी कोई purchased Test Series course नहीं मिला।
+        </div>
+        `;
+
+      return;
+    }
+
+
+    /* TESTS */
+
+    const {
+      data:tests,
+      error:e3
+    } =
+    await supabaseClient
+      .from("tests")
+      .select(
+        "id,exam,name,question_count,time_limit,status,created_at"
+      )
+      .in(
+        "exam",
+        names
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
+      .limit(20);
+
+
+    if(e3){
+
+      console.error(
+        "Tests loading error:",
+        e3
+      );
+
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          ❌ Tests load नहीं हो पाए।
+        </div>
+        `;
+
+      return;
+    }
+
+
+    const active =
+      (tests || [])
+        .filter(
+          t =>
+            String(
+              t.status || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            "active"
+        )
+        .slice(
+          0,
+          3
+        );
+
+
+    if(!active.length){
+
+      box.innerHTML =
+        `
+        <div class="empty">
+          अभी कोई active test available नहीं है।
+        </div>
+        `;
+
+      return;
+    }
+
+
+    box.innerHTML =
+      active
+        .map(
+          t =>
+          `
+          <div class="test">
+
+            <div class="test-icon">
+              📝
+            </div>
+
+
+            <div class="test-info">
+
+              <strong>
+                ${escapeHtml(
+                  t.name ||
+                  "Test"
+                )}
+              </strong>
+
+
+              <span>
+
+                ${escapeHtml(
+                  t.exam ||
+                  "Exam"
+                )}
+
+                •
+
+                ${Number(
+                  t.question_count ||
+                  0
+                )}
+
+                Questions
+
+                •
+
+                ${Number(
+                  t.time_limit ||
+                  0
+                )}
+
+                Minutes
+
+              </span>
+
+            </div>
+
+
+            <a
+              class="test-btn"
+              href="start-test.html?test_id=${encodeURIComponent(t.id)}"
+            >
+              Start
+            </a>
+
+          </div>
+          `
+        )
+        .join("");
+
+
+  }catch(error){
+
+    console.error(
+      "Upcoming tests error:",
+      error
+    );
+
+
+    box.innerHTML =
+      `
+      <div class="empty">
+        ❌ Tests load करते समय error आया।
+      </div>
+      `;
+
+  }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout(){
+
+  try{
+
+    const {
+      error
+    } =
+    await supabaseClient
+      .auth
+      .signOut();
+
+
+    if(error){
+
+      console.error(
+        "Logout error:",
+        error
+      );
+
+
+      alert(
+        "Logout नहीं हो पाया। Please try again."
+      );
+
+      return;
+    }
+
+
+    window.location.replace(
+      "student-login.html"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Logout failed:",
+      error
+    );
+
+
+    alert(
+      "Logout नहीं हो पाया।"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SLIDER
+========================================================= */
+
+function initSlider(){
+
+  const track =
+    document.getElementById(
+      "sliderTrack"
+    );
+
+
+  const slider =
+    document.getElementById(
+      "dashboardSlider"
+    );
+
+
+  const dots =
+    [
+      ...document.querySelectorAll(
+        ".dot"
+      )
+    ];
+
+
+  let current =
+    0;
+
+
+  let timer =
+    null;
+
+
+  let startX =
+    0;
+
+
+  function show(index){
+
+    current =
+      (
+        index +
+        dots.length
+      ) %
+      dots.length;
+
+
+    track.style.transform =
+      `translateX(-${current * 100}%)`;
+
+
+    dots.forEach(
+      (
+        dot,
+        index
+      ) => {
+
+        dot.classList.toggle(
+          "active",
+          index === current
+        );
+
+      }
+    );
+
+  }
+
+
+  function next(){
+
+    show(
+      current + 1
+    );
+
+  }
+
+
+  function start(){
+
+    clearInterval(
+      timer
+    );
+
+
+    timer =
+      setInterval(
+        next,
+        4500
+      );
+
+  }
+
+
+  document.getElementById(
+    "sliderPrev"
+  ).onclick =
+    () => {
+
+      show(
+        current - 1
+      );
+
+      start();
+
+    };
+
+
+  document.getElementById(
+    "sliderNext"
+  ).onclick =
+    () => {
+
+      next();
+
+      start();
+
+    };
+
+
+  dots.forEach(
+    dot => {
+
+      dot.onclick =
+        () => {
+
+          show(
+            Number(
+              dot.dataset.slide
+            )
+          );
+
+          start();
+
+        };
 
     }
+  );
+
+
+  slider.addEventListener(
+    "touchstart",
+    event => {
+
+      startX =
+        event.changedTouches[0]
+          .screenX;
+
+
+      clearInterval(
+        timer
+      );
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  slider.addEventListener(
+    "touchend",
+    event => {
+
+      const endX =
+        event.changedTouches[0]
+          .screenX;
+
+
+      const diff =
+        startX -
+        endX;
+
+
+      if(
+        Math.abs(diff) > 45
+      ){
+
+        if(diff > 0){
+
+          next();
+
+        }else{
+
+          show(
+            current - 1
+          );
+
+        }
+
+      }
+
+
+      start();
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  show(0);
+
+  start();
+
+}
+
+
+/* =========================================================
+   DASHBOARD LOADER
+========================================================= */
+
+async function loadDashboard(){
+
+  const user =
+    await getCurrentStudent();
+
+
+  if(!user){
+
+    return;
+  }
+
+
+  /*
+    Profile ko separately load karte hain.
+    Agar profile error ho bhi jaye,
+    baaki dashboard modules continue rahenge.
+  */
+
+  try{
+
+    await loadStudentProfile(
+      user
+    );
+
+  }catch(error){
+
+    console.error(
+      "Profile loading failed:",
+      error
+    );
+
+  }
+
+
+  /*
+    Promise.allSettled:
+    Ek module fail hone par
+    poora dashboard break nahi hoga.
+  */
+
+  await Promise.allSettled([
+
+    loadCourses(
+      user
+    ),
+
+    loadAttempts(
+      user
+    ),
+
+    loadUpcomingTests(
+      user
+    )
+
+  ]);
+
+}
+
+
+/* =========================================================
+   START APP
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    initSlider();
+
+    loadDashboard();
+
+  }
 );
+
+
+/* =========================================================
+   LOGOUT BUTTON
+========================================================= */
+
+const desktopLogout =
+  document.getElementById(
+    "desktopLogout"
+  );
+
+
+if(desktopLogout){
+
+  desktopLogout.addEventListener(
+    "click",
+    logout
+  );
+
+}
 
 </script>
 
-
-
-    <nav class="mobile-bottom-nav" aria-label="Student navigation">
-        <a href="student-dashboard.html" class="active"><span class="nav-icon">🏠</span><span>Home</span></a>
-        <a href="student-courses.html"><span class="nav-icon">📚</span><span>Courses</span></a>
-        <a href="student-tests.html"><span class="nav-icon">📝</span><span>Tests</span></a>
-        <a href="student-notes.html"><span class="nav-icon">📄</span><span>Notes</span></a>
-        <a href="student-profile.html"><span class="nav-icon">👤</span><span>Profile</span></a>
-    </nav>
 </body>
-
 </html>

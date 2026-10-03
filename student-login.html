@@ -1,915 +1,865 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#052a5b">
-
-    <title>Student Login | RajEdge</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-        .login-page {
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 22px 14px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(245,196,0,.18),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #eef4ff 0%,
-                    #f8fafc 52%,
-                    #fff9df 100%
-                );
-        }
-
-        .login-card {
-            width: 100%;
-            max-width: 430px;
-
-            background: rgba(255,255,255,.97);
-
-            border: 1px solid rgba(5,42,91,.08);
-
-            border-radius: 26px;
-
-            padding: 30px 24px 24px;
-
-            box-shadow:
-                0 18px 55px rgba(5,42,91,.13);
-        }
-
-        /* =========================
-           LOGO
-        ========================= */
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .login-logo-icon {
-            width: 68px;
-            height: 68px;
-
-            margin: 0 auto 10px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #052a5b,
-                    #0b4b88
-                );
-
-            box-shadow:
-                0 10px 25px rgba(5,42,91,.20);
-
-            font-size: 34px;
-        }
-
-        .login-logo h1 {
-            margin: 0;
-
-            color: #052a5b;
-
-            font-size: 31px;
-
-            letter-spacing: -.5px;
-        }
-
-        .login-logo h1 span {
-            color: #f5c400;
-        }
-
-        .login-logo p {
-            margin: 6px 0 0;
-
-            color: #718096;
-
-            font-size: 13px;
-        }
-
-        /* =========================
-           TITLE
-        ========================= */
-
-        .login-title {
-            text-align: center;
-
-            margin: 0 0 20px;
-
-            color: #052a5b;
-
-            font-size: 23px;
-        }
-
-        .login-subtitle {
-            text-align: center;
-
-            margin: -10px 0 20px;
-
-            color: #7b8798;
-
-            font-size: 13px;
-        }
-
-        /* =========================
-           MESSAGE
-        ========================= */
-
-        #message {
-            display: none;
-
-            margin-bottom: 16px;
-
-            padding: 12px 13px;
-
-            border-radius: 12px;
-
-            text-align: center;
-
-            font-size: 13px;
-
-            line-height: 1.45;
-
-            font-weight: 600;
-        }
-
-        /* =========================
-           FORM
-        ========================= */
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-
-            margin-bottom: 7px;
-
-            font-weight: 700;
-
-            color: #26364d;
-
-            font-size: 14px;
-        }
-
-        .form-group input {
-            width: 100%;
-
-            min-height: 52px;
-
-            padding: 13px 15px;
-
-            border:
-                1px solid #d9e0ea;
-
-            border-radius: 13px;
-
-            background: #fbfcfe;
-
-            color: #172033;
-
-            font-size: 16px;
-
-            outline: none;
-
-            transition: .2s ease;
-        }
-
-        .form-group input:focus {
-            background: #fff;
-
-            border-color: #0b4b88;
-
-            box-shadow:
-                0 0 0 4px
-                rgba(11,75,136,.08);
-        }
-
-        /* =========================
-           LOGIN BUTTON
-        ========================= */
-
-        .login-btn {
-            width: 100%;
-
-            min-height: 54px;
-
-            margin-top: 5px;
-
-            border: 0;
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #052a5b,
-                    #0b4b88
-                );
-
-            color: #fff;
-
-            font-size: 16px;
-
-            font-weight: 800;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 10px 22px
-                rgba(5,42,91,.20);
-
-            transition:
-                transform .15s ease,
-                opacity .15s ease;
-        }
-
-        .login-btn:hover {
-            background:
-                linear-gradient(
-                    135deg,
-                    #0b4b88,
-                    #052a5b
-                );
-        }
-
-        .login-btn:active {
-            transform: scale(.985);
-        }
-
-        .login-btn:disabled {
-            opacity: .65;
-
-            cursor: not-allowed;
-
-            box-shadow: none;
-        }
-
-        /* =========================
-           REGISTER
-        ========================= */
-
-        .register-text {
-            text-align: center;
-
-            margin-top: 20px;
-
-            color: #68778d;
-
-            font-size: 14px;
-        }
-
-        .register-text a {
-            color: #0b4b88;
-
-            font-weight: 800;
-
-            text-decoration: none;
-        }
-
-        .register-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* =========================
-           BACK HOME
-        ========================= */
-
-        .back-home {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 16px;
-
-            color: #7b8798;
-
-            text-decoration: none;
-
-            font-size: 13px;
-        }
-
-        .back-home:hover {
-            color: #0b4b88;
-        }
-
-        /* =========================
-           SECURITY
-        ========================= */
-
-        .security-note {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 6px;
-
-            margin-top: 18px;
-
-            color: #7b8798;
-
-            font-size: 12px;
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 500px) {
-
-            .login-page {
-                align-items: flex-start;
-
-                padding:
-                    18px 12px;
-            }
-
-            .login-card {
-                margin-top: 10px;
-
-                padding:
-                    27px 18px 21px;
-
-                border-radius: 22px;
-            }
-
-            .login-logo {
-                margin-bottom: 21px;
-            }
-
-            .login-logo-icon {
-                width: 62px;
-                height: 62px;
-
-                font-size: 31px;
-            }
-
-            .login-logo h1 {
-                font-size: 29px;
-            }
-
-            .login-title {
-                font-size: 21px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#062b55">
+<title>RajEdge - Login</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+    background:#f4f8fc;
+    color:#12304d;
+}
+
+.page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.card{
+    width:min(430px,100%);
+    background:#fff;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 18px 50px rgba(4,38,73,.15);
+}
+
+.hero{
+    background:linear-gradient(150deg,#062b55,#0b6680);
+    padding:34px 28px 30px;
+    color:#fff;
+    text-align:center;
+    position:relative;
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    right:-55px;
+    top:-55px;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    background:rgba(255,255,255,.07);
+}
+
+.logo{
+    width:72px;
+    height:72px;
+    margin:auto;
+    border-radius:22px;
+    background:#fff;
+    color:#062b55;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    font-size:35px;
+    box-shadow:0 8px 22px rgba(0,0,0,.15);
+    position:relative;
+    z-index:1;
+}
+
+.brand{
+    font-size:30px;
+    font-weight:900;
+    margin-top:12px;
+}
+
+.brand span{
+    color:#f6b73c;
+}
+
+.sub{
+    font-size:13px;
+    opacity:.9;
+    margin-top:3px;
+}
+
+.body{
+    padding:26px;
+}
+
+.eyebrow{
+    font-size:12px;
+    color:#0b7184;
+    font-weight:800;
+    letter-spacing:.7px;
+    text-transform:uppercase;
+}
+
+.title{
+    font-size:25px;
+    font-weight:850;
+    margin:5px 0;
+}
+
+.desc{
+    font-size:13px;
+    color:#6c7c8c;
+    margin-bottom:22px;
+}
+
+.group{
+    margin-bottom:15px;
+}
+
+.label{
+    display:block;
+    font-size:13px;
+    font-weight:750;
+    margin-bottom:7px;
+}
+
+.input-wrap{
+    position:relative;
+}
+
+.input{
+    width:100%;
+    height:52px;
+    border:1px solid #d9e4ed;
+    border-radius:14px;
+    padding:0 15px;
+    font-size:16px;
+    outline:none;
+    background:#fbfdff;
+    transition:.2s;
+}
+
+.input:focus{
+    border-color:#0b7184;
+    box-shadow:0 0 0 4px rgba(11,113,132,.09);
+    background:#fff;
+}
+
+.toggle{
+    position:absolute;
+    right:8px;
+    top:7px;
+    height:38px;
+    border:0;
+    background:transparent;
+    padding:0 10px;
+    color:#5f7385;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.forgot{
+    display:block;
+    text-align:right;
+    color:#086c82;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
+    margin:-3px 0 18px;
+}
+
+.login-btn{
+    width:100%;
+    height:53px;
+    border:0;
+    border-radius:15px;
+    background:linear-gradient(90deg,#062b55,#08768a);
+    color:#fff;
+    font-size:16px;
+    font-weight:850;
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(6,43,85,.2);
+}
+
+.login-btn:disabled{
+    opacity:.65;
+    cursor:wait;
+}
+
+.divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#91a0ae;
+    font-size:12px;
+    margin:20px 0;
+}
+
+.divider:before,
+.divider:after{
+    content:"";
+    height:1px;
+    background:#e4ebf1;
+    flex:1;
+}
+
+.secondary{
+    width:100%;
+    height:49px;
+    border:1px solid #dbe5ed;
+    border-radius:14px;
+    background:#fff;
+    color:#163b5a;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.register{
+    text-align:center;
+    font-size:13px;
+    color:#687887;
+    margin-top:20px;
+}
+
+.register a{
+    color:#086c82;
+    font-weight:850;
+    text-decoration:none;
+}
+
+.message{
+    display:none;
+    margin:0 0 16px;
+    padding:12px 14px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.45;
+}
+
+.success{
+    display:block;
+    background:#eafaf3;
+    color:#13734c;
+}
+
+.error{
+    display:block;
+    background:#fff0f0;
+    color:#b42318;
+}
+
+.secure{
+    text-align:center;
+    font-size:11px;
+    color:#8a98a5;
+    margin-top:18px;
+}
+
+.back{
+    text-align:center;
+    margin-top:14px;
+}
+
+.back a{
+    font-size:12px;
+    color:#718292;
+    text-decoration:none;
+}
+
+@media(max-width:420px){
+    .page{
+        padding:0;
+    }
+
+    .card{
+        min-height:100vh;
+        border-radius:0;
+    }
+
+    .hero{
+        padding-top:42px;
+    }
+
+    .body{
+        padding:24px 20px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="login-page">
+<div class="page">
+<div class="card">
 
-    <div class="login-card">
+<section class="hero">
 
-        <!-- LOGO -->
+<div class="logo">R</div>
 
-        <div class="login-logo">
+<div class="brand">
+Raj<span>Edge</span>
+</div>
 
-            <div class="login-logo-icon">
-                📚
-            </div>
+<div class="sub">
+Rajasthan Exam Preparation
+</div>
 
-            <h1>
-                Raj<span>Edge</span>
-            </h1>
-
-            <p>
-                Rajasthan Education Hub
-            </p>
-
-        </div>
+</section>
 
 
-        <!-- TITLE -->
+<section class="body">
 
-        <h2 class="login-title">
-            Student Login
-        </h2>
+<div class="eyebrow">
+Student Login
+</div>
 
-        <p class="login-subtitle">
-            Apne registered mobile number se login karein
-        </p>
+<div class="title">
+Welcome back, Warrior! 👋
+</div>
 
-
-        <!-- MESSAGE -->
-
-        <div id="message"></div>
-
-
-        <!-- LOGIN FORM -->
-
-        <form
-            id="loginForm"
-            autocomplete="on"
-        >
-
-            <!-- MOBILE -->
-
-            <div class="form-group">
-
-                <label for="mobile">
-                    Mobile Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="mobile"
-                    name="username"
-                    placeholder="10 digit mobile number"
-                    maxlength="10"
-                    minlength="10"
-                    inputmode="numeric"
-                    autocomplete="tel"
-                    pattern="[0-9]{10}"
-                    required
-                >
-
-            </div>
+<div class="desc">
+अपनी preparation वहीं से शुरू करें जहाँ आपने छोड़ी थी।
+</div>
 
 
-            <!-- PASSWORD -->
-
-            <div class="form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
+<div id="message" class="message"></div>
 
 
-            <!-- LOGIN -->
+<form id="loginForm">
 
-            <button
-                type="submit"
-                class="login-btn"
-                id="loginBtn"
-            >
-                Login
-            </button>
+<div class="group">
 
-        </form>
+<label class="label" for="mobile">
+📱 Mobile Number
+</label>
 
-
-        <!-- REGISTER -->
-
-        <div class="register-text">
-
-            New Student?
-
-            <a href="student-register.html">
-                Register Now
-            </a>
-
-        </div>
-
-
-        <!-- HOME -->
-
-        <a
-            href="index.html"
-            class="back-home"
-        >
-            ← Back to Home
-        </a>
-
-
-        <!-- SECURITY -->
-
-        <div class="security-note">
-            🔒 Secure login powered by RajEdge
-        </div>
-
-    </div>
+<input
+class="input"
+id="mobile"
+inputmode="numeric"
+maxlength="10"
+autocomplete="tel"
+placeholder="10 digit mobile number"
+required
+>
 
 </div>
 
 
+<div class="group">
+
+<label class="label" for="password">
+🔐 Password
+</label>
+
+<div class="input-wrap">
+
+<input
+class="input"
+id="password"
+type="password"
+autocomplete="current-password"
+placeholder="Enter your password"
+required
+>
+
+<button
+class="toggle"
+type="button"
+id="togglePassword"
+aria-label="Show password"
+>
+👁️
+</button>
+
+</div>
+
+</div>
+
+
+<a
+class="forgot"
+href="#"
+id="forgotBtn"
+>
+Forgot Password?
+</a>
+
+
+<button
+class="login-btn"
+id="loginBtn"
+type="submit"
+>
+Login
+</button>
+
+</form>
+
+
+<div class="divider">
+OR
+</div>
+
+
+<button
+class="secondary"
+type="button"
+onclick="location.href='student-register.html'"
+>
+Create New Account
+</button>
+
+
+<div class="register">
+Don't have an account?
+<a href="student-register.html">
+Sign Up
+</a>
+</div>
+
+
+<div class="secure">
+🔒 Secure login powered by RajEdge + Supabase
+</div>
+
+
+<div class="back">
+<a href="index.html">
+← Back to RajEdge Home
+</a>
+</div>
+
+</section>
+
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-/* ==========================================
+/* ================================
    SUPABASE CONFIG
-========================================== */
+================================ */
 
 const SUPABASE_URL =
-    "https://xysgwtnclxpacmlgnmer.supabase.co";
+"https://xysgwtnclxpacmlgnmer.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
+"sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
 
+
+/* ================================
+   SUPABASE CLIENT
+   IMPORTANT:
+   No custom storageKey
+================================ */
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-/* ==========================================
-   MESSAGE FUNCTION
-========================================== */
+/* ================================
+   DOM
+================================ */
+
+const form =
+document.getElementById("loginForm");
+
+const btn =
+document.getElementById("loginBtn");
+
+const message =
+document.getElementById("message");
+
+
+/* ================================
+   MESSAGE
+================================ */
 
 function showMessage(
-    message,
-    success = false
-) {
-
-    const box =
-        document.getElementById(
-            "message"
-        );
-
-
-    box.textContent =
-        message;
-
-
-    box.style.display =
-        "block";
-
-
-    if (success) {
-
-        box.style.background =
-            "#e8f7ee";
-
-        box.style.color =
-            "#16753b";
-
-    } else {
-
-        box.style.background =
-            "#fdecec";
-
-        box.style.color =
-            "#b42318";
-    }
-
+    text,
+    type = "error"
+){
+    message.textContent = text;
+    message.className =
+        "message " + type;
 }
 
 
-/* ==========================================
-   LOGIN FORM
-========================================== */
+/* ================================
+   PASSWORD SHOW / HIDE
+================================ */
 
 document
-    .getElementById("loginForm")
-    .addEventListener(
-        "submit",
-        async function(event) {
+.getElementById("togglePassword")
+.addEventListener("click", function(){
 
-            event.preventDefault();
+    const password =
+        document.getElementById("password");
 
+    if(password.type === "password"){
 
-            /* ===============================
-               FORM VALUES
-            =============================== */
+        password.type = "text";
+        this.textContent = "🙈";
 
-            const mobile =
-                document
-                    .getElementById("mobile")
-                    .value
-                    .trim();
+    }else{
 
+        password.type = "password";
+        this.textContent = "👁️";
 
-            const password =
-                document
-                    .getElementById("password")
-                    .value;
+    }
 
+});
 
-            const loginBtn =
-                document
-                    .getElementById("loginBtn");
 
+/* ================================
+   MOBILE VALIDATION
+================================ */
 
-            /* ===============================
-               MOBILE VALIDATION
-            =============================== */
+document
+.getElementById("mobile")
+.addEventListener("input", function(e){
 
-            if (
-                !/^[0-9]{10}$/.test(
-                    mobile
-                )
-            ) {
+    e.target.value =
+        e.target.value
+        .replace(/\D/g,"")
+        .slice(0,10);
 
-                showMessage(
-                    "Please enter a valid 10 digit mobile number."
-                );
+});
 
-                return;
-            }
 
+/* ================================
+   FORGOT PASSWORD
+================================ */
 
-            /* ===============================
-               PASSWORD VALIDATION
-            =============================== */
+document
+.getElementById("forgotBtn")
+.addEventListener("click", function(e){
 
-            if (!password) {
+    e.preventDefault();
 
-                showMessage(
-                    "Please enter your password."
-                );
+    showMessage(
+        "Password reset के लिए अभी admin/support से संपर्क करें।",
+        "error"
+    );
 
-                return;
-            }
+});
 
 
-            /* ===============================
-               LOADING
-            =============================== */
+/* ================================
+   EXISTING SESSION CHECK
+================================ */
 
-            loginBtn.disabled =
-                true;
+(async function(){
 
-            loginBtn.textContent =
-                "Logging in...";
+    try{
 
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.getSession();
 
-            try {
+        if(error){
 
+            console.error(
+                "Session Check Error:",
+                error
+            );
 
-                /* ==========================================
-                   STEP 1
-                   MOBILE → LOGIN EMAIL
-                ========================================== */
+            return;
+        }
 
-                const {
-                    data: profileData,
-                    error: profileError
-                } =
-                    await supabaseClient.rpc(
-                        "get_student_login_email",
-                        {
-                            p_mobile: mobile
-                        }
-                    );
+        if(
+            data &&
+            data.session &&
+            data.session.user
+        ){
 
+            console.log(
+                "Existing student session found."
+            );
 
-                /* ===============================
-                   RPC ERROR
-                =============================== */
-
-                if (profileError) {
-
-                    console.error(
-                        "Profile RPC Error:",
-                        profileError
-                    );
-
-                    throw profileError;
-
-                }
-
-
-                /* ===============================
-                   FIND PROFILE
-                =============================== */
-
-                const profile =
-                    profileData &&
-                    profileData.length > 0
-                        ? profileData[0]
-                        : null;
-
-
-                /* ===============================
-                   MOBILE NOT FOUND
-                =============================== */
-
-                if (!profile) {
-
-                    showMessage(
-                        "This mobile number is not registered."
-                    );
-
-                    return;
-                }
-
-
-                /* ==========================================
-                   STEP 2
-                   GET LOGIN EMAIL
-                ========================================== */
-
-                const email =
-                    profile.login_email ||
-                    profile.email;
-
-
-                if (!email) {
-
-                    showMessage(
-                        "Login email not found for this account."
-                    );
-
-                    return;
-                }
-
-
-                /* ==========================================
-                   STEP 3
-                   SUPABASE AUTH LOGIN
-                ========================================== */
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .auth
-                        .signInWithPassword({
-
-                            email:
-                                email,
-
-                            password:
-                                password
-
-                        });
-
-
-                /* ===============================
-                   AUTH ERROR
-                =============================== */
-
-                if (error) {
-
-                    console.error(
-                        "Auth Login Error:",
-                        error
-                    );
-
-                    throw error;
-
-                }
-
-
-                /* ===============================
-                   USER CHECK
-                =============================== */
-
-                if (
-                    !data ||
-                    !data.user
-                ) {
-
-                    showMessage(
-                        "Login failed. Please try again."
-                    );
-
-                    return;
-                }
-
-
-                /* ==========================================
-                   LOGIN SUCCESS
-                ========================================== */
-
-                showMessage(
-                    "✅ Login successful! Redirecting...",
-                    true
-                );
-
-
-                /* ===============================
-                   REDIRECT
-                =============================== */
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "student-dashboard.html";
-
-                    },
-                    800
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Login Error:",
-                    error
-                );
-
-
-                let message =
-                    error.message ||
-                    "Login failed. Please try again.";
-
-
-                const lowerMessage =
-                    message.toLowerCase();
-
-
-                /* ===============================
-                   FRIENDLY ERRORS
-                =============================== */
-
-                if (
-                    lowerMessage.includes(
-                        "invalid login credentials"
-                    ) ||
-                    lowerMessage.includes(
-                        "invalid_credentials"
-                    )
-                ) {
-
-                    message =
-                        "❌ Mobile number या password गलत है.";
-
-                }
-
-                else if (
-                    lowerMessage.includes(
-                        "email not confirmed"
-                    )
-                ) {
-
-                    message =
-                        "❌ Email verification pending है. पहले account verify करें.";
-
-                }
-
-                else if (
-                    lowerMessage.includes(
-                        "too many requests"
-                    )
-                ) {
-
-                    message =
-                        "⏳ बहुत ज्यादा login attempts हैं. थोड़ी देर बाद फिर कोशिश करें.";
-
-                }
-
-
-                showMessage(
-                    message
-                );
-
-            }
-
-            finally {
-
-                /* ===============================
-                   RESET BUTTON
-                =============================== */
-
-                loginBtn.disabled =
-                    false;
-
-                loginBtn.textContent =
-                    "Login";
-
-            }
+            window.location.replace(
+                "student-dashboard.html"
+            );
 
         }
-    );
+
+    }catch(error){
+
+        console.error(
+            "Session Check Failed:",
+            error
+        );
+
+    }
+
+})();
+
+
+/* ================================
+   LOGIN
+================================ */
+
+form.addEventListener(
+"submit",
+async function(e){
+
+    e.preventDefault();
+
+
+    const mobile =
+        document
+        .getElementById("mobile")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    /* Mobile validation */
+
+    if(
+        !/^[6-9]\d{9}$/.test(mobile)
+    ){
+
+        showMessage(
+            "कृपया valid 10 digit mobile number डालें।"
+        );
+
+        return;
+
+    }
+
+
+    /* Password validation */
+
+    if(password.length < 6){
+
+        showMessage(
+            "Password कम से कम 6 characters का होना चाहिए।"
+        );
+
+        return;
+
+    }
+
+
+    /* Button loading */
+
+    btn.disabled = true;
+    btn.textContent = "Signing in...";
+
+    message.className = "message";
+
+
+    try{
+
+        /* ==========================
+           GET STUDENT LOGIN EMAIL
+        ========================== */
+
+        const {
+            data: profile,
+            error: rpcError
+        } =
+        await supabaseClient.rpc(
+            "get_student_login_email",
+            {
+                p_mobile: mobile
+            }
+        );
+
+
+        if(rpcError){
+
+            console.error(
+                "RPC Error:",
+                rpcError
+            );
+
+            throw rpcError;
+
+        }
+
+
+        const row =
+            Array.isArray(profile)
+            ? profile[0]
+            : profile;
+
+
+        if(!row){
+
+            throw new Error(
+                "इस mobile number से student account नहीं मिला। पहले Sign Up करें।"
+            );
+
+        }
+
+
+        /* Email */
+
+        const email =
+            (
+                row.login_email ||
+                row.email ||
+                ""
+            )
+            .trim();
+
+
+        if(!email){
+
+            throw new Error(
+                "Student login email profile में उपलब्ध नहीं है।"
+            );
+
+        }
+
+
+        console.log(
+            "Login email found:",
+            email
+        );
+
+
+        /* ==========================
+           SUPABASE LOGIN
+        ========================== */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth
+        .signInWithPassword({
+            email: email,
+            password: password
+        });
+
+
+        if(error){
+
+            console.error(
+                "Supabase Login Error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            !data.session ||
+            !data.session.user
+        ){
+
+            throw new Error(
+                "Login session create नहीं हुई। कृपया दोबारा try करें।"
+            );
+
+        }
+
+
+        /* ==========================
+           SUCCESS
+        ========================== */
+
+        showMessage(
+            "✅ Login successful! Dashboard खोल रहे हैं...",
+            "success"
+        );
+
+
+        btn.textContent =
+            "Opening Dashboard...";
+
+
+        /*
+         * Small delay so user can see
+         * successful login message.
+         */
+
+        await new Promise(
+            resolve =>
+            setTimeout(resolve,700)
+        );
+
+
+        window.location.replace(
+            "student-dashboard.html"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "RajEdge Login Error:",
+            error
+        );
+
+
+        let errorMessage =
+            error?.message ||
+            "Login failed.";
+
+
+        if(
+            /invalid login credentials/i
+            .test(errorMessage)
+        ){
+
+            errorMessage =
+                "Mobile number या password गलत है.";
+
+        }
+
+
+        if(
+            /email not confirmed/i
+            .test(errorMessage)
+        ){
+
+            errorMessage =
+                "Account email confirmation pending है.";
+
+        }
+
+
+        if(
+            /fetch|network/i
+            .test(errorMessage)
+        ){
+
+            errorMessage =
+                "Internet connection या Supabase connection check करें.";
+
+        }
+
+
+        showMessage(
+            "❌ " + errorMessage,
+            "error"
+        );
+
+
+    }finally{
+
+        btn.disabled = false;
+        btn.textContent = "Login";
+
+    }
+
+});
 
 </script>
 

@@ -1,666 +1,321 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin Payments - RajEdge</title>
+<title>Admin Payments | RajEdge</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-    box-sizing:border-box;
+*{box-sizing:border-box}
+:root{
+    --navy:#0f172a;
+    --blue:#2563eb;
+    --blue2:#1d4ed8;
+    --green:#16a34a;
+    --red:#dc2626;
+    --orange:#d97706;
+    --bg:#f1f5f9;
+    --card:#fff;
+    --text:#172033;
+    --muted:#64748b;
+    --line:#e2e8f0;
 }
-
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f4f6f9;
-    color:#222;
-}
-
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+button,select,textarea{font:inherit}
 .header{
-    background:#111827;
-    color:white;
-    padding:18px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
+    position:sticky;top:0;z-index:100;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    color:#fff;padding:15px 20px;display:flex;
+    justify-content:space-between;align-items:center;gap:15px;
+    box-shadow:0 4px 18px rgba(15,23,42,.18)
 }
-
-.header h1{
-    margin:0;
-    font-size:22px;
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:22px}
+.header h1{margin:0;font-size:20px}
+.header small{display:block;color:#cbd5e1;margin-top:3px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+    border:0;border-radius:9px;padding:10px 14px;cursor:pointer;
+    font-weight:700;transition:.2s
 }
-
-.header button{
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.container{
-    max-width:1200px;
-    margin:25px auto;
-    padding:0 15px;
-}
-
-.top-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
-
-.top-bar h2{
-    margin:0;
-}
-
-.refresh-btn{
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:25px;
-}
-
+.btn:hover{transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue2)}
+.btn-red{background:#ef4444;color:#fff}
+.btn-light{background:#fff;color:#1e3a8a}
+.container{max-width:1250px;margin:24px auto;padding:0 15px}
+.top-bar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px;flex-wrap:wrap}
+.top-bar h2{margin:0;font-size:25px}
+.top-bar p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
 .stat{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    background:var(--card);padding:18px;border-radius:15px;
+    box-shadow:0 4px 16px rgba(15,23,42,.06);
+    border:1px solid var(--line);display:flex;align-items:center;gap:14px
 }
-
-.stat h3{
-    margin:0 0 8px;
-    font-size:14px;
-    color:#666;
-}
-
-.stat p{
-    margin:0;
-    font-size:28px;
-    font-weight:bold;
-}
-
-.pending-color{
-    color:#d97706;
-}
-
-.approved-color{
-    color:#16a34a;
-}
-
-.rejected-color{
-    color:#dc2626;
-}
-
+.stat-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:#eff6ff}
+.stat h3{margin:0 0 5px;font-size:13px;color:var(--muted)}
+.stat p{margin:0;font-size:27px;font-weight:800}
+.pending-color{color:var(--orange)}
+.approved-color{color:var(--green)}
+.rejected-color{color:var(--red)}
 .table-box{
-    background:white;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
-    overflow:hidden;
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    box-shadow:0 4px 16px rgba(15,23,42,.06);overflow:hidden
 }
-
 .table-header{
-    padding:18px;
-    border-bottom:1px solid #eee;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
+    padding:16px 18px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap
 }
-
-.table-header h3{
-    margin:0;
+.table-header h3{margin:0;font-size:17px}
+.table-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filter,.search{
+    padding:9px 12px;border:1px solid #cbd5e1;border-radius:9px;
+    background:#fff;outline:none
 }
-
-.filter{
-    padding:9px 12px;
-    border:1px solid #ddd;
-    border-radius:7px;
-    background:white;
+.search{min-width:220px}
+.search:focus,.filter:focus,textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1120px}
+th,td{padding:13px 12px;border-bottom:1px solid #edf2f7;text-align:left;vertical-align:top}
+th{background:#f8fafc;font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+td{font-size:13px}
+tr:hover td{background:#fafcff}
+.status,.purchase{
+    display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap
 }
-
-.table-scroll{
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:1000px;
-}
-
-th,td{
-    padding:13px 12px;
-    border-bottom:1px solid #eee;
-    text-align:left;
-    vertical-align:top;
-}
-
-th{
-    background:#f8fafc;
-    font-size:13px;
-}
-
-td{
-    font-size:14px;
-}
-
-.status{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.status-pending{
-    background:#fef3c7;
-    color:#92400e;
-}
-
-.status-approved{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.status-rejected{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
-.purchase{
-    background:#eef2ff;
-    color:#3730a3;
-    padding:5px 8px;
-    border-radius:6px;
-    font-size:12px;
-    font-weight:bold;
-}
-
+.status-pending{background:#fef3c7;color:#92400e}
+.status-approved{background:#dcfce7;color:#166534}
+.status-rejected{background:#fee2e2;color:#991b1b}
+.purchase{background:#eef2ff;color:#3730a3;border-radius:7px}
 .action-btn{
-    border:none;
-    padding:8px 12px;
-    border-radius:7px;
-    cursor:pointer;
-    font-weight:bold;
-    margin:2px;
+    border:0;padding:7px 10px;border-radius:7px;cursor:pointer;font-weight:700;margin:2px;font-size:12px
 }
-
-.approve-btn{
-    background:#16a34a;
-    color:white;
-}
-
-.reject-btn{
-    background:#dc2626;
-    color:white;
-}
-
-.action-btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.empty{
-    text-align:center;
-    padding:40px;
-    color:#777;
-}
-
-.loading{
-    text-align:center;
-    padding:40px;
-}
-
+.approve-btn{background:#16a34a;color:#fff}
+.reject-btn{background:#dc2626;color:#fff}
+.action-btn:disabled{opacity:.5;cursor:not-allowed}
+.empty,.loading{text-align:center;padding:42px;color:#64748b}
 .error{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:20px;
-    display:none;
+    background:#fee2e2;color:#991b1b;padding:13px 15px;border-radius:10px;
+    margin-bottom:18px;display:none;border:1px solid #fecaca
 }
-
+.success{
+    background:#dcfce7;color:#166534;padding:13px 15px;border-radius:10px;
+    margin-bottom:18px;display:none;border:1px solid #bbf7d0
+}
 .modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.55);
-    z-index:9999;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+    display:none;position:fixed;inset:0;background:rgba(2,6,23,.62);
+    z-index:9999;align-items:center;justify-content:center;padding:18px
 }
-
 .modal-box{
-    background:white;
-    width:100%;
-    max-width:450px;
-    border-radius:12px;
-    padding:22px;
+    background:#fff;width:100%;max-width:470px;border-radius:16px;padding:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25)
 }
-
-.modal-box h3{
-    margin-top:0;
-}
-
+.modal-box h3{margin:0 0 8px}
+.modal-box p{color:#64748b;font-size:14px}
 .modal-box textarea{
-    width:100%;
-    min-height:100px;
-    resize:vertical;
-    padding:10px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin:10px 0;
+    width:100%;min-height:105px;resize:vertical;padding:11px;
+    border:1px solid #cbd5e1;border-radius:9px;outline:none;margin:8px 0 14px
 }
-
-.modal-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
+.modal-actions{display:flex;justify-content:flex-end;gap:9px}
+.cancel-btn{background:#e2e8f0;color:#334155}
+.confirm-btn{background:#dc2626;color:#fff}
+.mobile-summary{display:none}
+@media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr)}
 }
-
-.cancel-btn{
-    background:#e5e7eb;
-    border:none;
-    padding:10px 15px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-.confirm-btn{
-    background:#dc2626;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-@media(max-width:800px){
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-}
-
-@media(max-width:500px){
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .header{
-        align-items:flex-start;
-        flex-direction:column;
-    }
-
+@media(max-width:600px){
+    .header{padding:12px 14px}
+    .header h1{font-size:17px}
+    .header small{font-size:11px}
+    .header-actions .btn{padding:8px 10px;font-size:12px}
+    .container{margin:17px auto;padding:0 10px}
+    .top-bar h2{font-size:21px}
+    .stats{grid-template-columns:repeat(2,1fr);gap:9px}
+    .stat{padding:13px;gap:9px;border-radius:12px}
+    .stat-icon{width:38px;height:38px;font-size:18px}
+    .stat p{font-size:22px}
+    .stat h3{font-size:11px}
+    .table-header{padding:13px}
+    .search{min-width:180px;width:100%}
+    .table-tools{width:100%}
+    .filter{flex:1}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
+<header class="header">
+    <div class="brand">
+        <div class="brand-icon">💳</div>
+        <div>
+            <h1>RajEdge Admin Payments</h1>
+            <small>Payment verification & student access</small>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="btn btn-light" id="dashboardButton">🏠 Dashboard</button>
+        <button class="btn btn-red" id="logoutButton">Logout</button>
+    </div>
+</header>
 
-    <h1>💳 RajEdge Admin Payments</h1>
-
-    <button onclick="logoutAdmin()">
-        Logout
-    </button>
-
-</div>
-
-
-<div class="container">
+<main class="container">
 
     <div id="errorBox" class="error"></div>
-
+    <div id="successBox" class="success"></div>
 
     <div class="top-bar">
-
-        <h2>Payment Requests</h2>
-
-        <button class="refresh-btn" onclick="loadPayments()">
-            🔄 Refresh
-        </button>
-
+        <div>
+            <h2>Payment Requests</h2>
+            <p>Student ke payment ko verify karke access unlock karo.</p>
+        </div>
+        <button class="btn btn-blue" id="refreshButton">🔄 Refresh</button>
     </div>
 
-
-    <div class="stats">
-
+    <section class="stats">
         <div class="stat">
-            <h3>Total Requests</h3>
-            <p id="totalRequests">0</p>
+            <div class="stat-icon">📋</div>
+            <div><h3>Total Requests</h3><p id="totalRequests">0</p></div>
         </div>
-
         <div class="stat">
-            <h3>Pending</h3>
-            <p id="pendingRequests" class="pending-color">0</p>
+            <div class="stat-icon">⏳</div>
+            <div><h3>Pending</h3><p id="pendingRequests" class="pending-color">0</p></div>
         </div>
-
         <div class="stat">
-            <h3>Approved</h3>
-            <p id="approvedRequests" class="approved-color">0</p>
+            <div class="stat-icon">✅</div>
+            <div><h3>Approved</h3><p id="approvedRequests" class="approved-color">0</p></div>
         </div>
-
         <div class="stat">
-            <h3>Rejected</h3>
-            <p id="rejectedRequests" class="rejected-color">0</p>
+            <div class="stat-icon">❌</div>
+            <div><h3>Rejected</h3><p id="rejectedRequests" class="rejected-color">0</p></div>
         </div>
+    </section>
 
-    </div>
-
-
-    <div class="table-box">
-
+    <section class="table-box">
         <div class="table-header">
-
             <h3>All Payment Requests</h3>
-
-            <select id="statusFilter"
-                    class="filter"
-                    onchange="renderPayments()">
-
-                <option value="all">All</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-
-            </select>
-
+            <div class="table-tools">
+                <input id="searchInput" class="search" type="search" placeholder="Student, mobile, UTR search...">
+                <select id="statusFilter" class="filter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
         </div>
-
 
         <div class="table-scroll">
-
             <table>
-
                 <thead>
-
                     <tr>
-
                         <th>Date</th>
-
                         <th>Student</th>
-
                         <th>Course</th>
-
                         <th>Purchase</th>
-
                         <th>Amount</th>
-
                         <th>UTR</th>
-
                         <th>Status</th>
-
                         <th>Admin Note</th>
-
                         <th>Action</th>
-
                     </tr>
-
                 </thead>
-
                 <tbody id="paymentTableBody">
-
-                    <tr>
-                        <td colspan="9" class="loading">
-                            Loading payments...
-                        </td>
-                    </tr>
-
+                    <tr><td colspan="9" class="loading">Loading payments...</td></tr>
                 </tbody>
-
             </table>
-
         </div>
-
-    </div>
-
-</div>
-
-
-<!-- Reject Modal -->
+    </section>
+</main>
 
 <div id="rejectModal" class="modal">
-
     <div class="modal-box">
-
         <h3>Reject Payment Request</h3>
-
-        <p>
-            Reject karne ka reason likho:
-        </p>
-
-        <textarea
-            id="rejectReason"
-            placeholder="Example: UTR verify nahi hua..."
-        ></textarea>
-
+        <p>Student ko rejection reason dikhane ke liye reason likho.</p>
+        <textarea id="rejectReason" placeholder="Example: UTR verify nahi hua..."></textarea>
         <div class="modal-actions">
-
-            <button
-                class="cancel-btn"
-                onclick="closeRejectModal()">
-                Cancel
-            </button>
-
-            <button
-                class="confirm-btn"
-                onclick="confirmReject()">
-                Reject Payment
-            </button>
-
+            <button class="btn cancel-btn" id="cancelRejectButton">Cancel</button>
+            <button class="btn confirm-btn" id="confirmRejectButton">Reject Payment</button>
         </div>
-
     </div>
-
 </div>
 
-
 <script>
+const SUPABASE_URL = "https://xysgwtnclxpacmlgnmer.supabase.co";
+const SUPABASE_KEY = "sb_publishable_5VnFiKCfqI0s_dTO3B5CPg_OekspHI5";
 
-const SUPABASE_URL =
-"https://xysgwtnclxpacmlgnmer.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_5VnfiKCfqI0s_dTO3B5CPg_OekspHI5";
-
-const supabaseClient =
-window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
-
 let allPayments = [];
 let rejectPaymentId = null;
 
-
-/* =========================
-   ERROR
-========================= */
-
 function showError(message){
-
-    const box =
-        document.getElementById("errorBox");
-
+    const box = document.getElementById("errorBox");
     box.textContent = message;
     box.style.display = "block";
 }
-
-
 function hideError(){
-
-    document.getElementById("errorBox")
-        .style.display = "none";
+    document.getElementById("errorBox").style.display = "none";
 }
-
-
-/* =========================
-   ADMIN CHECK
-========================= */
+function showSuccess(message){
+    const box = document.getElementById("successBox");
+    box.textContent = message;
+    box.style.display = "block";
+    setTimeout(() => box.style.display = "none", 4000);
+}
 
 async function checkAdminLogin(){
-
     try{
-
         hideError();
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.auth.getUser();
+        const {data, error} = await supabaseClient.auth.getUser();
 
-
-        if(error || !data.user){
-
-            window.location.replace(
-                "admin-login.html"
-            );
-
+        if(error || !data?.user){
+            window.location.replace("admin-login.html");
             return;
         }
 
-
-        const userId =
-            data.user.id;
-
-
-        const {
-            data: adminUser,
-            error: adminError
-        } =
-        await supabaseClient
-            .from("admin_users")
-            .select("id")
-            .eq("id", userId)
-            .maybeSingle();
-
+        const {data: adminUser, error: adminError} =
+            await supabaseClient
+                .from("admin_users")
+                .select("id")
+                .eq("id", data.user.id)
+                .maybeSingle();
 
         if(adminError){
-
-            console.error(
-                "Admin verification error:",
-                adminError
-            );
-
-            showError(
-                "Admin verification failed: " +
-                adminError.message
-            );
-
+            console.error("Admin verification error:", adminError);
+            showError("Admin verification failed: " + adminError.message);
             return;
         }
-
 
         if(!adminUser){
-
-            alert(
-                "Access denied. Admin account required."
-            );
-
+            alert("Access denied. Admin account required.");
             await supabaseClient.auth.signOut();
-
-            window.location.replace(
-                "admin-login.html"
-            );
-
+            window.location.replace("admin-login.html");
             return;
         }
 
-
         await loadPayments();
-
+    }catch(error){
+        console.error("Admin check error:", error);
+        showError("Admin check failed: " + error.message);
     }
-    catch(error){
-
-        console.error(
-            "Admin check error:",
-            error
-        );
-
-        showError(
-            "Admin check failed: " +
-            error.message
-        );
-
-    }
-
 }
 
-
-/* =========================
-   LOAD PAYMENTS
-========================= */
-
 async function loadPayments(){
-
-    const tbody =
-        document.getElementById(
-            "paymentTableBody"
-        );
-
-
-    tbody.innerHTML = `
-        <tr>
-            <td colspan="9" class="loading">
-                Loading payments...
-            </td>
-        </tr>
-    `;
-
-
+    const tbody = document.getElementById("paymentTableBody");
+    tbody.innerHTML = `<tr><td colspan="9" class="loading">⏳ Loading payments...</td></tr>`;
     hideError();
 
-
     try{
-
-        /*
-         payment_requests:
-         id
-         student_id
-         course_id
-         purchase_type
-         amount
-         utr_number
-         payment_status
-         admin_note
-         created_at
-         */
-
-
-        const {
-            data: payments,
-            error
-        } =
-        await supabaseClient
+        const {data: payments, error} = await supabaseClient
             .from("payment_requests")
             .select(`
                 id,
@@ -671,934 +326,330 @@ async function loadPayments(){
                 utr_number,
                 payment_status,
                 admin_note,
-                created_at
+                created_at,
+                verified_at
             `)
-            .order(
-                "created_at",
-                {
-                    ascending:false
-                }
-            );
+            .order("created_at", {ascending:false});
 
+        if(error) throw error;
 
-        if(error){
+        allPayments = payments || [];
 
-            throw error;
-
-        }
-
-
-        allPayments =
-            payments || [];
-
-
-        /*
-         Load students
-        */
-
-        const studentIds =
-            [
-                ...new Set(
-                    allPayments
-                        .map(p => p.student_id)
-                        .filter(Boolean)
-                )
-            ];
-
-
-        /*
-         Load courses
-        */
-
-        const courseIds =
-            [
-                ...new Set(
-                    allPayments
-                        .map(p => p.course_id)
-                        .filter(Boolean)
-                )
-            ];
-
+        const studentIds = [...new Set(allPayments.map(p => p.student_id).filter(Boolean))];
+        const courseIds = [...new Set(allPayments.map(p => p.course_id).filter(Boolean))];
 
         let students = [];
         let courses = [];
 
-
         if(studentIds.length){
+            const result = await supabaseClient
+                .from("student_profiles")
+                .select("id,full_name,mobile,email,login_email")
+                .in("id", studentIds);
 
-            const result =
-                await supabaseClient
-                    .from("student_profiles")
-                    .select(`
-                        id,
-                        full_name,
-                        mobile,
-                        email,
-                        login_email
-                    `)
-                    .in(
-                        "id",
-                        studentIds
-                    );
-
-
-            if(result.error){
-
-                console.error(
-                    "Student loading error:",
-                    result.error
-                );
-
-            }
-            else{
-
-                students =
-                    result.data || [];
-
-            }
-
+            if(result.error) console.error("Student loading error:", result.error);
+            else students = result.data || [];
         }
-
 
         if(courseIds.length){
+            const result = await supabaseClient
+                .from("courses")
+                .select("id,name")
+                .in("id", courseIds);
 
-            const result =
-                await supabaseClient
-                    .from("courses")
-                    .select(`
-                        id,
-                        name
-                    `)
-                    .in(
-                        "id",
-                        courseIds
-                    );
-
-
-            if(result.error){
-
-                console.error(
-                    "Course loading error:",
-                    result.error
-                );
-
-            }
-            else{
-
-                courses =
-                    result.data || [];
-
-            }
-
+            if(result.error) console.error("Course loading error:", result.error);
+            else courses = result.data || [];
         }
 
+        const studentMap = Object.fromEntries(students.map(s => [s.id, s]));
+        const courseMap = Object.fromEntries(courses.map(c => [c.id, c]));
 
-        const studentMap = {};
-
-        students.forEach(student => {
-
-            studentMap[student.id] =
-                student;
-
-        });
-
-
-        const courseMap = {};
-
-        courses.forEach(course => {
-
-            courseMap[course.id] =
-                course;
-
-        });
-
-
-        allPayments =
-            allPayments.map(payment => ({
-
-                ...payment,
-
-                student:
-                    studentMap[payment.student_id]
-                    || null,
-
-                course:
-                    courseMap[payment.course_id]
-                    || null
-
-            }));
-
+        allPayments = allPayments.map(payment => ({
+            ...payment,
+            student: studentMap[payment.student_id] || null,
+            course: courseMap[payment.course_id] || null
+        }));
 
         updateStats();
-
         renderPayments();
-
+    }catch(error){
+        console.error("Payment loading error:", error);
+        tbody.innerHTML = `<tr><td colspan="9" class="empty">Payment requests load nahi ho paayi.</td></tr>`;
+        showError("Payment loading failed: " + error.message);
     }
-    catch(error){
-
-        console.error(
-            "Payment loading error:",
-            error
-        );
-
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9" class="empty">
-                    Payment requests load nahi ho paayi.
-                </td>
-            </tr>
-        `;
-
-
-        showError(
-            "Payment loading failed: " +
-            error.message
-        );
-
-    }
-
 }
-
-
-/* =========================
-   STATS
-========================= */
 
 function updateStats(){
+    const normalized = p => String(p.payment_status || "").toLowerCase().trim();
 
-    const total =
-        allPayments.length;
-
-
-    const pending =
-        allPayments.filter(
-            p =>
-                String(
-                    p.payment_status || ""
-                ).toLowerCase().trim()
-                === "pending"
-        ).length;
-
-
-    const approved =
-        allPayments.filter(
-            p =>
-                ["approved","paid"]
-                .includes(
-                    String(
-                        p.payment_status || ""
-                    ).toLowerCase().trim()
-                )
-        ).length;
-
-
-    const rejected =
-        allPayments.filter(
-            p =>
-                String(
-                    p.payment_status || ""
-                ).toLowerCase().trim()
-                === "rejected"
-        ).length;
-
-
-    document.getElementById(
-        "totalRequests"
-    ).textContent = total;
-
-
-    document.getElementById(
-        "pendingRequests"
-    ).textContent = pending;
-
-
-    document.getElementById(
-        "approvedRequests"
-    ).textContent = approved;
-
-
-    document.getElementById(
-        "rejectedRequests"
-    ).textContent = rejected;
-
+    document.getElementById("totalRequests").textContent = allPayments.length;
+    document.getElementById("pendingRequests").textContent =
+        allPayments.filter(p => normalized(p) === "pending").length;
+    document.getElementById("approvedRequests").textContent =
+        allPayments.filter(p => ["approved","paid"].includes(normalized(p))).length;
+    document.getElementById("rejectedRequests").textContent =
+        allPayments.filter(p => normalized(p) === "rejected").length;
 }
-
-
-/* =========================
-   RENDER
-========================= */
 
 function renderPayments(){
+    const tbody = document.getElementById("paymentTableBody");
+    const filter = document.getElementById("statusFilter").value;
+    const search = document.getElementById("searchInput").value.trim().toLowerCase();
 
-    const tbody =
-        document.getElementById(
-            "paymentTableBody"
-        );
+    let payments = allPayments.filter(payment => {
+        const status = String(payment.payment_status || "").toLowerCase().trim();
+        if(filter !== "all" && status !== filter) return false;
 
+        if(search){
+            const student = payment.student || {};
+            const course = payment.course || {};
+            const haystack = [
+                student.full_name,
+                student.mobile,
+                student.email,
+                student.login_email,
+                course.name,
+                payment.utr_number,
+                payment.purchase_type,
+                payment.payment_status
+            ].filter(Boolean).join(" ").toLowerCase();
 
-    const filter =
-        document.getElementById(
-            "statusFilter"
-        ).value;
-
-
-    let payments =
-        [...allPayments];
-
-
-    if(filter !== "all"){
-
-        payments =
-            payments.filter(
-                payment =>
-                    String(
-                        payment.payment_status || ""
-                    ).toLowerCase().trim()
-                    === filter
-            );
-
-    }
-
+            if(!haystack.includes(search)) return false;
+        }
+        return true;
+    });
 
     if(!payments.length){
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9" class="empty">
-                    No payment requests found.
-                </td>
-            </tr>
-        `;
-
+        tbody.innerHTML = `<tr><td colspan="9" class="empty">No payment requests found.</td></tr>`;
         return;
     }
 
-
-    tbody.innerHTML =
-        payments.map(
-            payment => createPaymentRow(payment)
-        ).join("");
-
+    tbody.innerHTML = payments.map(createPaymentRow).join("");
 }
-
-
-/* =========================
-   PAYMENT ROW
-========================= */
 
 function createPaymentRow(payment){
+    const date = payment.created_at
+        ? new Date(payment.created_at).toLocaleString("en-IN")
+        : "-";
 
-    const date =
-        payment.created_at
-            ? new Date(
-                payment.created_at
-              ).toLocaleString(
-                "en-IN"
-              )
-            : "-";
+    const student = payment.student || {};
+    const course = payment.course || {};
+    const studentName = student.full_name || "Unknown Student";
+    const mobile = student.mobile || "-";
+    const email = student.email || student.login_email || "-";
+    const courseName = course.name || "Unknown Course";
 
+    const purchaseType = String(payment.purchase_type || "").toLowerCase();
+    let purchaseText = payment.purchase_type || "-";
 
-    const student =
-        payment.student;
+    if(purchaseType === "notes") purchaseText = "📚 Notes";
+    else if(["test_series","test-series"].includes(purchaseType)) purchaseText = "📝 Test Series";
 
+    const status = String(payment.payment_status || "pending").toLowerCase().trim();
 
-    const course =
-        payment.course;
+    let statusClass = "status-pending";
+    let statusText = "Pending";
 
-
-    const studentName =
-        student?.full_name
-        || "Unknown Student";
-
-
-    const mobile =
-        student?.mobile
-        || "-";
-
-
-    const email =
-        student?.email
-        || student?.login_email
-        || "-";
-
-
-    const courseName =
-        course?.name
-        || "Unknown Course";
-
-
-    const purchaseType =
-        String(
-            payment.purchase_type || ""
-        ).toLowerCase();
-
-
-    let purchaseText =
-        payment.purchase_type
-        || "-";
-
-
-    if(purchaseType === "notes"){
-
-        purchaseText =
-            "📚 Notes";
-
-    }
-    else if(
-        purchaseType === "test_series"
-        ||
-        purchaseType === "test-series"
-    ){
-
-        purchaseText =
-            "📝 Test Series";
-
+    if(["approved","paid"].includes(status)){
+        statusClass = "status-approved";
+        statusText = "Approved";
+    }else if(status === "rejected"){
+        statusClass = "status-rejected";
+        statusText = "Rejected";
     }
 
-
-    const status =
-        String(
-            payment.payment_status || "pending"
-        ).toLowerCase().trim();
-
-
-    let statusClass =
-        "status-pending";
-
-
-    let statusText =
-        "Pending";
-
-
-    if(
-        status === "approved"
-        ||
-        status === "paid"
-    ){
-
-        statusClass =
-            "status-approved";
-
-        statusText =
-            "Approved";
-
-    }
-    else if(
-        status === "rejected"
-    ){
-
-        statusClass =
-            "status-rejected";
-
-        statusText =
-            "Rejected";
-
-    }
-
-
-    const amount =
-        Number(
-            payment.amount || 0
-        );
-
-
+    const amount = Number(payment.amount || 0);
     let actions = "-";
 
-
     if(status === "pending"){
-
         actions = `
-
-            <button
-                class="action-btn approve-btn"
-                onclick="approvePayment('${payment.id}')">
-                ✓ Approve
-            </button>
-
-            <button
-                class="action-btn reject-btn"
-                onclick="openRejectModal('${payment.id}')">
-                ✕ Reject
-            </button>
-
+            <button class="action-btn approve-btn" data-action="approve" data-id="${escapeHtml(payment.id)}">✓ Approve</button>
+            <button class="action-btn reject-btn" data-action="reject" data-id="${escapeHtml(payment.id)}">✕ Reject</button>
         `;
-
     }
-
 
     return `
-
         <tr>
-
+            <td>${escapeHtml(date)}</td>
             <td>
-                ${escapeHtml(date)}
+                <strong>${escapeHtml(studentName)}</strong><br>
+                <small>📱 ${escapeHtml(mobile)}</small><br>
+                <small>✉️ ${escapeHtml(email)}</small>
             </td>
-
-
-            <td>
-
-                <strong>
-                    ${escapeHtml(studentName)}
-                </strong>
-
-                <br>
-
-                <small>
-                    📱 ${escapeHtml(mobile)}
-                </small>
-
-                <br>
-
-                <small>
-                    ✉️ ${escapeHtml(email)}
-                </small>
-
-            </td>
-
-
-            <td>
-                <strong>
-                    ${escapeHtml(courseName)}
-                </strong>
-            </td>
-
-
-            <td>
-
-                <span class="purchase">
-                    ${escapeHtml(purchaseText)}
-                </span>
-
-            </td>
-
-
-            <td>
-                <strong>
-                    ₹${amount.toLocaleString("en-IN")}
-                </strong>
-            </td>
-
-
-            <td>
-
-                <strong>
-                    ${escapeHtml(
-                        payment.utr_number || "-"
-                    )}
-                </strong>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    status
-                    ${statusClass}
-                ">
-
-                    ${statusText}
-
-                </span>
-
-            </td>
-
-
-            <td>
-                ${escapeHtml(
-                    payment.admin_note || "-"
-                )}
-            </td>
-
-
-            <td>
-                ${actions}
-            </td>
-
+            <td><strong>${escapeHtml(courseName)}</strong></td>
+            <td><span class="purchase">${escapeHtml(purchaseText)}</span></td>
+            <td><strong>₹${amount.toLocaleString("en-IN")}</strong></td>
+            <td><strong>${escapeHtml(payment.utr_number || "-")}</strong></td>
+            <td><span class="status ${statusClass}">${statusText}</span></td>
+            <td>${escapeHtml(payment.admin_note || "-")}</td>
+            <td>${actions}</td>
         </tr>
-
     `;
-
 }
-
-
-/* =========================
-   APPROVE PAYMENT
-========================= */
 
 async function approvePayment(paymentId){
-
-    const payment =
-        allPayments.find(
-            p => String(p.id) === String(paymentId)
-        );
-
+    const payment = allPayments.find(p => String(p.id) === String(paymentId));
 
     if(!payment){
-
         alert("Payment request not found.");
-
         return;
-
     }
 
-
-    if(
-        !confirm(
-            "Is payment ko APPROVE karna hai?"
-        )
-    ){
-
+    if(String(payment.payment_status).toLowerCase().trim() !== "pending"){
+        alert("Ye payment already process ho chuka hai.");
         return;
-
     }
 
+    if(!confirm("Is payment ko APPROVE karna hai? Student ko paid access milega.")) return;
 
     try{
-
-        /*
-         Step 1:
-         payment request ko approved karo
-        */
-
-        const {
-            error:paymentError
-        } =
-        await supabaseClient
+        const {error: paymentError} = await supabaseClient
             .from("payment_requests")
             .update({
-
-                payment_status:
-                    "approved",
-
-                verified_at:
-                    new Date().toISOString(),
-
-                admin_note:
-                    "Payment approved by admin."
-
+                payment_status: "approved",
+                verified_at: new Date().toISOString(),
+                admin_note: "Payment approved by admin."
             })
-            .eq(
-                "id",
-                payment.id
-            );
+            .eq("id", payment.id);
 
+        if(paymentError) throw paymentError;
 
-        if(paymentError){
+        const {data: existingEnrollment, error: existingError} =
+            await supabaseClient
+                .from("enrollments")
+                .select("id")
+                .eq("student_id", payment.student_id)
+                .eq("course_id", payment.course_id)
+                .eq("purchase_type", payment.purchase_type)
+                .maybeSingle();
 
-            throw paymentError;
-
-        }
-
-
-        /*
-         Step 2:
-         Check existing enrollment
-        */
-
-        const {
-            data:existingEnrollment,
-            error:existingError
-        } =
-        await supabaseClient
-            .from("enrollments")
-            .select("id")
-            .eq(
-                "student_id",
-                payment.student_id
-            )
-            .eq(
-                "course_id",
-                payment.course_id
-            )
-            .eq(
-                "purchase_type",
-                payment.purchase_type
-            )
-            .maybeSingle();
-
-
-        if(existingError){
-
-            throw existingError;
-
-        }
-
-
-        /*
-         Step 3:
-         Existing enrollment ko paid karo
-         ya new enrollment banao
-        */
+        if(existingError) throw existingError;
 
         if(existingEnrollment){
-
-            const {
-                error:updateError
-            } =
-            await supabaseClient
+            const {error: updateError} = await supabaseClient
                 .from("enrollments")
                 .update({
-
-                    amount:
-                        payment.amount,
-
-                    payment_status:
-                        "paid",
-
-                    payment_id:
-                        payment.utr_number
-
+                    amount: payment.amount,
+                    payment_status: "paid",
+                    payment_id: payment.utr_number
                 })
-                .eq(
-                    "id",
-                    existingEnrollment.id
-                );
+                .eq("id", existingEnrollment.id);
 
-
-            if(updateError){
-
-                throw updateError;
-
-            }
-
-        }
-        else{
-
-            const {
-                error:insertError
-            } =
-            await supabaseClient
+            if(updateError) throw updateError;
+        }else{
+            const {error: insertError} = await supabaseClient
                 .from("enrollments")
                 .insert({
-
-                    student_id:
-                        payment.student_id,
-
-                    course_id:
-                        payment.course_id,
-
-                    purchase_type:
-                        payment.purchase_type,
-
-                    amount:
-                        payment.amount,
-
-                    payment_status:
-                        "paid",
-
-                    payment_id:
-                        payment.utr_number
-
+                    student_id: payment.student_id,
+                    course_id: payment.course_id,
+                    purchase_type: payment.purchase_type,
+                    amount: payment.amount,
+                    payment_status: "paid",
+                    payment_id: payment.utr_number
                 });
 
-
-            if(insertError){
-
-                throw insertError;
-
-            }
-
+            if(insertError) throw insertError;
         }
 
-
-        alert(
-            "✅ Payment approved!\n\nStudent ko paid access mil gaya."
-        );
-
-
+        showSuccess("✅ Payment approved. Student ko paid access mil gaya.");
         await loadPayments();
-
+    }catch(error){
+        console.error("Approve payment error:", error);
+        alert("❌ Payment approve nahi hua.\n\n" + error.message);
+        await loadPayments();
     }
-    catch(error){
-
-        console.error(
-            "Approve payment error:",
-            error
-        );
-
-
-        alert(
-            "❌ Payment approve nahi hua.\n\n"
-            + error.message
-        );
-
-    }
-
 }
-
-
-/* =========================
-   REJECT MODAL
-========================= */
 
 function openRejectModal(paymentId){
-
-    rejectPaymentId =
-        paymentId;
-
-
-    document.getElementById(
-        "rejectReason"
-    ).value = "";
-
-
-    document.getElementById(
-        "rejectModal"
-    ).style.display = "flex";
-
+    rejectPaymentId = paymentId;
+    document.getElementById("rejectReason").value = "";
+    document.getElementById("rejectModal").style.display = "flex";
+    setTimeout(() => document.getElementById("rejectReason").focus(), 50);
 }
-
 
 function closeRejectModal(){
-
-    rejectPaymentId =
-        null;
-
-
-    document.getElementById(
-        "rejectModal"
-    ).style.display = "none";
-
+    rejectPaymentId = null;
+    document.getElementById("rejectModal").style.display = "none";
 }
-
-
-/* =========================
-   CONFIRM REJECT
-========================= */
 
 async function confirmReject(){
+    if(!rejectPaymentId) return;
 
-    if(!rejectPaymentId){
-
-        return;
-
-    }
-
-
-    const reason =
-        document.getElementById(
-            "rejectReason"
-        ).value.trim();
-
+    const reason = document.getElementById("rejectReason").value.trim();
 
     if(!reason){
-
-        alert(
-            "Reject reason likhna zaroori hai."
-        );
-
+        alert("Reject reason likhna zaroori hai.");
         return;
-
     }
-
 
     try{
-
-        const {
-            error
-        } =
-        await supabaseClient
+        const {error} = await supabaseClient
             .from("payment_requests")
             .update({
-
-                payment_status:
-                    "rejected",
-
-                admin_note:
-                    reason
-
+                payment_status: "rejected",
+                admin_note: reason,
+                verified_at: new Date().toISOString()
             })
-            .eq(
-                "id",
-                rejectPaymentId
-            );
+            .eq("id", rejectPaymentId);
 
-
-        if(error){
-
-            throw error;
-
-        }
-
+        if(error) throw error;
 
         closeRejectModal();
-
-
-        alert(
-            "❌ Payment request rejected."
-        );
-
-
+        showSuccess("❌ Payment request rejected.");
         await loadPayments();
-
+    }catch(error){
+        console.error("Reject payment error:", error);
+        alert("Payment reject nahi hua.\n\n" + error.message);
     }
-    catch(error){
-
-        console.error(
-            "Reject payment error:",
-            error
-        );
-
-
-        alert(
-            "Payment reject nahi hua.\n\n"
-            + error.message
-        );
-
-    }
-
 }
 
-
-/* =========================
-   ESCAPE HTML
-========================= */
-
 function escapeHtml(value){
-
-    if(value === null || value === undefined){
-
-        return "";
-
-    }
-
-
+    if(value === null || value === undefined) return "";
     return String(value)
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
-
 }
-
-
-/* =========================
-   LOGOUT
-========================= */
 
 async function logoutAdmin(){
-
     await supabaseClient.auth.signOut();
-
-    window.location.replace(
-        "admin-login.html"
-    );
-
+    window.location.replace("admin-login.html");
 }
 
+document.getElementById("refreshButton").addEventListener("click", loadPayments);
+document.getElementById("statusFilter").addEventListener("change", renderPayments);
+document.getElementById("searchInput").addEventListener("input", renderPayments);
+document.getElementById("logoutButton").addEventListener("click", logoutAdmin);
 
-/* =========================
-   START
-========================= */
+document.getElementById("dashboardButton").addEventListener("click", () => {
+    window.location.href = "admin-dashboard.html";
+});
 
-window.addEventListener(
-    "load",
-    checkAdminLogin
-);
+document.getElementById("cancelRejectButton").addEventListener("click", closeRejectModal);
+document.getElementById("confirmRejectButton").addEventListener("click", confirmReject);
 
+document.addEventListener("click", event => {
+    const button = event.target.closest("[data-action]");
+    if(!button) return;
+
+    const id = button.dataset.id;
+    const action = button.dataset.action;
+
+    if(action === "approve") approvePayment(id);
+    if(action === "reject") openRejectModal(id);
+});
+
+document.getElementById("rejectModal").addEventListener("click", event => {
+    if(event.target.id === "rejectModal") closeRejectModal();
+});
+
+document.addEventListener("keydown", event => {
+    if(event.key === "Escape") closeRejectModal();
+});
+
+window.addEventListener("load", checkAdminLogin);
 </script>
 
 </body>
