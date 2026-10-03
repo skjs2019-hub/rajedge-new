@@ -3290,9 +3290,8 @@ async function loadCourseNotes(
                     pdf_url,
                     created_at
                 `)
-                .eq(
-                    "exam",
-                    course.name
+                .or(
+                    `exam.eq.${course.name},category.eq.${course.name}`
                 )
                 .not(
                     "pdf_url",
