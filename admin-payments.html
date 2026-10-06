@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
@@ -275,18 +275,26 @@ async function checkAdminLogin(){
     try{
         hideError();
 
-        const {data, error} = await supabaseClient.auth.getUser();
+        const { data: sessionData, error: sessionError } =
+            await supabaseClient.auth.getSession();
 
-        if(error || !data?.user){
+        if(sessionError){
+            console.error("Session check error:", sessionError);
+            showError("Admin session check failed: " + sessionError.message);
+            return;
+        }
+
+        const session = sessionData?.session;
+        if(!session?.user){
             window.location.replace("admin-login.html");
             return;
         }
 
-        const {data: adminUser, error: adminError} =
+        const { data: adminUser, error: adminError } =
             await supabaseClient
                 .from("admin_users")
                 .select("id")
-                .eq("id", data.user.id)
+                .eq("id", session.user.id)
                 .maybeSingle();
 
         if(adminError){
@@ -296,7 +304,6 @@ async function checkAdminLogin(){
         }
 
         if(!adminUser){
-            alert("Access denied. Admin account required.");
             await supabaseClient.auth.signOut();
             window.location.replace("admin-login.html");
             return;
@@ -616,6 +623,14 @@ document.getElementById("rejectModal").addEventListener("click", event => {
 
 document.addEventListener("keydown", event => {
     if(event.key === "Escape") closeRejectModal();
+});
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+    if(event === "SIGNED_OUT" || !session?.user){
+        if(!window.location.pathname.endsWith("admin-login.html")){
+            window.location.replace("admin-login.html");
+        }
+    }
 });
 
 window.addEventListener("load", checkAdminLogin);
